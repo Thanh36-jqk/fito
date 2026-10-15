@@ -1,5 +1,6 @@
 import { Online } from "./Online";
 import { PaletteToggle } from "./PaletteToggle";
+import { SignOutButton } from "./SignOutButton";
 
 /* Chỉ hiện dưới 1024px; trên máy tính logo và bảng màu nằm ở thanh bên. */
 export function MobileHeader() {
@@ -11,6 +12,7 @@ export function MobileHeader() {
       <div className="flex items-center gap-2">
         <Online className="hidden min-[400px]:flex" />
         <PaletteToggle />
+        <SignOutButton />
       </div>
     </header>
   );

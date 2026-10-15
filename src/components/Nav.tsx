@@ -6,6 +6,7 @@ import { motion } from "motion/react";
 import { BookOpen, Heart, Ticket, Tv, type LucideIcon } from "lucide-react";
 import { Online } from "./Online";
 import { PaletteToggle } from "./PaletteToggle";
+import { SignOutButton } from "./SignOutButton";
 
 const TABS: { href: string; label: string; Icon: LucideIcon }[] = [
   { href: "/", label: "Rạp", Icon: Ticket },
@@ -73,6 +74,7 @@ export function Nav() {
       <div className="mt-auto hidden flex-col items-start gap-4 px-3 lg:flex">
         <Online className="flex" />
         <PaletteToggle />
+        <SignOutButton />
       </div>
     </nav>
   );
