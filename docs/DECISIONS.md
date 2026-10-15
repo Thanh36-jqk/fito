@@ -72,10 +72,10 @@ Chọn **bản ổn định mới nhất đã ra được ít nhất ~1 tuần**
 | Icon | lucide-react | 1.52.0 | Chỉ dùng ở thanh điều hướng và nút hành động |
 | Linh vật động | Rive (`@rive-app/react-canvas`) | chưa cài | Chỉ cài khi có file `.riv`; trước đó Bắp là SVG + Motion |
 | Dữ liệu client | TanStack Query | chưa cài | chưa cần: dữ liệu lấy ở Server Component + `'use cache'` |
-| DB, đăng nhập, realtime | Supabase (`@supabase/supabase-js`, `@supabase/ssr`) | chưa cài | Cài cuối pha 1, khi người dùng đã có project Supabase |
+| DB, đăng nhập, realtime | Supabase (`@supabase/supabase-js`, `@supabase/ssr`) | @supabase/supabase-js 2.117.3, @supabase/ssr 0.12.7 | Đăng nhập link email (token_hash), RLS theo allowed_users, Realtime cho swipes |
 | Hosting | Vercel Hobby + Vercel Cron | | Tự deploy khi push main |
 | PWA | Next PWA guide hoặc `@serwist/next` | | Pha 5 |
-| Test | Vitest | 4.1.11 | Pha 2: test hàm chọn trailer, tên/tóm tắt, điểm tổng; Playwright để pha 5 |
+| Test | Vitest (+ Playwright ở pha 5) | 4.1.11 | Hàm chọn trailer, tên/tóm tắt, điểm tổng (`src/`) và hàm parse dòng IMDb (`scripts/`) |
 
 Chi phí mục tiêu: 0đ/tháng.
 
@@ -165,6 +165,10 @@ Yêu cầu: phải tìm và lọc ra được cả những phim ít người bi�
   - `store.tsx`: trạng thái hai người trong bộ nhớ, thay bằng Supabase ở pha 4
   - `useMedia.ts`
   - `palette.ts`
+  - `supabase/`: `env.ts` (biến public, `hasSupabase`), `client.ts` (trình duyệt), `server.ts` (server, đọc cookie)
+- `src/proxy.ts` — làm mới phiên Supabase, chưa đăng nhập thì về `/login`; không có biến Supabase thì cho qua.
+- `supabase/migrations/` — SQL chạy tay trong Supabase SQL Editor.
+- `scripts/` — script Node chạy ngoài app (nạp IMDb ratings), có test Vitest.
 - `src/app/globals.css` — token màu, font, class dùng chung.
 - `src/styles/fito.css` — class component chép từ bản mẫu, thêm bố cục máy tính. Import trong `layout.tsx`, không dùng `@import` trong `globals.css` (Turbopack bỏ qua).
 - `prototype/vibe.html` — bản mẫu tham chiếu. Không sửa trừ khi người dùng yêu cầu.
@@ -218,3 +222,4 @@ Yêu cầu: phải tìm và lọc ra được cả những phim ít người bi�
 - **16/10/2026** — Phim mẫu đổi sang **id âm** (-1..-15) để không trùng id TMDB. Chọn phim/Quẹt/Match vẫn dùng dữ liệu mẫu; Hóng phim thật chỉ thêm id dương vào danh sách hóng, không thành match.
 - **16/10/2026** — Bình luận TMDB gộp bản vi + en (bỏ trùng, mới nhất trước, tối đa 5). Độ tuổi VN lấy từ trường `note` của `release_dates` khi `certification` rỗng (P, K, T13, T16, T18, C).
 - **16/10/2026** — `next/image` chỉ cho phép `https://image.tmdb.org/t/p/**`. Logo `.svg` bị bỏ qua.
+- **16/10/2026** — Pha 1B (bản gọn cho 2 người): migration Supabase 0001 (6 bảng/view, RLS, trigger chặn email lạ, swipes vào Realtime), đăng nhập link email + /auth/callback, proxy chuyển về /login (không có biến Supabase thì cho qua), nút Đăng xuất, script nạp IMDb ratings + GitHub Actions hằng tuần. Cột watch_log.where đổi thành place vì where là từ khoá SQL. Cài @supabase/supabase-js 2.117.3 (2.118.0 mới ra 1 ngày), @supabase/ssr 0.12.7, vitest 4.1.11 (không dùng 5.0.3 vì cần peer @types/node ^22, dự án đang dùng ^20).

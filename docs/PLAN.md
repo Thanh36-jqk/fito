@@ -74,7 +74,7 @@ Chỉ 2 user trong `allowed_users` được đọc và ghi. Phim nhận diện b
 | `movie_cache` | tmdb_id (PK), imdb_id, title_vi, title_en, year, runtime, genres[], poster_path, backdrop_path, trailer_key, providers_vn (jsonb), scores (jsonb), score_total, tmdb_fetched_at, omdb_fetched_at, trakt_fetched_at | Mỗi nguồn một mốc thời gian để làm mới riêng |
 | `swipes` | user_id, tmdb_id, decision (want / skip), created_at. PK (user_id, tmdb_id) | Quẹt lại thì ghi đè |
 | `matches` (view) | tmdb_id, matched_at | Phim có 2 dòng `want` từ 2 user khác nhau. Realtime lắng nghe `swipes` |
-| `watch_log` | id, tmdb_id, watched_on, where (cinema / home), user_id, my_score (1–10), note | Mỗi người một dòng cho mỗi lần xem |
+| `watch_log` | id, tmdb_id, watched_on, place (cinema / home), user_id, my_score (1–10), note | Mỗi người một dòng cho mỗi lần xem |
 
 Cấu trúc `scores`: `{ imdb: {v, votes}, rt: {v}, mc: {v}, tmdb: {v, votes}, trakt: {v, votes} }`. Giá trị `null` khi nguồn không có.
 
@@ -110,9 +110,9 @@ Mỗi màn có 3 trạng thái bắt buộc:
 - [x] Tạo app Next.js + TypeScript + Tailwind trong `D:\Fito`
 - [x] Đưa token màu, font, 3 theme từ `prototype/vibe.html` vào `globals.css`
 - [x] Khung app: điều hướng 4 tab có ô chọn trượt, responsive cho cả điện thoại và máy tính
-- [ ] Tạo project Supabase, chạy migration 5 bảng + RLS
-- [ ] Đăng nhập bằng link email, chặn email ngoài `allowed_users`
-- [ ] Proxy (middleware): chưa đăng nhập thì chuyển về `/login`
+- [ ] Tạo project Supabase, chạy migration 5 bảng + RLS (code xong 16/10, chờ tạo project để chạy thật)
+- [ ] Đăng nhập bằng link email, chặn email ngoài `allowed_users` (code xong 16/10, chờ tạo project để chạy thật)
+- [ ] Proxy (middleware): chưa đăng nhập thì chuyển về `/login` (code xong 16/10, chờ tạo project để chạy thật)
 - [ ] `.env.example`, README, deploy lần đầu lên Vercel
 
 > **16/10/2026:** Giao diện của pha 2, 3, 4 đã làm xong với dữ liệu mẫu: Rạp, Ở nhà, Chi tiết, Chọn phim, Quẹt, Match, màn Trùng gu. Các mục bên dưới chỉ được tick khi đã chạy bằng dữ liệu thật hoặc Supabase.
@@ -120,7 +120,7 @@ Mỗi màn có 3 trạng thái bắt buộc:
 ### Pha 2 — Dữ liệu và điểm
 - [ ] `lib/tmdb.ts`: now_playing, upcoming, discover theo nền tảng VN, chi tiết, tìm kiếm
 - [ ] `lib/omdb.ts` (chỉ RT + Metacritic), `lib/trakt.ts`: lấy điểm và bình luận theo imdb_id
-- [ ] Bảng `imdb_ratings` + job GitHub Actions hằng tuần nạp IMDb Datasets (điểm IMDb cho mọi phim)
+- [ ] Bảng `imdb_ratings` + job GitHub Actions hằng tuần nạp IMDb Datasets (điểm IMDb cho mọi phim) (script + workflow xong, chờ chạy thật)
 - [ ] Trang chi tiết đầy đủ: diễn viên/ekip có ảnh, tagline, nước, ngôn ngữ, độ tuổi, bộ sưu tập, phim tương tự, gợi ý, logo (TMDB, thiếu thì Fanart.tv)
 - [ ] `lib/score.ts`: chuẩn hoá thang 10, tính điểm tổng, có test Vitest
 - [ ] Cache vào `movie_cache` theo mốc thời gian từng nguồn

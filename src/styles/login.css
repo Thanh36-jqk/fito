@@ -1,0 +1,68 @@
+/* Trang /login: vé vào cửa. Chỉ dùng token màu. */
+
+/* Ẩn thanh điều hướng và header điện thoại khi ở trang đăng nhập */
+.shell:has(.login) nav[aria-label="Điều hướng"],
+.shell:has(.login) .main > header { display: none; }
+@media (min-width: 1024px) {
+  .shell:has(.login) { grid-template-columns: minmax(0, 1fr); }
+}
+
+.login {
+  min-height: calc(100dvh - 140px);
+  display: grid; grid-template-columns: minmax(0, 1fr); align-content: center; gap: 28px;
+  padding-top: 40px;
+}
+.login-intro { min-width: 0; }
+.login-intro p { margin: 14px 0 10px; max-width: 40ch; color: var(--muted); line-height: 1.6; }
+.login-arrow { transform: rotate(70deg); }
+
+/* Khung ngoài không bị mask nên sticker và Bắp thò ra khỏi vé được */
+.login-card { position: relative; width: 100%; max-width: 440px; justify-self: center; padding-top: 22px; }
+.login-sticker {
+  position: absolute; top: 4px; left: 12px; z-index: 2; --rot: -6deg;
+  min-height: 36px; font-size: 13px; pointer-events: none;
+}
+.login-bap { position: absolute; top: -34px; right: 10px; z-index: 2; width: 84px; pointer-events: none; }
+.login-bap svg { display: block; width: 100%; height: auto; }
+
+/* --ny: khía hai bên trùng đường đục lỗ (padding 18 + cuống 22 + margin 12 + nửa nét 1) */
+.login-ticket { --ny: calc(100% - 53px); padding: 28px 22px 18px; }
+.login-head small {
+  display: block; font-size: 12px; font-weight: 800; letter-spacing: .18em; color: var(--muted);
+}
+.login-head h2 { font-family: var(--f-display); font-weight: 800; font-size: 30px; line-height: 1.1; margin: 2px 0 0; }
+
+.login-form { display: grid; gap: 10px; margin-top: 18px; }
+.login-form label { font-weight: 800; font-size: 14px; }
+.login-input {
+  width: 100%; min-height: 52px; border-radius: 16px; padding: 0 16px;
+  background: var(--surface-2); border: 2px solid var(--line); color: var(--fg); font-size: 16px;
+  transition: border-color .2s;
+}
+.login-input::placeholder { color: var(--muted); opacity: .7; }
+.login-input:focus-visible { outline: none; border-color: var(--accent); }
+.login-form .btn-main { margin-top: 4px; }
+.login-err { display: flex; align-items: flex-start; gap: 8px; margin: 2px 0 0; color: var(--bad); font-size: 14px; line-height: 1.45; }
+
+.login-sent { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; padding-top: 8px; }
+.login-sent h2 { font-family: var(--f-display); font-weight: 800; font-size: 26px; margin: 0; }
+.login-sent p { margin: 0; color: var(--muted); line-height: 1.6; overflow-wrap: anywhere; }
+.login-sent b { color: var(--fg); }
+.login-hand { font-family: var(--f-hand); color: var(--accent-2); font-size: 15px; transform: rotate(-2deg); }
+.login-back { width: 100%; margin-top: 6px; }
+
+.login-perf { margin: 22px -11px 12px; }
+.login-stub {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 0 8px; margin: 0;
+  min-height: 22px; line-height: 22px;
+  font-family: var(--f-display); font-weight: 700; font-size: 13px; color: var(--muted);
+}
+.login-src { text-align: center; margin-top: 14px; }
+
+@media (min-width: 1024px) {
+  .login {
+    grid-template-columns: minmax(0, 1fr) 440px; align-items: center; gap: 64px;
+    max-width: 1000px; margin-inline: auto;
+  }
+  .login-arrow { transform: none; }
+}

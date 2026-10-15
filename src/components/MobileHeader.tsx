@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Search } from "lucide-react";
 import { Online } from "./Online";
 import { PaletteToggle } from "./PaletteToggle";
+import { SignOutButton } from "./SignOutButton";
 
 /* Chỉ hiện dưới 1024px; trên máy tính logo và bảng màu nằm ở thanh bên. */
 export function MobileHeader() {
@@ -16,6 +17,7 @@ export function MobileHeader() {
           <Search className="size-5" aria-hidden />
         </Link>
         <PaletteToggle />
+        <SignOutButton />
       </div>
     </header>
   );
