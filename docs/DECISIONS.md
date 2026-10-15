@@ -131,6 +131,19 @@ Yêu cầu: phải tìm và lọc ra được cả những phim ít người bi�
 5. **Phim không có ở VN:** `watch/providers` cho VN trống thì ghi rõ "Chưa thấy trên nền tảng nào ở VN (dữ liệu JustWatch)". Không đoán.
 6. Luôn để `include_adult=false`.
 
+**Thử thật với token TMDB (16/10/2026), phim 38551:**
+- Tìm bằng "snakes and earrings", "蛇にピアス" hay "hebi ni piasu" đều ra đúng phim.
+- Dữ liệu trả về: tóm tắt, thể loại, nước, diễn viên, đạo diễn, từ khoá, 20 phim tương tự, 20 gợi ý, tên thay thế, 6 poster, 4 ảnh nền, trailer tiếng Anh chính thức.
+- Những chỗ thiếu và cách xử lý:
+  - **Tên:** TMDB không có tên tiếng Việt, `title` trả về chính tên gốc tiếng Nhật.
+    - Tên hiển thị = tên Việt nếu khác tên gốc; không thì lấy tên tiếng Anh (`en-US`).
+    - Tên gốc luôn hiện ở dòng phụ.
+  - **Tóm tắt:** không có tiếng Việt → lấy `en-US`, gắn nhãn "EN". Pha 5 có thể dùng AI dịch.
+  - **Logo:** không có trên TMDB → thử Fanart.tv; vẫn không có thì dùng tên phim bằng chữ Baloo 2.
+  - **Điểm TMDB:** chỉ 41 lượt (dưới 50), nên bị loại khỏi điểm tổng. Điểm IMDb lấy từ IMDb Datasets (1.032 lượt).
+  - **Nền tảng ở VN:** không có → hiện "Chưa thấy trên nền tảng nào ở VN".
+  - **Trailer:** có một bản tiếng Nhật không chính thức (bỏ) và một bản tiếng Anh chính thức (dùng).
+
 - Poster CSS (`Poster.tsx`) chỉ dùng cho dữ liệu mẫu. Khi có ảnh TMDB thì giữ khung, viền, halftone, chỉ thay phần nền bằng ảnh thật.
 
 ## Cấu trúc code
