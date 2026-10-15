@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { FILMS, total } from "@/lib/films";
+import { fmtDayMonth, type MovieCard } from "@/lib/movie";
+import { totalScore } from "@/lib/score";
 import { EmptyState } from "../EmptyState";
 import { PosterStrip } from "./PosterStrip";
 import { TicketCard } from "./TicketCard";
@@ -9,12 +10,22 @@ import { TicketCard } from "./TicketCard";
 const GENRES = ["Tất cả", "Hành động", "Kinh dị", "Hài", "Tình cảm", "Hoạt hình", "Điểm ≥ 7,5"];
 const ROT = [-2, 1.5, -1, 2, -1.5, 1, -2];
 
-export function RapView() {
+export function RapView({
+  now: nowAll,
+  soon: soonAll,
+  nowError,
+  soonError,
+}: {
+  now: MovieCard[];
+  soon: MovieCard[];
+  nowError: boolean;
+  soonError: boolean;
+}) {
   const [genre, setGenre] = useState("Tất cả");
-  const pass = (f: (typeof FILMS)[number]) =>
-    genre === "Tất cả" || (genre === "Điểm ≥ 7,5" ? (total(f) ?? 0) >= 7.5 : f.genres.includes(genre));
-  const now = FILMS.filter((f) => f.when === "now" && pass(f));
-  const soon = FILMS.filter((f) => f.when === "soon" && pass(f));
+  const pass = (f: MovieCard) =>
+    genre === "Tất cả" || (genre === "Điểm ≥ 7,5" ? (totalScore(f.sc) ?? 0) >= 7.5 : f.genres.includes(genre));
+  const now = nowAll.filter(pass);
+  const soon = soonAll.filter(pass);
 
   return (
     <>
@@ -43,7 +54,11 @@ export function RapView() {
           </svg>
         </span>
       </div>
-      {now.length ? (
+      {nowError ? (
+        <EmptyState mood="sad" title="TMDB đang trục trặc">
+          Chưa lấy được phim đang chiếu. Thử tải lại sau nha.
+        </EmptyState>
+      ) : now.length ? (
         <PosterStrip films={now} />
       ) : (
         <EmptyState mood="sad" title="Không có phim hợp chip này">
@@ -55,16 +70,21 @@ export function RapView() {
         <h2>Sắp chiếu</h2>
         <small>theo TMDB</small>
       </div>
-      {soon.length ? (
+      {soonError ? (
+        <p className="text-muted">Chưa lấy được phim sắp chiếu từ TMDB.</p>
+      ) : soon.length ? (
         <div className="grid-tickets">
           {soon.map((f) => (
-            <TicketCard key={f.id} film={f} />
+            <TicketCard key={f.id} film={f} sticker={fmtDayMonth(f.releaseDate)} />
           ))}
         </div>
       ) : (
         <p className="text-muted">Chưa có phim sắp chiếu hợp bộ lọc.</p>
       )}
-      <p className="foot">Dữ liệu mẫu, phim và điểm là giả. App thật lấy từ TMDB, OMDb, Trakt.</p>
+      <p className="foot">
+        Phim và lịch theo TMDB, có thể lệch với rạp thật. Sản phẩm dùng API của TMDB nhưng không được TMDB xác nhận
+        hay chứng nhận.
+      </p>
     </>
   );
 }

@@ -1,0 +1,47 @@
+/* Khu vực Chi tiết phim (/phim/[id] và sheet): style riêng của T3. Chỉ dùng token màu. */
+
+/* ---------- hero có backdrop TMDB ---------- */
+.d-hero.has-bd { isolation: isolate; }
+.d-hero .d-bd { object-fit: cover; z-index: -2; }
+.d-hero.has-bd::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to bottom, color-mix(in srgb, var(--bg) 30%, transparent), var(--bg) 92%); }
+.d-logo { position: relative; display: block; width: 100%; height: 64px; max-width: 320px; }
+.d-logo img { object-fit: contain; object-position: left; }
+.d-tag { font-family: var(--f-hand); color: var(--muted); font-size: 15px; line-height: 1.4; margin: 6px 0 0; overflow-wrap: anywhere; }
+@media (min-width: 768px) { .d-logo { height: 84px; } }
+
+/* nhãn "EN" khi đang hiện bản tiếng Anh */
+.lang { display: inline-block; vertical-align: middle; margin-left: 6px; padding: 1px 6px; border-radius: 6px; font-family: var(--f-body); font-size: 10px; font-weight: 800; line-height: 1.5; letter-spacing: .04em; font-style: normal; color: var(--fg); background: var(--surface-2); border: 1.5px solid var(--line); }
+
+/* ---------- trailer ---------- */
+.trailer { isolation: isolate; }
+.trailer .t-bd { object-fit: cover; z-index: -1; }
+iframe.trailer { border: 0; display: block; }
+
+/* ---------- xem ở đâu ---------- */
+.block .pv-label { font-size: 13px; font-weight: 800; color: var(--muted); margin: 12px 0 6px; }
+.pv-group { margin-top: 4px; }
+.d-link { display: inline-flex; align-items: center; gap: 4px; min-height: 24px; font-weight: 800; color: var(--accent-2); text-decoration: underline; text-underline-offset: 3px; overflow-wrap: anywhere; }
+.block > .d-link { margin-top: 10px; }
+.where a.tag { color: var(--fg); text-decoration: none; }
+@media (hover: hover) { .where a.tag:hover { border-color: var(--accent-2); } .d-link:hover { color: var(--fg); } }
+
+/* ---------- thông tin ---------- */
+.facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 16px; margin: 0; }
+.facts dt { font-size: 13px; color: var(--muted); }
+.facts dd { margin: 2px 0 0; font-size: 15px; font-weight: 700; overflow-wrap: anywhere; }
+@media (min-width: 768px) { .facts { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+/* ---------- diễn viên, ekip ---------- */
+.people { display: flex; gap: 12px; overflow-x: auto; list-style: none; margin: 0; padding: 0 0 4px; scrollbar-width: none; overscroll-behavior-x: contain; }
+.people::-webkit-scrollbar { display: none; }
+.person { flex: none; width: 84px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 2px; font-size: 12px; line-height: 1.3; min-width: 0; }
+.person .ph { width: 72px; height: 72px; margin-bottom: 4px; border-radius: 50%; overflow: hidden; display: grid; place-items: center; background: var(--surface-2); border: 2px solid var(--line); color: var(--muted); }
+.person .ph img { width: 100%; height: 100%; object-fit: cover; }
+.person b, .person > span:not(.ph) { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; max-width: 100%; overflow-wrap: anywhere; }
+.person b { font-size: 13px; }
+.person > span:not(.ph) { color: var(--muted); }
+
+/* ---------- phim tương tự / gợi ý ---------- */
+.rail { display: flex; gap: 12px; overflow-x: auto; padding: 6px 2px 10px; scrollbar-width: none; overscroll-behavior-x: contain; }
+.rail::-webkit-scrollbar { display: none; }
+.rail .ticket { flex: none; width: 148px; }

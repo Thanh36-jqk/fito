@@ -8,6 +8,9 @@ import { Providers } from "@/components/Providers";
 import { PALETTE_SCRIPT } from "@/lib/palette";
 import "./globals.css";
 import "@/styles/fito.css";
+import "@/styles/home.css";
+import "@/styles/detail.css";
+import "@/styles/search.css";
 
 const baloo = Baloo_2({ variable: "--font-baloo", subsets: ["latin", "vietnamese"], weight: ["600", "700", "800"] });
 const nunito = Nunito({ variable: "--font-nunito", subsets: ["latin", "vietnamese"], weight: ["500", "600", "700", "800"] });
@@ -44,7 +47,8 @@ export default function RootLayout({ children, modal }: LayoutProps<"/">) {
             </Suspense>
             <main className="main">
               <MobileHeader />
-              <ViewTransition default="tab-swap">{children}</ViewTransition>
+              {/* Gõ ở /tim (transitionTypes "search") thì không chạy hiệu ứng chuyển trang */}
+              <ViewTransition default={{ search: "none", default: "tab-swap" }}>{children}</ViewTransition>
             </main>
           </div>
           {modal}

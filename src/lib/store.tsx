@@ -14,15 +14,15 @@ type State = {
   justMatched: number | null;
 };
 
-const DEFAULT_DECK = [1, 3, 2, 6, 4, 7, 8];
+const DEFAULT_DECK = [-1, -3, -2, -6, -4, -7, -8];
 
 const initial: State = {
-  wants: [5, 9],
+  wants: [-5, -9],
   skips: [],
   deck: DEFAULT_DECK,
   matches: [
-    { id: 5, at: "03/10", seat: "H07–08" },
-    { id: 9, at: "12/10", seat: "E11–12" },
+    { id: -5, at: "03/10", seat: "H07–08" },
+    { id: -9, at: "12/10", seat: "E11–12" },
   ],
   justMatched: null,
 };

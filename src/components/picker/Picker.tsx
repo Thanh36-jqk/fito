@@ -15,6 +15,8 @@ import { ScorePill } from "../film/ScorePill";
 import { LENS, MINS, SORTS, WHERE, okGenre, pool, results, type Criteria } from "./pick";
 
 const ROT = [-1.5, 1, -1, 1.5];
+/* Bộ chọn vẫn chạy trên phim mẫu (FILMS) cho tới khi chuyển sang TMDB discover. */
+const SAMPLE_NOTE = "Dữ liệu mẫu, điểm là giả";
 
 function Chips<T>({ title, items, on, tap }: {
   title: string;
@@ -87,7 +89,7 @@ function PickerSheet({ start }: { start?: PickWhere }) {
     body = (
       <>
         <h2 className="pk-q">Hôm nay xem ở đâu?</h2>
-        <p className="pk-sub">Chọn một cái, Bắp lọc tiếp cho.</p>
+        <p className="pk-sub">Chọn một cái, Bắp lọc tiếp cho. ({SAMPLE_NOTE})</p>
         <div className="pk-opts">
           {(Object.keys(WHERE) as PickWhere[]).map((k) => {
             const list = FILMS.filter(WHERE[k].ok);
@@ -169,6 +171,7 @@ function PickerSheet({ start }: { start?: PickWhere }) {
     body = (
       <>
         <h2 className="pk-q">{res.length ? `Bắp lọc được ${res.length} phim` : "Hụt mất rồi"}</h2>
+        <p className="pk-sub">{SAMPLE_NOTE}</p>
         <div className="pk-sum">{tags.map((t) => <span key={t} className="tag">{t}</span>)}</div>
         {res.length ? (
           <div className="mlist">

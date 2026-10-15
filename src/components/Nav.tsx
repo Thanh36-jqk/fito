@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
-import { BookOpen, Heart, Ticket, Tv, type LucideIcon } from "lucide-react";
+import { BookOpen, Heart, Search, Ticket, Tv, type LucideIcon } from "lucide-react";
 import { Online } from "./Online";
 import { PaletteToggle } from "./PaletteToggle";
 
@@ -36,6 +36,14 @@ export function Nav() {
       <div className="logo hidden px-3 lg:block">
         Fito<small>sổ tay xem phim của hai đứa</small>
       </div>
+
+      <Link
+        href="/tim"
+        className="search-link hidden lg:flex"
+        aria-current={pathname.startsWith("/tim") ? "page" : undefined}
+      >
+        <Search className="size-5" aria-hidden /> Tìm phim
+      </Link>
 
       <ul
         className="grid grid-cols-4 rounded-full border-2 border-line bg-surface/90 p-1.5 shadow-[0_18px_40px_-16px_#000] backdrop-blur-md

@@ -71,11 +71,11 @@ Chọn **bản ổn định mới nhất đã ra được ít nhất ~1 tuần**
 | Chuyển trang | React `<ViewTransition>` | có sẵn trong React 19.3 | Crossfade giữa các tab, sau này morph poster |
 | Icon | lucide-react | 1.52.0 | Chỉ dùng ở thanh điều hướng và nút hành động |
 | Linh vật động | Rive (`@rive-app/react-canvas`) | chưa cài | Chỉ cài khi có file `.riv`; trước đó Bắp là SVG + Motion |
-| Dữ liệu client | TanStack Query | chưa cài | Cài ở pha 2 |
+| Dữ liệu client | TanStack Query | chưa cài | chưa cần: dữ liệu lấy ở Server Component + `'use cache'` |
 | DB, đăng nhập, realtime | Supabase (`@supabase/supabase-js`, `@supabase/ssr`) | chưa cài | Cài cuối pha 1, khi người dùng đã có project Supabase |
 | Hosting | Vercel Hobby + Vercel Cron | | Tự deploy khi push main |
 | PWA | Next PWA guide hoặc `@serwist/next` | | Pha 5 |
-| Test | Vitest + Playwright | chưa cài | Pha 2 (hàm tính điểm) và pha 5 (luồng chính) |
+| Test | Vitest | 4.1.11 | Pha 2: test hàm chọn trailer, tên/tóm tắt, điểm tổng; Playwright để pha 5 |
 
 Chi phí mục tiêu: 0đ/tháng.
 
@@ -158,7 +158,9 @@ Yêu cầu: phải tìm và lọc ra được cả những phim ít người bi�
   - `match/`: Deck, MatchView, MatchOverlay
   - dùng chung: Nav, Providers, Toast…
 - `src/lib/`:
-  - `films.ts`: **DỮ LIỆU MẪU**, thay ở pha 2
+  - `films.ts`: **DỮ LIỆU MẪU** cho Chọn phim/Quẹt/Match, id âm (-1..-15) để không trùng id TMDB; `sampleCard`/`sampleDetail` đổi sang kiểu chung
+  - `movie.ts`: kiểu chung `MovieCard`/`MovieDetail`, nhãn thể loại/ekip tiếng Việt, hàm định dạng; an toàn cho client
+  - `tmdb/`: `client.ts` (server-only, nơi duy nhất đọc token), `api.ts` (server-only, có cache `'use cache'` + `cacheLife`), `pick.ts` (hàm thuần, có test), `types.ts` (JSON thô), `__fixtures__/` (dữ liệu thật phim 38551 cho test)
   - `score.ts`: điểm tổng, mức điểm, chữ trên con dấu
   - `store.tsx`: trạng thái hai người trong bộ nhớ, thay bằng Supabase ở pha 4
   - `useMedia.ts`
@@ -208,3 +210,11 @@ Yêu cầu: phải tìm và lọc ra được cả những phim ít người bi�
   - Thêm IMDb Datasets (điểm IMDb cho mọi phim) và Fanart.tv (logo).
   - OMDb chỉ còn lấy RT và Metacritic.
   - Đã kiểm chứng TMDB và IMDb đều có *Snakes and Earrings*.
+- **16/10/2026** — Pha 2 nối TMDB (`src/lib/tmdb/`). Cache bằng `'use cache'` + `cacheLife`: danh sách 6 giờ (`LIST_LIFE`), chi tiết 24 giờ (`DETAIL_LIFE`). Lỗi thì throw trong scope có cache để lỗi không bị cache.
+  - Cài Vitest 4.1.11 (`--save-exact`, kéo theo Vite 8.3.4). npm 10.9.8 bị crash nội bộ (`Cannot read properties of null (reading 'edgesOut')`, không phải ERESOLVE) khi dựng cây peer của Vite 8, nên chạy lệnh cài bằng `npx npm@11.21.0`, không dùng `--force` hay `--legacy-peer-deps`.
+- **16/10/2026** — Đã kiểm chứng TMDB/JustWatch **KHÔNG có vùng VN**: `/watch/providers/regions` (139 vùng) không có VN, `discover` với `watch_region=VN` ra 0 phim. FPT Play, Galaxy Play, VieON không có trong danh mục nền tảng của TMDB.
+  - Ở nhà hiện thông báo + "Đang hot trên TMDB", không đoán nền tảng.
+  - **Cần người dùng chốt hướng xử lý** (ví dụ tự gắn nền tảng cho phim, như mục Rủi ro trong PLAN.md).
+- **16/10/2026** — Phim mẫu đổi sang **id âm** (-1..-15) để không trùng id TMDB. Chọn phim/Quẹt/Match vẫn dùng dữ liệu mẫu; Hóng phim thật chỉ thêm id dương vào danh sách hóng, không thành match.
+- **16/10/2026** — Bình luận TMDB gộp bản vi + en (bỏ trùng, mới nhất trước, tối đa 5). Độ tuổi VN lấy từ trường `note` của `release_dates` khi `certification` rỗng (P, K, T13, T16, T18, C).
+- **16/10/2026** — `next/image` chỉ cho phép `https://image.tmdb.org/t/p/**`. Logo `.svg` bị bỏ qua.

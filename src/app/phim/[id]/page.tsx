@@ -5,16 +5,20 @@ import { Suspense } from "react";
 import { ChevronLeft } from "lucide-react";
 import { DetailActions } from "@/components/detail/DetailActions";
 import { DetailBody } from "@/components/detail/DetailBody";
+import { DetailError } from "@/components/detail/DetailError";
 import { DetailSkeleton } from "@/components/detail/DetailSkeleton";
-import { FILMS, getFilm } from "@/lib/films";
+import { parseMovieId } from "@/lib/movie";
+import { getDetailForRoute } from "@/lib/tmdb/api";
 
+/* cacheComponents cần ít nhất 1 mẫu để kiểm lúc build; id khác render khi có request. */
 export function generateStaticParams() {
-  return FILMS.map((f) => ({ id: String(f.id) }));
+  return [{ id: "38551" }];
 }
 
 export async function generateMetadata({ params }: PageProps<"/phim/[id]">): Promise<Metadata> {
-  const film = getFilm(Number((await params).id));
-  return { title: film?.vi ?? "Không tìm thấy phim" };
+  const id = parseMovieId((await params).id);
+  const r = id == null ? null : await getDetailForRoute(id);
+  return { title: r?.ok ? r.data.title : "Không tìm thấy phim" };
 }
 
 /* Mở trực tiếp bằng link (hoặc tải lại trang). Bấm từ list thì @modal/(.)phim/[id] chặn và mở dạng sheet. */
@@ -34,14 +38,19 @@ export default function PhimPage({ params }: PageProps<"/phim/[id]">) {
 }
 
 async function PageContent({ params }: { params: PageProps<"/phim/[id]">["params"] }) {
-  const film = getFilm(Number((await params).id));
-  if (!film) notFound();
+  const id = parseMovieId((await params).id);
+  if (id == null) notFound();
+  const r = await getDetailForRoute(id);
+  if (!r.ok) {
+    if (r.reason === "not_found") notFound();
+    return <DetailError />;
+  }
   return (
     <>
       <div className="sheet-scroll">
-        <DetailBody film={film} />
+        <DetailBody film={r.data} />
       </div>
-      <DetailActions id={film.id} className="sticky bottom-[calc(84px+env(safe-area-inset-bottom,0px))] lg:bottom-0" />
+      <DetailActions id={r.data.id} className="sticky bottom-[calc(84px+env(safe-area-inset-bottom,0px))] lg:bottom-0" />
     </>
   );
 }

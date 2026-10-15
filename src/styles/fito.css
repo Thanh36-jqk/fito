@@ -20,6 +20,10 @@
 .poster.bare .pmeta { display: none; }
 .poster.bare .ptitle { bottom: 6px; left: 6px; right: 6px; }
 .poster .glare { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .2s; background: radial-gradient(circle at var(--gx, 50%) var(--gy, 50%), rgba(255, 255, 255, .45), transparent 45%); mix-blend-mode: soft-light; }
+/* poster ảnh TMDB: giữ khung + halftone, nền là ảnh thật */
+.poster.has-img { background: var(--surface-2); }
+.poster .pimg { object-fit: cover; z-index: -2; }
+.poster.has-img .halftone { opacity: .35; }
 
 /* ---------- pill điểm ---------- */
 .pill { display: inline-flex; align-items: center; gap: 4px; padding: 2px 9px; border-radius: 999px; font-family: var(--f-display); font-weight: 800; font-size: 14px; line-height: 1.6; }
@@ -124,13 +128,13 @@
 .stamp { display: inline-block; white-space: nowrap; font-family: var(--f-display); font-weight: 800; font-size: 20px; letter-spacing: .04em; padding: 2px 12px; border: 3.5px solid currentColor; border-radius: 10px; margin-bottom: 6px; background: transparent !important; }
 .stamp.lv-good { color: var(--good); } .stamp.lv-mid { color: var(--mid); } .stamp.lv-bad { color: var(--bad); } .stamp.lv-none { color: var(--muted); }
 .rings { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; margin-top: 16px; }
-.ring { display: flex; flex-direction: column; align-items: center; gap: 2px; text-align: center; }
-.ring svg { width: 58px; height: 58px; transform: rotate(-90deg); }
-.ring circle { fill: none; stroke-width: 6; }
-.ring .bgc { stroke: var(--surface-2); }
-.ring .rv { margin-top: -44px; height: 30px; font-family: var(--f-display); font-weight: 800; font-size: 15px; }
-.ring b { font-size: 12px; margin-top: 6px; }
-.ring span { font-size: 12px; color: var(--muted); line-height: 1.2; }
+.score-ring { display: flex; flex-direction: column; align-items: center; gap: 2px; text-align: center; }
+.score-ring svg { width: 58px; height: 58px; transform: rotate(-90deg); }
+.score-ring circle { fill: none; stroke-width: 6; }
+.score-ring .bgc { stroke: var(--surface-2); }
+.score-ring .rv { margin-top: -44px; height: 30px; font-family: var(--f-display); font-weight: 800; font-size: 15px; }
+.score-ring b { font-size: 12px; margin-top: 6px; }
+.score-ring span { font-size: 12px; color: var(--muted); line-height: 1.2; }
 .block { margin-top: 24px; }
 .block h3 { font-family: var(--f-display); font-weight: 800; font-size: 19px; margin: 0 0 10px; }
 .block p { margin: 0; line-height: 1.65; max-width: 65ch; }

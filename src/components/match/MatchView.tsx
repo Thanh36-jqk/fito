@@ -16,6 +16,7 @@ function MatchList() {
   const { state } = useFito();
   const [f, setF] = useState<(typeof FILTERS)[number]>("Tất cả");
   const list = state.matches
+    .filter((m) => !!getFilm(m.id))
     .filter((m) => {
       const w = getFilm(m.id)!.when;
       return f === "Tất cả" || (f === "Ở nhà" ? w === "home" : w !== "home");

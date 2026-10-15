@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { Search } from "lucide-react";
 import { Online } from "./Online";
 import { PaletteToggle } from "./PaletteToggle";
 
@@ -10,6 +12,9 @@ export function MobileHeader() {
       </div>
       <div className="flex items-center gap-2">
         <Online className="hidden min-[400px]:flex" />
+        <Link href="/tim" className="icon-btn search-btn" aria-label="Tìm phim">
+          <Search className="size-5" aria-hidden />
+        </Link>
         <PaletteToggle />
       </div>
     </header>

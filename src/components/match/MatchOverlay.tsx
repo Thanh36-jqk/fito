@@ -19,7 +19,7 @@ const TITLE = "TRÙNG GU RỒI!";
 export function MatchOverlay() {
   const { state, dispatch } = useFito();
   const id = state.justMatched;
-  if (id == null) return null;
+  if (id == null || !getFilm(id)) return null;
   return <Overlay key={id} id={id} n={state.matches.length} onClose={() => dispatch({ type: "closeMatch" })} />;
 }
 

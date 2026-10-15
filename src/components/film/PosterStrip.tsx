@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useRef } from "react";
-import type { Film } from "@/lib/films";
+import { DASH, type MovieCard } from "@/lib/movie";
 import { Poster } from "./Poster";
 import { ScorePill } from "./ScorePill";
 
@@ -10,9 +10,34 @@ import { ScorePill } from "./ScorePill";
   Băng poster: cuộn dừng giữa, poster giữa phóng to, hai bên mờ, nền app đổi màu theo poster giữa.
   Máy có chuột: kéo bằng chuột để cuộn, poster nghiêng 3D có vệt sáng theo con trỏ.
 */
-export function PosterStrip({ films }: { films: Film[] }) {
+/* Màu trung bình của poster (ảnh đi qua /_next/image cùng origin nên canvas đọc được). Lỗi thì null. */
+function avgColor(img: HTMLImageElement): string | null {
+  try {
+    const c = document.createElement("canvas");
+    c.width = c.height = 8;
+    const ctx = c.getContext("2d", { willReadFrequently: true });
+    if (!ctx) return null;
+    ctx.drawImage(img, 0, 0, 8, 8);
+    const d = ctx.getImageData(0, 0, 8, 8).data;
+    let r = 0;
+    let g = 0;
+    let b = 0;
+    for (let i = 0; i < d.length; i += 4) {
+      r += d[i];
+      g += d[i + 1];
+      b += d[i + 2];
+    }
+    const n = d.length / 4;
+    return `rgb(${Math.round(r / n)} ${Math.round(g / n)} ${Math.round(b / n)})`;
+  } catch {
+    return null;
+  }
+}
+
+export function PosterStrip({ films }: { films: MovieCard[] }) {
   const ref = useRef<HTMLDivElement>(null);
   const drag = useRef({ on: false, x: 0, left: 0, moved: false });
+  const updateRef = useRef<() => void>(() => {});
 
   const update = useCallback(() => {
     const st = ref.current;
@@ -31,8 +56,32 @@ export function PosterStrip({ films }: { films: Film[] }) {
         best = sl;
       }
     });
-    if (best) document.body.style.setProperty("--tint", (best as HTMLElement).dataset.c!);
+    const sl = best as HTMLElement | null;
+    if (!sl) return;
+    if (!sl.dataset.c) {
+      const img = sl.querySelector("img");
+      if (img && img.complete && img.naturalWidth > 0) {
+        const c = avgColor(img);
+        if (c) sl.dataset.c = c;
+      } else if (img && !sl.dataset.wait) {
+        // ảnh chưa tải xong: tạm dùng màu token, tải xong thì tính lại
+        sl.dataset.wait = "1";
+        img.addEventListener(
+          "load",
+          () => {
+            delete sl.dataset.wait;
+            updateRef.current();
+          },
+          { once: true },
+        );
+      }
+    }
+    document.body.style.setProperty("--tint", sl.dataset.c || "var(--accent-2)");
   }, []);
+
+  useEffect(() => {
+    updateRef.current = update;
+  }, [update]);
 
   useEffect(() => {
     update();
@@ -95,12 +144,12 @@ export function PosterStrip({ films }: { films: Film[] }) {
       }}
     >
       {films.map((f) => (
-        <div key={f.id} className="slot" data-c={f.c2}>
+        <div key={f.id} className="slot" data-c={f.sample?.c2}>
           <Link
             href={`/phim/${f.id}`}
             scroll={false}
             className="tilt"
-            aria-label={`Xem chi tiết ${f.vi}`}
+            aria-label={`Xem chi tiết ${f.title}`}
             draggable={false}
             onPointerMove={(e) => {
               if (!fine() || calm() || drag.current.on) return;
@@ -115,11 +164,11 @@ export function PosterStrip({ films }: { films: Film[] }) {
             }}
             onPointerLeave={(e) => (e.currentTarget.style.transform = "")}
           >
-            <Poster film={f} />
+            <Poster film={f} sizes="(min-width: 1024px) 210px, 170px" />
           </Link>
           <div className="cap">
             <ScorePill film={f} />
-            <span>{f.genres[0]}</span>
+            <span>{f.genres[0] ?? DASH}</span>
           </div>
         </div>
       ))}

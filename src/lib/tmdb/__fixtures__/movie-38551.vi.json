@@ -1,0 +1,1771 @@
+{
+  "adult": false,
+  "backdrop_path": "/sd54IIGNr43NyacaW7sF1m3zszv.jpg",
+  "belongs_to_collection": null,
+  "budget": 0,
+  "genres": [
+    {
+      "id": 10749,
+      "name": "Phim Lãng Mạn"
+    },
+    {
+      "id": 53,
+      "name": "Phim Gây Cấn"
+    },
+    {
+      "id": 80,
+      "name": "Phim Hình Sự"
+    }
+  ],
+  "homepage": "",
+  "id": 38551,
+  "imdb_id": "tt1254249",
+  "origin_country": [
+    "JP"
+  ],
+  "original_language": "ja",
+  "original_title": "蛇にピアス",
+  "overview": "",
+  "popularity": 3.1832,
+  "poster_path": "/A31AcjVQEv0PXoyGaZwd2Q5uUoY.jpg",
+  "production_companies": [
+    {
+      "id": 3219,
+      "logo_path": "/aGapBauQIUYV6tiXGk0JGiTMnlv.png",
+      "name": "Amuse Soft Entertainment",
+      "origin_country": "JP"
+    },
+    {
+      "id": 113890,
+      "logo_path": null,
+      "name": "Point Break Pictures",
+      "origin_country": ""
+    },
+    {
+      "id": 104177,
+      "logo_path": null,
+      "name": "Studio3",
+      "origin_country": "JP"
+    },
+    {
+      "id": 3656,
+      "logo_path": "/mY6L0bHRp8fNWfICPqLjxp3khvq.png",
+      "name": "GAGA Communications",
+      "origin_country": "JP"
+    },
+    {
+      "id": 50381,
+      "logo_path": "/qGHc4PzytsZWN31IWibSoYTrJis.png",
+      "name": "Ark Entertainment",
+      "origin_country": "JP"
+    },
+    {
+      "id": 2918,
+      "logo_path": "/gyEWUBWwqrm3H5T2hkERD9LxpOq.png",
+      "name": "Shueisha",
+      "origin_country": "JP"
+    },
+    {
+      "id": 257839,
+      "logo_path": "/yzbNSSKMWYxferuSFVVcsDJTBAV.png",
+      "name": "Channel NECO",
+      "origin_country": "JP"
+    }
+  ],
+  "production_countries": [
+    {
+      "iso_3166_1": "JP",
+      "name": "Japan"
+    }
+  ],
+  "release_date": "2008-09-20",
+  "revenue": 0,
+  "runtime": 123,
+  "softcore": false,
+  "spoken_languages": [
+    {
+      "english_name": "Japanese",
+      "iso_639_1": "ja",
+      "name": "日本語"
+    }
+  ],
+  "status": "Released",
+  "tagline": "",
+  "title": "蛇にピアス",
+  "video": false,
+  "vote_average": 6.1,
+  "vote_count": 41,
+  "credits": {
+    "cast": [
+      {
+        "adult": false,
+        "gender": 1,
+        "id": 120689,
+        "known_for_department": "Acting",
+        "name": "Yoshitaka Yuriko",
+        "original_name": "吉高由里子",
+        "popularity": 2.3216,
+        "profile_path": "/YJfw7d3ZbHyfLoeKnNBnKN0aRo.jpg",
+        "cast_id": 2,
+        "character": "Lui",
+        "credit_id": "52fe46c59251416c9105f34b",
+        "order": 0
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 120690,
+        "known_for_department": "Acting",
+        "name": "Kora Kengo",
+        "original_name": "高良健吾",
+        "popularity": 1.9922,
+        "profile_path": "/wb293WmYQ7yTAtf3opmhCoTJQfa.jpg",
+        "cast_id": 3,
+        "character": "Ama",
+        "credit_id": "52fe46c59251416c9105f34f",
+        "order": 1
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 82540,
+        "known_for_department": "Acting",
+        "name": "Iura Arata",
+        "original_name": "井浦新",
+        "popularity": 1.4817,
+        "profile_path": "/uJbyT6FDqDfVZKXpkDvRDS7NcQj.jpg",
+        "cast_id": 4,
+        "character": "Shiba",
+        "credit_id": "52fe46c59251416c9105f353",
+        "order": 2
+      },
+      {
+        "adult": false,
+        "gender": 1,
+        "id": 1110582,
+        "known_for_department": "Acting",
+        "name": "あびる優",
+        "original_name": "あびる優",
+        "popularity": 0.6282,
+        "profile_path": "/aB2epG6XZEU1cwauTPuHKbFD1Xm.jpg",
+        "cast_id": 5,
+        "character": "Maki",
+        "credit_id": "546232cdc3a3686f3900284c",
+        "order": 3
+      },
+      {
+        "adult": false,
+        "gender": 1,
+        "id": 1039447,
+        "known_for_department": "Acting",
+        "name": "ソニン",
+        "original_name": "ソニン",
+        "popularity": 0.7539,
+        "profile_path": "/e12mSOv5iaA6hjQwHU7CgYwyzWh.jpg",
+        "cast_id": 12,
+        "character": "Yuri",
+        "credit_id": "54623302c3a3686f31002715",
+        "order": 4
+      },
+      {
+        "adult": false,
+        "gender": 0,
+        "id": 3198399,
+        "known_for_department": "Acting",
+        "name": "Yuko Imai",
+        "original_name": "Yuko Imai",
+        "popularity": 0.3647,
+        "profile_path": null,
+        "cast_id": 30,
+        "character": "",
+        "credit_id": "61193f837ef381005c37a5de",
+        "order": 5
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 1255319,
+        "known_for_department": "Acting",
+        "name": "綾部守人",
+        "original_name": "綾部守人",
+        "popularity": 0.5197,
+        "profile_path": null,
+        "cast_id": 28,
+        "character": "",
+        "credit_id": "61193f426c19ea0046491398",
+        "order": 6
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 130097,
+        "known_for_department": "Acting",
+        "name": "市瀬秀和",
+        "original_name": "市瀬秀和",
+        "popularity": 0.6159,
+        "profile_path": "/9qqcjKBEJWzBmKKGAZxStnnkhJR.jpg",
+        "cast_id": 29,
+        "character": "",
+        "credit_id": "61193f552e0697002e46d4ee",
+        "order": 7
+      },
+      {
+        "adult": false,
+        "gender": 0,
+        "id": 1384553,
+        "known_for_department": "Acting",
+        "name": "Masafumi Senô",
+        "original_name": "Masafumi Senô",
+        "popularity": 0.4332,
+        "profile_path": null,
+        "cast_id": 11,
+        "character": "",
+        "credit_id": "546232fa0e0a2672a70025c9",
+        "order": 8
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 1058059,
+        "known_for_department": "Acting",
+        "name": "四代目 市川 猿之助",
+        "original_name": "四代目 市川 猿之助",
+        "popularity": 1.0544,
+        "profile_path": "/cpWURS7vo2uaBf7blTv9IpjyHUn.jpg",
+        "cast_id": 7,
+        "character": "Kamejirô Ichikawa",
+        "credit_id": "546232e0c3a3686f3900284f",
+        "order": 9
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 36077,
+        "known_for_department": "Acting",
+        "name": "井手らっきょ",
+        "original_name": "井手らっきょ",
+        "popularity": 0.8233,
+        "profile_path": "/3mY0fvuqDdQwLIsHjCqpznC77A9.jpg",
+        "cast_id": 8,
+        "character": "",
+        "credit_id": "546232e70e0a2609b6001c17",
+        "order": 10
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 46364,
+        "known_for_department": "Acting",
+        "name": "Oguri Shun",
+        "original_name": "小栗旬",
+        "popularity": 2.6931,
+        "profile_path": "/4tfrhvqp3IGHPATor0lYE9X9UD3.jpg",
+        "cast_id": 10,
+        "character": "Yoshida Mitsuhiro",
+        "credit_id": "546232f3c3a3686f39002853",
+        "order": 11
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 81350,
+        "known_for_department": "Acting",
+        "name": "唐沢寿明",
+        "original_name": "唐沢寿明",
+        "popularity": 1.4568,
+        "profile_path": "/vB73o5XHjSHLpCwxRl83uFNAicP.jpg",
+        "cast_id": 15,
+        "character": "",
+        "credit_id": "54c479609251416eae00fb94",
+        "order": 12
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 31078,
+        "known_for_department": "Acting",
+        "name": "Fujiwara Tatsuya",
+        "original_name": "藤原竜也",
+        "popularity": 2.3296,
+        "profile_path": "/1nR5cYgh9SaA7fGdQAXznyqObPv.jpg",
+        "cast_id": 6,
+        "character": "Yokoyama Satoru",
+        "credit_id": "546232d5c3a3686f31002704",
+        "order": 13
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 6318546,
+        "known_for_department": "Acting",
+        "name": "竹居正武",
+        "original_name": "竹居正武",
+        "popularity": 0.2809,
+        "profile_path": "/6Geg5Ft25AgqPqho2xqrKFsXRzc.jpg",
+        "cast_id": 37,
+        "character": "",
+        "credit_id": "6a43ffd56beb6efcb8f4bb7f",
+        "order": 14
+      }
+    ],
+    "crew": [
+      {
+        "adult": false,
+        "gender": 1,
+        "id": 55782,
+        "known_for_department": "Sound",
+        "name": "Chara",
+        "original_name": "Chara",
+        "popularity": 1.1573,
+        "profile_path": "/67fsGUZHCCBCaE8Lg8mWQ4sSekV.jpg",
+        "credit_id": "622d0c9c221ba6007197d007",
+        "department": "Sound",
+        "job": "Theme Song Performance"
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 120688,
+        "known_for_department": "Acting",
+        "name": "蜷川幸雄",
+        "original_name": "蜷川幸雄",
+        "popularity": 1.069,
+        "profile_path": "/hse5D9e9fuyMXa04kJ7mZ04Cvtj.jpg",
+        "credit_id": "52fe46c59251416c9105f347",
+        "department": "Directing",
+        "job": "Director"
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 548022,
+        "known_for_department": "Art",
+        "name": "稲垣尚夫",
+        "original_name": "稲垣尚夫",
+        "popularity": 0.5647,
+        "profile_path": null,
+        "credit_id": "61193d2e0f0da5005f519b25",
+        "department": "Art",
+        "job": "Production Design"
+      },
+      {
+        "adult": false,
+        "gender": 0,
+        "id": 1716805,
+        "known_for_department": "Production",
+        "name": "Yasuhide Uno",
+        "original_name": "Yasuhide Uno",
+        "popularity": 0.3183,
+        "profile_path": "/8m4Lc7u8O49xBW5ChKeSAyGizp2.jpg",
+        "credit_id": "61193d06665408005e0ce554",
+        "department": "Production",
+        "job": "Producer"
+      },
+      {
+        "adult": false,
+        "gender": 0,
+        "id": 1309320,
+        "known_for_department": "Production",
+        "name": "Yasuhiro Hasegawa",
+        "original_name": "Yasuhiro Hasegawa",
+        "popularity": 0.3347,
+        "profile_path": null,
+        "credit_id": "61193d109f0e19005c37079f",
+        "department": "Production",
+        "job": "Producer"
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 80917,
+        "known_for_department": "Lighting",
+        "name": "渡辺三雄",
+        "original_name": "渡辺三雄",
+        "popularity": 0.4753,
+        "profile_path": null,
+        "credit_id": "61193d382dc44e0045b7c656",
+        "department": "Lighting",
+        "job": "Lighting Technician"
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 551568,
+        "known_for_department": "Editing",
+        "name": "川島章正",
+        "original_name": "川島章正",
+        "popularity": 1.1794,
+        "profile_path": "/yRBqn0Vh0MPV3hi3skUjtFJKCXD.jpg",
+        "credit_id": "61193d4d0f0da500475f58cf",
+        "department": "Editing",
+        "job": "Editor"
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 25647,
+        "known_for_department": "Sound",
+        "name": "弦巻裕",
+        "original_name": "弦巻裕",
+        "popularity": 0.6209,
+        "profile_path": null,
+        "credit_id": "61193d454a0b19002e80e502",
+        "department": "Sound",
+        "job": "Sound Recordist"
+      },
+      {
+        "adult": false,
+        "gender": 1,
+        "id": 1278190,
+        "known_for_department": "Acting",
+        "name": "星野有香",
+        "original_name": "星野有香",
+        "popularity": 1.4156,
+        "profile_path": "/4lvDUR5HKvFMzOXeMhbLv5gfBou.jpg",
+        "credit_id": "61193d596c19ea007fb1008b",
+        "department": "Production",
+        "job": "Executive Producer"
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 120688,
+        "known_for_department": "Acting",
+        "name": "蜷川幸雄",
+        "original_name": "蜷川幸雄",
+        "popularity": 1.069,
+        "profile_path": "/hse5D9e9fuyMXa04kJ7mZ04Cvtj.jpg",
+        "credit_id": "61193cfa0f0da5005f519ab9",
+        "department": "Writing",
+        "job": "Screenplay"
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 1464865,
+        "known_for_department": "Production",
+        "name": "湊谷恭史",
+        "original_name": "湊谷恭史",
+        "popularity": 0.5352,
+        "profile_path": null,
+        "credit_id": "61193d712e0697005d9aef11",
+        "department": "Production",
+        "job": "Line Producer"
+      },
+      {
+        "adult": false,
+        "gender": 0,
+        "id": 1267714,
+        "known_for_department": "Writing",
+        "name": "Takuya Miyawaki",
+        "original_name": "Takuya Miyawaki",
+        "popularity": 0.3177,
+        "profile_path": null,
+        "credit_id": "546233290e0a2672a300274d",
+        "department": "Writing",
+        "job": "Screenplay"
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 1267682,
+        "known_for_department": "Production",
+        "name": "梅川治男",
+        "original_name": "梅川治男",
+        "popularity": 0.5127,
+        "profile_path": null,
+        "credit_id": "61848545ddd52d0026b6f647",
+        "department": "Production",
+        "job": "Producer"
+      },
+      {
+        "adult": false,
+        "gender": 1,
+        "id": 1384554,
+        "known_for_department": "Writing",
+        "name": "金原ひとみ",
+        "original_name": "金原ひとみ",
+        "popularity": 0.4959,
+        "profile_path": null,
+        "credit_id": "61848571a13533002dbce512",
+        "department": "Writing",
+        "job": "Novel"
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 2334400,
+        "known_for_department": "Production",
+        "name": "森重晃",
+        "original_name": "森重晃",
+        "popularity": 0.42,
+        "profile_path": null,
+        "credit_id": "5cfe89790e0a267e51cacf07",
+        "department": "Production",
+        "job": "Executive Producer"
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 20704,
+        "known_for_department": "Sound",
+        "name": "茂野雅道",
+        "original_name": "茂野雅道",
+        "popularity": 0.6167,
+        "profile_path": "/qapmvzpWWrYT1De48RzI9608QbM.jpg",
+        "credit_id": "66e3ee68c81b24b3fe23f165",
+        "department": "Sound",
+        "job": "Original Music Composer"
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 1047250,
+        "known_for_department": "Camera",
+        "name": "藤石修",
+        "original_name": "藤石修",
+        "popularity": 0.6076,
+        "profile_path": null,
+        "credit_id": "66e3ee7a28048d92def94fe8",
+        "department": "Camera",
+        "job": "Director of Photography"
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 5387328,
+        "known_for_department": "Directing",
+        "name": "山田敏久",
+        "original_name": "山田敏久",
+        "popularity": 0.3796,
+        "profile_path": null,
+        "credit_id": "69428e942657398afdab175a",
+        "department": "Directing",
+        "job": "Assistant Director"
+      }
+    ]
+  },
+  "videos": {
+    "results": [
+      {
+        "iso_639_1": "ja",
+        "iso_3166_1": "JP",
+        "name": "蛇にピアス(プレビュー)",
+        "key": "Qa4K02yQp8w",
+        "site": "YouTube",
+        "size": 480,
+        "type": "Trailer",
+        "official": false,
+        "id": "62e88aec764b99006141bc8d",
+        "published_at": "2012-10-30T15:00:29.000Z"
+      },
+      {
+        "iso_639_1": "en",
+        "iso_3166_1": "US",
+        "name": "Snakes&Earrings (Hebi ni Piasu) Trailer English subtitled",
+        "key": "A9onKczFG5M",
+        "site": "YouTube",
+        "size": 360,
+        "type": "Trailer",
+        "official": true,
+        "id": "546233a80e0a2609b6001c2d",
+        "published_at": "2012-10-05T05:49:15.000Z"
+      }
+    ]
+  },
+  "images": {
+    "backdrops": [
+      {
+        "aspect_ratio": 1.778,
+        "height": 720,
+        "iso_3166_1": null,
+        "iso_639_1": null,
+        "file_path": "/sd54IIGNr43NyacaW7sF1m3zszv.jpg",
+        "vote_average": 3.334,
+        "vote_count": 1,
+        "width": 1280
+      },
+      {
+        "aspect_ratio": 1.778,
+        "height": 1080,
+        "iso_3166_1": null,
+        "iso_639_1": null,
+        "file_path": "/9ZQTWPMNGRaODnGW0BtWAhcxka1.jpg",
+        "vote_average": 0,
+        "vote_count": 0,
+        "width": 1920
+      },
+      {
+        "aspect_ratio": 1.779,
+        "height": 1124,
+        "iso_3166_1": null,
+        "iso_639_1": null,
+        "file_path": "/d7hdC3s8N3eUd8VSE2MgP6QW61b.jpg",
+        "vote_average": 0,
+        "vote_count": 0,
+        "width": 2000
+      },
+      {
+        "aspect_ratio": 1.779,
+        "height": 1124,
+        "iso_3166_1": null,
+        "iso_639_1": null,
+        "file_path": "/wiuG08enMkCCY9jZw4cgBCWZu5x.jpg",
+        "vote_average": 0,
+        "vote_count": 0,
+        "width": 2000
+      }
+    ],
+    "logos": [],
+    "posters": [
+      {
+        "aspect_ratio": 0.667,
+        "height": 2250,
+        "iso_3166_1": "US",
+        "iso_639_1": "en",
+        "file_path": "/ys874V8V2YUQFPakMQRnXbIwZAX.jpg",
+        "vote_average": 3.334,
+        "vote_count": 1,
+        "width": 1500
+      }
+    ]
+  },
+  "release_dates": {
+    "results": [
+      {
+        "iso_3166_1": "AU",
+        "release_dates": [
+          {
+            "certification": "MA15+",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2008-09-20T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      },
+      {
+        "iso_3166_1": "JP",
+        "release_dates": [
+          {
+            "certification": "R15+",
+            "descriptors": [],
+            "iso_639_1": "",
+            "note": "",
+            "release_date": "2008-09-20T00:00:00.000Z",
+            "type": 3
+          }
+        ]
+      }
+    ]
+  },
+  "keywords": {
+    "keywords": [
+      {
+        "id": 818,
+        "name": "based on novel or book"
+      },
+      {
+        "id": 4424,
+        "name": "pain"
+      },
+      {
+        "id": 7277,
+        "name": "love-hate relationship"
+      },
+      {
+        "id": 9673,
+        "name": "love"
+      },
+      {
+        "id": 193217,
+        "name": "body modification"
+      },
+      {
+        "id": 311642,
+        "name": "tattooist"
+      }
+    ]
+  },
+  "similar": {
+    "page": 1,
+    "results": [
+      {
+        "adult": false,
+        "backdrop_path": "/x2LTysjFSpeK0d40zHw6Lqd4oAH.jpg",
+        "genre_ids": [
+          12,
+          14,
+          10749,
+          10751
+        ],
+        "id": 2270,
+        "title": "Ánh Sao Ma Thuật",
+        "original_language": "en",
+        "original_title": "Stardust",
+        "overview": "Tristan hứa với Victoria sẽ có được một ngôi sao từ vương quốc Stormhold huyền diệu tồn tại bên kia Bức tường. Cố gắng giữ lời hứa của mình, Tristan cuối cùng đã có một cuộc phiêu lưu thay đổi cuộc đời anh.",
+        "popularity": 24.9589,
+        "poster_path": "/9ePedHZ7sREMlohyaR67WPw4dty.jpg",
+        "release_date": "2007-08-10",
+        "softcore": false,
+        "video": false,
+        "vote_average": 7.3,
+        "vote_count": 4619
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/lTxRQzTfGwApLoxQlRldgOIcx55.jpg",
+        "genre_ids": [
+          12,
+          18,
+          14,
+          10751,
+          53
+        ],
+        "id": 2274,
+        "title": "Quyền Lực Bóng Đêm",
+        "original_language": "en",
+        "original_title": "The Seeker: The Dark Is Rising",
+        "overview": "",
+        "popularity": 3.5413,
+        "poster_path": "/65oKWdrQRwtkOolnCQMUQkvUryS.jpg",
+        "release_date": "2007-10-05",
+        "softcore": false,
+        "video": false,
+        "vote_average": 5.453,
+        "vote_count": 459
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/ppXYWZdv0qkr9aIRMLjtJPXDDon.jpg",
+        "genre_ids": [
+          53,
+          9648,
+          80
+        ],
+        "id": 2275,
+        "title": "Con gái tướng quân",
+        "original_language": "en",
+        "original_title": "The General's Daughter",
+        "overview": "Hai chuẩn úy điều tra vụ con gái của một đại tướng bị sát hại. Họ phát hiện ra rằng nhiều năm trước, cô từng bị hành hung tàn bạo, và biết được cả màn che đậy sau đó.",
+        "popularity": 12.4835,
+        "poster_path": "/w8CMN81n7SON7ALPMlxZtOzBZB.jpg",
+        "release_date": "1999-06-18",
+        "softcore": false,
+        "video": false,
+        "vote_average": 6.416,
+        "vote_count": 1083
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/aIVL5crQCBMPxKMoExiIsUDFPeR.jpg",
+        "genre_ids": [
+          18,
+          10749,
+          878
+        ],
+        "id": 2277,
+        "title": "Người 200 Tuổi",
+        "original_language": "en",
+        "original_title": "Bicentennial Man",
+        "overview": "Bicentennial Man theo chân Andrew Martin, một người máy có ngoại hình như con người, dần thức tỉnh cảm xúc và khao khát được sống như một con người thực thụ. Trải qua gần 200 năm tồn tại, Andrew học cách yêu thương, sáng tạo, suy nghĩ độc lập và chấp nhận những mất mát không thể tránh khỏi. Mỗi bước tiến hóa của anh đều phải đánh đổi bằng thời gian và sự hy sinh, khi những người anh yêu thương lần lượt già đi rồi rời xa mãi mãi. Không chỉ là câu chuyện về một cỗ máy, bộ phim là bản tình ca buồn và sâu lắng về nhân tính, tình yêu, định kiến, sự công bằng và ước mơ được thừa nhận là “con người”.",
+        "popularity": 14.7523,
+        "poster_path": "/wrs23eO0VEWwOQpXoOasMnlW9Y4.jpg",
+        "release_date": "1999-12-17",
+        "softcore": false,
+        "video": false,
+        "vote_average": 7.273,
+        "vote_count": 4099
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/n0hy2FtvgPTc6SIYgOnCRj2eUNb.jpg",
+        "genre_ids": [
+          18,
+          10749
+        ],
+        "id": 2282,
+        "title": "À nos amours",
+        "original_language": "fr",
+        "original_title": "À nos amours",
+        "overview": "",
+        "popularity": 1.9988,
+        "poster_path": "/gK0o8dmI1a4sqfw8ZJK4iT8gU0U.jpg",
+        "release_date": "1983-11-16",
+        "softcore": false,
+        "video": false,
+        "vote_average": 6.825,
+        "vote_count": 231
+      },
+      {
+        "adult": false,
+        "backdrop_path": null,
+        "genre_ids": [
+          80
+        ],
+        "id": 2414,
+        "title": "Le Malin Plaisir",
+        "original_language": "fr",
+        "original_title": "Le Malin Plaisir",
+        "overview": "",
+        "popularity": 0.8724,
+        "poster_path": "/5N99A20HqPJsqH3eWSqUsXSbSCD.jpg",
+        "release_date": "1975-01-01",
+        "softcore": false,
+        "video": false,
+        "vote_average": 3.7,
+        "vote_count": 3
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/1HOO7m6NeK3wFw22xGBLdwvim51.jpg",
+        "genre_ids": [
+          35,
+          18,
+          10749
+        ],
+        "id": 2470,
+        "title": "Belle Époque",
+        "original_language": "es",
+        "original_title": "Belle Époque",
+        "overview": "",
+        "popularity": 5.4232,
+        "poster_path": "/Aeiy8R2cTm15WaosWpnFIOxetCJ.jpg",
+        "release_date": "1992-12-04",
+        "softcore": false,
+        "video": false,
+        "vote_average": 6.7,
+        "vote_count": 215
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/kJaRWmy1BGq3pHyE94LOTteiHer.jpg",
+        "genre_ids": [
+          28,
+          9648,
+          53
+        ],
+        "id": 2501,
+        "title": "Siêu Điệp Viên: Danh Tính Của Bourne",
+        "original_language": "en",
+        "original_title": "The Bourne Identity",
+        "overview": "Ngoài khơi biển Địa Trung Hải, chiếc tàu đánh cá đã cứu được một chàng trai đang trôi vật vờ theo sóng nước, người đầy vết đạn bắn. Anh không biết mình là ai, mình đã làm gì... Manh mối lờ mờ duy nhất là dòng chữ ghi địa chỉ một ngân hàng Thuỵ Sĩ do con chip laser cấy vào người anh phát ra. Sau khi tàu cập bến, anh lên đường lao vào cuộc tìm kiếm lại quá khứ. Liệu anh sẽ tìm ra được những gì trong quá khứ?",
+        "popularity": 21.4922,
+        "poster_path": "/aP8swke3gmowbkfZ6lmNidu0y9p.jpg",
+        "release_date": "2002-06-14",
+        "softcore": false,
+        "video": false,
+        "vote_average": 7.487,
+        "vote_count": 10468
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/fE7RqvVHbGHjBC9NjIjlLh2t4zK.jpg",
+        "genre_ids": [
+          28,
+          18,
+          53
+        ],
+        "id": 2502,
+        "title": "Siêu Điệp Viên 2: Quyền Lực Của Bourne",
+        "original_language": "en",
+        "original_title": "The Bourne Supremacy",
+        "overview": "2 năm đã trôi qua kể từ ngày chương trình Treadstone đổ bể, Jason Bourne mai danh ẩn tích sống hạnh phúc cùng bạn gái xinh đẹp Marie. Anh chỉ mang máng nhớ mình là một điệp viên CIA. Thỉnh thoảng những hình ảnh kinh hoàng lại hiện về trong trí óc trong phim hay này nhưng Jason không thể hồi tưởng chi tiết cụ thể những gì đã diễn ra... Trên đường phố đông đúc, phát hiện bị theo dõi, một khuôn mặt làm Jason gợi nhớ về dự án Treadstone mà anh từng tham gia. Linh cảm nguy hiểm cận kề, anh cùng Marie tìm đường lẩn trốn. Không may trong cuộc truy sát, bạn gái anh đã vĩnh viễn ra đi, Jason thoát chết nhưng phải lặn biệt tăm. Nuốt nỗi đau vào lòng, tiêu hủy giấy tờ hình ảnh, bay về Châu Âu, anh quyết tâm đi tìm sự thật.",
+        "popularity": 24.5281,
+        "poster_path": "/hE6NJNwC5n14xkWRMyzLdvtIdo2.jpg",
+        "release_date": "2004-07-23",
+        "softcore": false,
+        "video": false,
+        "vote_average": 7.336,
+        "vote_count": 8477
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/qiBILuWhv7ipF0pxiEqIJdkQzj8.jpg",
+        "genre_ids": [
+          28,
+          18,
+          9648,
+          53
+        ],
+        "id": 2503,
+        "title": "Siêu Điệp Viên 3: Tối Hậu Thư Của Bourne",
+        "original_language": "en",
+        "original_title": "The Bourne Ultimatum",
+        "overview": "Sau cái chết của Marie, Jason gần như trở nên điên loạn với hàng đống đạn dược và những vũ khí giết người hiện đại. Anh chỉ có một mục tiêu duy nhất là quay trở lại nơi bắt đầu và tìm hiểu về thân phận của mình. Jason phải truy ra quá khứ của mình để tìm ra một tương lai mới cho bản thân. Anh phải đi từ Moscow, Paris, Madrid và London sang Tangier và New York tiếp tục sứ mệnh của mình để tìm ra Jason Bourne \"thật\". Anh phải cố thoát khỏi sự truy đuổi của cảnh sát và điệp viên của Interpol trong suốt chuyến hành trình gian khổ đó.",
+        "popularity": 53.0777,
+        "poster_path": "/15rMz5MRXFp7CP4VxhjYw4y0FUn.jpg",
+        "release_date": "2007-08-03",
+        "softcore": false,
+        "video": false,
+        "vote_average": 7.446,
+        "vote_count": 8671
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/mcM6FM8PuguotFgbHcmorHKSa5C.jpg",
+        "genre_ids": [
+          18,
+          10749
+        ],
+        "id": 636121,
+        "title": "Teatro Dos Rostos",
+        "original_language": "pt",
+        "original_title": "Teatro Dos Rostos",
+        "overview": "",
+        "popularity": 0.9208,
+        "poster_path": "/y8JDwy7XESUNHBUwRCYibslIhH5.jpg",
+        "release_date": "2019-12-01",
+        "softcore": false,
+        "video": false,
+        "vote_average": 10,
+        "vote_count": 1
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/3NSwwxsu8YXIqnGOrfREEsXWkT7.jpg",
+        "genre_ids": [
+          18,
+          53
+        ],
+        "id": 2370,
+        "title": "Topaz",
+        "original_language": "en",
+        "original_title": "Topaz",
+        "overview": "",
+        "popularity": 3.2034,
+        "poster_path": "/8u7vxykCVZoaxNocLbpstv3IFNK.jpg",
+        "release_date": "1969-12-17",
+        "softcore": false,
+        "video": false,
+        "vote_average": 6,
+        "vote_count": 436
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/cJbz0Jg5AHh35WiGnpxG73Nge9Y.jpg",
+        "genre_ids": [
+          12,
+          18,
+          53
+        ],
+        "id": 2378,
+        "title": "L'Île aux trente cercueils",
+        "original_language": "fr",
+        "original_title": "L'Île aux trente cercueils",
+        "overview": "",
+        "popularity": 1.2001,
+        "poster_path": "/yHYx4ClWbx6g7pYCMW1gb32dCEd.jpg",
+        "release_date": "1979-09-21",
+        "softcore": false,
+        "video": false,
+        "vote_average": 5.8,
+        "vote_count": 10
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/3uwyXMZN93PRkShUxvLrufwVAc2.jpg",
+        "genre_ids": [
+          27,
+          80,
+          18
+        ],
+        "id": 452507,
+        "title": "Tội Lỗi Năm 1922",
+        "original_language": "en",
+        "original_title": "1922",
+        "overview": "Một nông dân đơn giản nhưng đầy kiêu hãnh vào năm 1922 đã âm mưu giết vợ vì lợi ích tài chính, thuyết phục con trai tuổi teen tham gia. Sau đó, một loạt những chuyện không may đã xảy đến ám ảnh cuộc đời của hai bố con họ.",
+        "popularity": 4.1046,
+        "poster_path": "/q4FQOiSRhTLWulHl5Vpg37FMArH.jpg",
+        "release_date": "2017-10-20",
+        "softcore": false,
+        "video": false,
+        "vote_average": 5.949,
+        "vote_count": 2990
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/43kxj1gcewWJNlzqGmPkZXE3fek.jpg",
+        "genre_ids": [
+          18,
+          10749
+        ],
+        "id": 3055,
+        "title": "Valley of the Dolls",
+        "original_language": "en",
+        "original_title": "Valley of the Dolls",
+        "overview": "",
+        "popularity": 3.7875,
+        "poster_path": "/hQgsWkNTL8GJloJRzqonImIaIJb.jpg",
+        "release_date": "1967-12-27",
+        "softcore": false,
+        "video": false,
+        "vote_average": 6.055,
+        "vote_count": 155
+      },
+      {
+        "adult": false,
+        "backdrop_path": null,
+        "genre_ids": [
+          53,
+          14
+        ],
+        "id": 1600999,
+        "title": "The Arcane Arts",
+        "original_language": "en",
+        "original_title": "The Arcane Arts",
+        "overview": "",
+        "popularity": 1.1919,
+        "poster_path": null,
+        "release_date": "",
+        "softcore": false,
+        "video": false,
+        "vote_average": 0,
+        "vote_count": 0
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/AiSfsXyFdze5UhlSC3YVqIdG8vS.jpg",
+        "genre_ids": [
+          12,
+          35,
+          10751,
+          14,
+          10749
+        ],
+        "id": 2897,
+        "title": "Around the World in 80 Days",
+        "original_language": "en",
+        "original_title": "Around the World in 80 Days",
+        "overview": "",
+        "popularity": 6.6843,
+        "poster_path": "/kk6Rrwh0toMz9tjuUHdS4O3v2Rk.jpg",
+        "release_date": "1956-10-17",
+        "softcore": false,
+        "video": false,
+        "vote_average": 6.7,
+        "vote_count": 609
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/ll1BtZ7R84UZfZppK3l7rCi0TBu.jpg",
+        "genre_ids": [
+          10749,
+          80,
+          18
+        ],
+        "id": 2923,
+        "title": "B. Monkey",
+        "original_language": "en",
+        "original_title": "B. Monkey",
+        "overview": "",
+        "popularity": 1.8042,
+        "poster_path": "/80bQjfpH14P5p2TDnfWUukEkM55.jpg",
+        "release_date": "1999-07-15",
+        "softcore": false,
+        "video": false,
+        "vote_average": 5.813,
+        "vote_count": 92
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/ljZtX8UZhGOOpQrgtcqSwPTTZJv.jpg",
+        "genre_ids": [
+          28,
+          12,
+          10749
+        ],
+        "id": 2926,
+        "title": "The Three Musketeers",
+        "original_language": "en",
+        "original_title": "The Three Musketeers",
+        "overview": "",
+        "popularity": 19.2829,
+        "poster_path": "/6qjW1e31k2XhcWpzGz6lgHcRt5W.jpg",
+        "release_date": "1973-12-11",
+        "softcore": false,
+        "video": false,
+        "vote_average": 6.7,
+        "vote_count": 380
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/yhfHeIsR5Ki02b5SqBuLqAsLDCk.jpg",
+        "genre_ids": [
+          80,
+          18,
+          9648
+        ],
+        "id": 3009,
+        "title": "Le Procès",
+        "original_language": "en",
+        "original_title": "Le Procès",
+        "overview": "",
+        "popularity": 6.9259,
+        "poster_path": "/4qDUe5HqB8pXNplSBlsoyVjNP3r.jpg",
+        "release_date": "1962-08-25",
+        "softcore": false,
+        "video": false,
+        "vote_average": 7.4,
+        "vote_count": 594
+      }
+    ],
+    "total_pages": 1001,
+    "total_results": 20001
+  },
+  "recommendations": {
+    "page": 1,
+    "results": [
+      {
+        "adult": false,
+        "backdrop_path": "/jwQBAmJMIz5RKdHBpZAXFD7njn8.jpg",
+        "id": 656940,
+        "title": "Body Brokers",
+        "original_title": "Body Brokers",
+        "overview": "Utah and his girlfriend Opal, are drug addicts living on the streets in rural Ohio. After getting recruited by body broker Wood and offered treatment in Los Angeles, Wood takes Utah under his wing and introduces him to treatment center mogul Vin. Wood and Vin bring Utah in on their lucrative and illegal dealings, where saving lives comes second to the bottom line.",
+        "poster_path": "/fNQUUrtlN79pDIMAPigX8NUvNW2.jpg",
+        "media_type": "movie",
+        "original_language": "en",
+        "genre_ids": [
+          53,
+          80
+        ],
+        "popularity": 6.2526,
+        "release_date": "2021-02-19",
+        "softcore": false,
+        "video": false,
+        "vote_average": 6.169,
+        "vote_count": 130
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/c7MRmF3LMiBWokedmdQl3roTUv2.jpg",
+        "id": 798362,
+        "title": "Con Gái Của Vua Đầm Lầy",
+        "original_title": "The Marsh King's Daughter",
+        "overview": "Helena, một người phụ nữ sống một cuộc sống tưởng chừng như bình thường, đang che giấu một bí mật đen tối—cha cô là 'Vua đầm lầy' khét tiếng, người đàn ông đã giam giữ cô và mẹ cô ở vùng hoang dã trong nhiều năm. Sau một đời cố gắng trốn thoát khỏi quá khứ, Helena buộc phải đối mặt với ác quỷ của mình khi cha cô bất ngờ trốn thoát khỏi nhà tù.",
+        "poster_path": "/bcuEjrwhp5HgEUnFe5lc4xpEqzt.jpg",
+        "media_type": "movie",
+        "original_language": "en",
+        "genre_ids": [
+          53,
+          80,
+          9648
+        ],
+        "popularity": 7.6566,
+        "release_date": "2023-09-28",
+        "softcore": false,
+        "video": false,
+        "vote_average": 6.4,
+        "vote_count": 426
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/c5TiPhbggc1LWckfd93p8ZFu16X.jpg",
+        "id": 13483,
+        "title": "Awake",
+        "original_title": "Awake",
+        "overview": "While undergoing heart surgery, a man experiences a phenomenon called ‘anesthetic awareness’, which leaves him awake but paralyzed throughout the operation. As various obstacles present themselves, his wife must make life-altering decisions while wrestling with her own personal drama.",
+        "poster_path": "/xqooV6lR1Kdx4Q52Sim0aGbDTYP.jpg",
+        "media_type": "movie",
+        "original_language": "en",
+        "genre_ids": [
+          53,
+          80,
+          9648
+        ],
+        "popularity": 5.9024,
+        "release_date": "2007-11-28",
+        "softcore": false,
+        "video": false,
+        "vote_average": 6.592,
+        "vote_count": 1639
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/jiW3TaZtpMQgMfVnMn5Nmciqhdv.jpg",
+        "id": 1530875,
+        "title": "Quỷ Dữ Ẩn Mình",
+        "original_title": "All the Devils Are Here",
+        "overview": "Sau một vụ cướp táo bạo, bốn tên tội phạm rút về một căn nhà an toàn nằm biệt lập, chờ đợi chỉ thị tiếp theo. Tuy nhiên, khi sự nghi ngờ và căng thẳng ngày càng gia tăng, họ dần nhận ra rằng mối nguy hiểm thật sự không phải ở bên ngoài — mà có thể đang ẩn mình ngay trong chính nhóm của họ.",
+        "poster_path": "/4GJTUSjbCGynQo4PpTTNzzxYfBM.jpg",
+        "media_type": "movie",
+        "original_language": "en",
+        "genre_ids": [
+          53,
+          80,
+          9648
+        ],
+        "popularity": 11.4004,
+        "release_date": "2025-09-25",
+        "softcore": false,
+        "video": false,
+        "vote_average": 6.223,
+        "vote_count": 94
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/gUttUEqsrvaMlK5oL5TSQ54iE96.jpg",
+        "id": 520663,
+        "title": "Bí Mật Bên Kia Khung Cửa",
+        "original_title": "The Woman in the Window",
+        "overview": "Luôn ở trong nhà vì chứng sợ khoảng trống, một nhà tâm lý học trở nên ám ảnh với những người hàng xóm mới – và phá giải một vụ án tàn bạo mà cô chứng kiến qua cửa sổ.",
+        "poster_path": "/iToGQSG4jWNuuPu8bg4BvKRhsKm.jpg",
+        "media_type": "movie",
+        "original_language": "en",
+        "genre_ids": [
+          80,
+          9648,
+          53
+        ],
+        "popularity": 31.5242,
+        "release_date": "2021-05-13",
+        "softcore": false,
+        "video": false,
+        "vote_average": 5.968,
+        "vote_count": 2221
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/fcNno43tiFnaycu1mO9TqfbPL45.jpg",
+        "id": 938150,
+        "title": "Wardriver",
+        "original_title": "Wardriver",
+        "overview": "Anh ta là Wardriver: một hacker chuyên đánh cắp ngân hàng chứ không phải người khác cho đến khi anh ta bị chú ý. Bây giờ số tiền trở nên bạo lực và người phụ nữ vướng vào nó có thể cứu anh ta hoặc giết cả hai.",
+        "poster_path": "/rBZA12Hf4yZZgud6iPuFU49L7zk.jpg",
+        "media_type": "movie",
+        "original_language": "en",
+        "genre_ids": [
+          53,
+          80
+        ],
+        "popularity": 4.7904,
+        "release_date": "2026-03-04",
+        "softcore": false,
+        "video": false,
+        "vote_average": 7.476,
+        "vote_count": 124
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/iVytJHJmbAQ5wnPCbYYAt4xZqR6.jpg",
+        "id": 1024627,
+        "title": "The System",
+        "original_title": "The System",
+        "overview": "When a young soldier, newly returned from war, gets caught up in a drug bust, he is recruited by the authorities to go undercover in a notoriously dangerous prison in order to figure out what is really going on.",
+        "poster_path": "/uj6BjK7OXSCDhg0AjC2duL34vwQ.jpg",
+        "media_type": "movie",
+        "original_language": "en",
+        "genre_ids": [
+          28,
+          80,
+          53
+        ],
+        "popularity": 4.2931,
+        "release_date": "2022-10-28",
+        "softcore": false,
+        "video": false,
+        "vote_average": 7.372,
+        "vote_count": 164
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/tCQfubckzzcuCbsGugkpLhfjS5z.jpg",
+        "id": 970347,
+        "title": "Nữ Hoàng Tử Thần",
+        "original_title": "The Killer",
+        "overview": "Zee là một kẻ giết người theo hợp đồng đáng sợ được gọi là \"Nữ Hoàng Tử Thần\", nhưng khi cô từ chối giết một phụ nữ mù, cô thấy mình bị săn lùng bởi cả các tội phạm và một thanh tra cảnh sát.",
+        "poster_path": "/6PCnxKZZIVRanWb710pNpYVkCSw.jpg",
+        "media_type": "movie",
+        "original_language": "en",
+        "genre_ids": [
+          28,
+          53,
+          80
+        ],
+        "popularity": 15.7902,
+        "release_date": "2024-08-22",
+        "softcore": false,
+        "video": false,
+        "vote_average": 6.3,
+        "vote_count": 633
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/zQXo8qMCd0Oial7Ped5746uHR7N.jpg",
+        "id": 127521,
+        "title": "6 Bullets",
+        "original_title": "6 Bullets",
+        "overview": "An ex-mercenary known for finding missing children is hired by a mixed martial arts fighter whose daughter has been kidnapped.",
+        "poster_path": "/vH15N6iRLPX9YM2Xalop15hvaLD.jpg",
+        "media_type": "movie",
+        "original_language": "en",
+        "genre_ids": [
+          53,
+          28,
+          80
+        ],
+        "popularity": 9.0362,
+        "release_date": "2012-09-11",
+        "softcore": false,
+        "video": false,
+        "vote_average": 6.286,
+        "vote_count": 423
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/10NS0wKi2kKDTzMQIBV7TTMlxDP.jpg",
+        "id": 695282,
+        "title": "Giải Cứu Con Gái",
+        "original_title": "Take Back",
+        "overview": "Bộ phim xoay quanh gia đình nhỏ hạnh phúc của Zara và Brian cùng với cô con gái thân yêu, họ sống những tháng ngày yên bình tại một thị trấn nhỏ. Cuộc sống phút chốc bị phá vỡ khi một kẻ lạ mặt bí ẩn từ quá khứ tìm đến bắt cóc cô con gái thân yêu đi mất. Để giải cứu con mình Brian và Zara phải chạy đua với thời gian, đối mặt với muôn trùng nguy hiểm chết người để tìm kiếm cứu con mình thoát khỏi tên bắt cóc chết tiệt.",
+        "poster_path": "/16JXKkATNiSKouOhxyg9lkHBag9.jpg",
+        "media_type": "movie",
+        "original_language": "en",
+        "genre_ids": [
+          28,
+          53,
+          80
+        ],
+        "popularity": 8.0848,
+        "release_date": "2021-06-18",
+        "softcore": false,
+        "video": false,
+        "vote_average": 5.9,
+        "vote_count": 72
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/z6ueaizIb3vH3l1l4xSr2bET2Am.jpg",
+        "id": 13252,
+        "title": "Cleaner",
+        "original_title": "Cleaner",
+        "overview": "Single father and former cop Tom Cutler has an unusual occupation: he cleans up death scenes. But when he's called in to sterilize a wealthy suburban residence after a brutal shooting, Cutler is shocked to learn he may have unknowingly erased crucial evidence, entangling himself in a dirty criminal cover-up.",
+        "poster_path": "/8KhDbFg9STRlvrOLvaQ7PjOo7XT.jpg",
+        "media_type": "movie",
+        "original_language": "en",
+        "genre_ids": [
+          80,
+          53,
+          9648
+        ],
+        "popularity": 26.1101,
+        "release_date": "2007-09-11",
+        "softcore": false,
+        "video": false,
+        "vote_average": 6.094,
+        "vote_count": 982
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/eL05IPWMWl4EzFMwej2vd5vwV9I.jpg",
+        "id": 70577,
+        "title": "Faces in the Crowd",
+        "original_title": "Faces in the Crowd",
+        "overview": "Anna is living with \"face-blindness\" after surviving a serial killer's attack. As she lives with her condition, one in which facial features change each time she loses sight of them, the killer closes in.",
+        "poster_path": "/A3EtPBwTZe1Dfx1xvjCtReUxDsD.jpg",
+        "media_type": "movie",
+        "original_language": "en",
+        "genre_ids": [
+          53,
+          80
+        ],
+        "popularity": 4.4546,
+        "release_date": "2011-10-25",
+        "softcore": false,
+        "video": false,
+        "vote_average": 6.073,
+        "vote_count": 538
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/x3HAZPrhIetDEar4vlEuncVXRL.jpg",
+        "id": 20411,
+        "title": "Quyết Tử",
+        "original_title": "Until Death",
+        "overview": "Anthony Stowe là một cảnh sát bẩn thỉu nghiện heroin - và mọi người đều ghét anh ta. Sau một tai nạn nghiêm trọng, anh ta bị đưa vào tình trạng hôn mê, nhưng nổi lên từ đó là một người tốt hơn, người muốn sửa chữa mọi thứ.",
+        "poster_path": "/kI6Wpkz5FzkomIDDRtMIsDjMhnh.jpg",
+        "media_type": "movie",
+        "original_language": "en",
+        "genre_ids": [
+          28,
+          53,
+          80
+        ],
+        "popularity": 4.2255,
+        "release_date": "2007-01-19",
+        "softcore": false,
+        "video": false,
+        "vote_average": 6,
+        "vote_count": 246
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/5IIFJxwRzmkhczQidIhpoaolpZY.jpg",
+        "id": 976734,
+        "title": "Mật Danh Chim Hoàng Yến",
+        "original_title": "Canary Black",
+        "overview": "Mật Danh Chim Hoàng Yến kể về Avery Graves, một đặc vụ bị đẩy vào tình thế hiểm nghèo khi chồng cô bị nhóm khủng bố bắt cóc. Để cứu anh, cô buộc phải đối mặt với lựa chọn tàn khốc: phản bội đất nước mình hay mất đi người thân yêu nhất. Trong cuộc chiến chống lại kẻ thù, Avery phải sử dụng tất cả kỹ năng của mình để vượt qua những âm mưu nguy hiểm và tìm cách bảo vệ cả gia đình lẫn tổ quốc.",
+        "poster_path": "/hhiR6uUbTYYvKoACkdAIQPS5c6f.jpg",
+        "media_type": "movie",
+        "original_language": "en",
+        "genre_ids": [
+          28,
+          53,
+          80
+        ],
+        "popularity": 9.685,
+        "release_date": "2024-10-10",
+        "softcore": false,
+        "video": false,
+        "vote_average": 6.2,
+        "vote_count": 546
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/4bPNy1jpf75bwHk4T7iIuEYayEJ.jpg",
+        "id": 14576,
+        "title": "Shade",
+        "original_title": "Shade",
+        "overview": "Tiffany, Charlie and Vernon are con artists looking to up the ante from their typical scams. They figure a good way of doing this is taking down Dean \"The Dean\" Stevens, a well-known cardsharp, in a rigged game. However, they first need enough money to enter a game with Stevens, so they decide to strike a deal with fellow crook Larry Jennings to scam a local gangster -- which turns out to be a bad idea.",
+        "poster_path": "/2uK217wp1SSFgbIcwDaPrzlLd7X.jpg",
+        "media_type": "movie",
+        "original_language": "en",
+        "genre_ids": [
+          28,
+          53,
+          80
+        ],
+        "popularity": 14.1967,
+        "release_date": "2003-05-18",
+        "softcore": false,
+        "video": false,
+        "vote_average": 6.2,
+        "vote_count": 277
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/6xJ2odkMFmO2LptVUBR8t8wBldQ.jpg",
+        "id": 483,
+        "title": "Wild at Heart",
+        "original_title": "Wild at Heart",
+        "overview": "Young lovers Sailor and Lula hit the road to start a new life together away from the wrath of Lula’s deranged, disapproving mother, who has hired a team of hitmen to cut the lovers’ surreal honeymoon short.",
+        "poster_path": "/uLUFI5sJIfWrBUWB2Y1dEuyvvVy.jpg",
+        "media_type": "movie",
+        "original_language": "en",
+        "genre_ids": [
+          80,
+          53,
+          10749
+        ],
+        "popularity": 16.9864,
+        "release_date": "1990-08-17",
+        "softcore": false,
+        "video": false,
+        "vote_average": 7.02,
+        "vote_count": 2003
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/t1MnIPjLJ6z9ObHcpmKEwBZ7EQd.jpg",
+        "id": 835112,
+        "title": "Sát Nhân Kinh Hoàng",
+        "original_title": "Ted Bundy: American Boogeyman",
+        "overview": "Set in a gritty and decadent 1970s America, American Boogeyman follows the elusive and charming killer and the manhunt that brought him to justice involving the detective and the FBI rookie who coined the phrase ‘serial killer’.",
+        "poster_path": "/1MGcMWgxYPFrBMjIAHcQqmsOIGS.jpg",
+        "media_type": "movie",
+        "original_language": "en",
+        "genre_ids": [
+          53,
+          80
+        ],
+        "popularity": 3.2556,
+        "release_date": "2021-08-16",
+        "softcore": false,
+        "video": false,
+        "vote_average": 6.588,
+        "vote_count": 153
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/aSglK0vFI50etQENUq4EIcwfoMR.jpg",
+        "id": 808023,
+        "title": "The Virtuoso",
+        "original_title": "The Virtuoso",
+        "overview": "Danger, deception and murder descend upon a sleepy town when a professional assassin accepts a new assignment from his enigmatic boss.",
+        "poster_path": "/vXHzO26mJaOt4VO7ZFiM6No5ScT.jpg",
+        "media_type": "movie",
+        "original_language": "en",
+        "genre_ids": [
+          53,
+          80,
+          28
+        ],
+        "popularity": 8.9861,
+        "release_date": "2021-04-30",
+        "softcore": false,
+        "video": false,
+        "vote_average": 5.92,
+        "vote_count": 460
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/kS7B1EXg9HT4dzD71MDMfNBhEIH.jpg",
+        "id": 31932,
+        "title": "City of Ghosts",
+        "original_title": "City of Ghosts",
+        "overview": "A con man  who is on the run from law enforcement in the U.S. travels to Cambodia to collect his share in an insurance scam but discovers more than he bargained for.",
+        "poster_path": "/1nZbFdgEjJELfbZeXWLjXx5evHa.jpg",
+        "media_type": "movie",
+        "original_language": "en",
+        "genre_ids": [
+          53,
+          80
+        ],
+        "popularity": 4.6215,
+        "release_date": "2002-09-10",
+        "softcore": false,
+        "video": false,
+        "vote_average": 5.857,
+        "vote_count": 98
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/cNsaWXnNfvKyK618CZtVpzFMnpc.jpg",
+        "id": 101852,
+        "title": "Shuffle",
+        "original_title": "Shuffle",
+        "overview": "Lovell Milo is a man who begins experiencing his life out of order; every day he wakes up at a different age, on a different day of his life, never knowing where or when he’s going to be once he falls asleep. He’s terrified and wants it to stop - until he notices a pattern in his experience, and works to uncover why this is happening to him - and what or who is behind it.",
+        "poster_path": "/icUxRbzHAy4m6D5s3xu8OzWN6v2.jpg",
+        "media_type": "movie",
+        "original_language": "en",
+        "genre_ids": [
+          53,
+          9648,
+          10749
+        ],
+        "popularity": 2.4372,
+        "release_date": "2012-03-20",
+        "softcore": false,
+        "video": false,
+        "vote_average": 6.4,
+        "vote_count": 41
+      }
+    ],
+    "total_pages": 20,
+    "total_results": 395
+  },
+  "reviews": {
+    "page": 1,
+    "results": [],
+    "total_pages": 0,
+    "total_results": 0
+  },
+  "watch/providers": {
+    "results": {
+      "AU": {
+        "link": "https://www.themoviedb.org/movie/38551/watch?locale=AU",
+        "flatrate": [
+          {
+            "logo_path": "/gMZdpavHmxFNnLpMHwVxfqeux2g.png",
+            "provider_id": 119,
+            "provider_name": "Amazon Prime Video",
+            "display_priority": 2
+          },
+          {
+            "logo_path": "/tpwTT1FpWqLLhxUfAuDavIXDDfI.png",
+            "provider_id": 2100,
+            "provider_name": "Amazon Prime Video with Ads",
+            "display_priority": 90
+          }
+        ]
+      },
+      "CA": {
+        "link": "https://www.themoviedb.org/movie/38551/watch?locale=CA",
+        "flatrate": [
+          {
+            "logo_path": "/gMZdpavHmxFNnLpMHwVxfqeux2g.png",
+            "provider_id": 119,
+            "provider_name": "Amazon Prime Video",
+            "display_priority": 1
+          },
+          {
+            "logo_path": "/tpwTT1FpWqLLhxUfAuDavIXDDfI.png",
+            "provider_id": 2100,
+            "provider_name": "Amazon Prime Video with Ads",
+            "display_priority": 107
+          }
+        ]
+      },
+      "GB": {
+        "link": "https://www.themoviedb.org/movie/38551/watch?locale=GB",
+        "flatrate": [
+          {
+            "logo_path": "/gMZdpavHmxFNnLpMHwVxfqeux2g.png",
+            "provider_id": 9,
+            "provider_name": "Amazon Prime Video",
+            "display_priority": 1
+          },
+          {
+            "logo_path": "/tpwTT1FpWqLLhxUfAuDavIXDDfI.png",
+            "provider_id": 2100,
+            "provider_name": "Amazon Prime Video with Ads",
+            "display_priority": 95
+          }
+        ]
+      },
+      "GG": {
+        "link": "https://www.themoviedb.org/movie/38551/watch?locale=GG",
+        "flatrate": [
+          {
+            "logo_path": "/gMZdpavHmxFNnLpMHwVxfqeux2g.png",
+            "provider_id": 119,
+            "provider_name": "Amazon Prime Video",
+            "display_priority": 1
+          }
+        ]
+      },
+      "JP": {
+        "link": "https://www.themoviedb.org/movie/38551/watch?locale=JP",
+        "flatrate": [
+          {
+            "logo_path": "/rK1KljqmbvO9HQa1PBFLILWah72.png",
+            "provider_id": 8,
+            "provider_name": "Netflix",
+            "display_priority": 0
+          },
+          {
+            "logo_path": "/gMZdpavHmxFNnLpMHwVxfqeux2g.png",
+            "provider_id": 9,
+            "provider_name": "Amazon Prime Video",
+            "display_priority": 1
+          },
+          {
+            "logo_path": "/3DGpCh83CR9lDzyKbNWlmUBexBF.png",
+            "provider_id": 84,
+            "provider_name": "U-NEXT",
+            "display_priority": 6
+          },
+          {
+            "logo_path": "/eGUwOOIxcazwEBxqJpSN5sWEu6V.png",
+            "provider_id": 1796,
+            "provider_name": "Netflix Standard with Ads",
+            "display_priority": 23
+          },
+          {
+            "logo_path": "/jjXnZFeUc848snG5PHRQpbV3MMm.png",
+            "provider_id": 2498,
+            "provider_name": "FOD Channel Amazon Channel",
+            "display_priority": 46
+          },
+          {
+            "logo_path": "/tpwTT1FpWqLLhxUfAuDavIXDDfI.png",
+            "provider_id": 2100,
+            "provider_name": "Amazon Prime Video with Ads",
+            "display_priority": 69
+          },
+          {
+            "logo_path": "/m0tkTiV5TN7NWfazDEYc8NoVXSd.png",
+            "provider_id": 2683,
+            "provider_name": "FOD",
+            "display_priority": 78
+          }
+        ],
+        "buy": [
+          {
+            "logo_path": "/jn6TLbtaTZntTRX9UYucHJvpQx1.png",
+            "provider_id": 10,
+            "provider_name": "Amazon Video",
+            "display_priority": 7
+          },
+          {
+            "logo_path": "/qdEGArH3lKfFnAtYXMkSYk5wxuG.png",
+            "provider_id": 2,
+            "provider_name": "Apple TV Store",
+            "display_priority": 8
+          }
+        ],
+        "rent": [
+          {
+            "logo_path": "/qdEGArH3lKfFnAtYXMkSYk5wxuG.png",
+            "provider_id": 2,
+            "provider_name": "Apple TV Store",
+            "display_priority": 8
+          }
+        ]
+      },
+      "MX": {
+        "link": "https://www.themoviedb.org/movie/38551/watch?locale=MX",
+        "flatrate": [
+          {
+            "logo_path": "/gMZdpavHmxFNnLpMHwVxfqeux2g.png",
+            "provider_id": 119,
+            "provider_name": "Amazon Prime Video",
+            "display_priority": 1
+          },
+          {
+            "logo_path": "/tpwTT1FpWqLLhxUfAuDavIXDDfI.png",
+            "provider_id": 2100,
+            "provider_name": "Amazon Prime Video with Ads",
+            "display_priority": 69
+          }
+        ]
+      },
+      "NZ": {
+        "link": "https://www.themoviedb.org/movie/38551/watch?locale=NZ",
+        "flatrate": [
+          {
+            "logo_path": "/gMZdpavHmxFNnLpMHwVxfqeux2g.png",
+            "provider_id": 119,
+            "provider_name": "Amazon Prime Video",
+            "display_priority": 1
+          }
+        ]
+      },
+      "TW": {
+        "link": "https://www.themoviedb.org/movie/38551/watch?locale=TW",
+        "rent": [
+          {
+            "logo_path": "/bonc3GQiIbZVG9WyNYEYAI9mqFy.png",
+            "provider_id": 159,
+            "provider_name": "Catchplay",
+            "display_priority": 14
+          }
+        ],
+        "flatrate": [
+          {
+            "logo_path": "/bonc3GQiIbZVG9WyNYEYAI9mqFy.png",
+            "provider_id": 159,
+            "provider_name": "Catchplay",
+            "display_priority": 14
+          }
+        ]
+      },
+      "US": {
+        "link": "https://www.themoviedb.org/movie/38551/watch?locale=US",
+        "flatrate": [
+          {
+            "logo_path": "/gMZdpavHmxFNnLpMHwVxfqeux2g.png",
+            "provider_id": 9,
+            "provider_name": "Amazon Prime Video",
+            "display_priority": 3
+          },
+          {
+            "logo_path": "/tpwTT1FpWqLLhxUfAuDavIXDDfI.png",
+            "provider_id": 2100,
+            "provider_name": "Amazon Prime Video with Ads",
+            "display_priority": 200
+          }
+        ]
+      }
+    }
+  },
+  "external_ids": {
+    "imdb_id": "tt1254249",
+    "wikidata_id": "Q105094901",
+    "facebook_id": null,
+    "instagram_id": null,
+    "twitter_id": null
+  }
+}
