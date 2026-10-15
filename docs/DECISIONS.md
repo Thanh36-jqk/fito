@@ -79,6 +79,29 @@ Chọn **bản ổn định mới nhất đã ra được ít nhất ~1 tuần**
 
 Chi phí mục tiêu: 0đ/tháng.
 
+## Nguồn dữ liệu, ảnh, trailer (chốt 16/10/2026)
+
+**Nguyên tắc:** chỉ lấy dữ liệu qua **API chính thức của các nguồn uy tín**, để thông tin, ảnh và trailer đúng nhất. Không cào web, không lấy ảnh hay trailer từ nguồn không rõ. Mọi lệnh gọi chạy trên server, có cache, và ghi nguồn trên giao diện.
+
+| Cần gì | Lấy từ đâu | Cách lấy cho đúng |
+|---|---|---|
+| Thông tin phim (tên Việt/gốc, năm, độ dài, thể loại, tóm tắt) | **TMDB API** | `language=vi-VN`; thiếu bản tiếng Việt thì lấy `en-US`. Tên gốc lấy từ `original_title` |
+| Phim đang/sắp chiếu ở VN | TMDB `now_playing` / `upcoming` với `region=VN` | Ghi "theo TMDB" vì có thể lệch với rạp thật |
+| **Poster, ảnh nền** | **TMDB Images** (`image.tmdb.org`), endpoint `/movie/{id}/images` | Poster ưu tiên tiếng Việt, rồi poster không chữ, rồi tiếng Anh (`include_image_language=vi,null,en`). Cỡ: poster `w500` (list) / `w780` (chi tiết), ảnh nền `w1280`. Qua `next/image`, chỉ cho phép host `image.tmdb.org` |
+| **Trailer** | TMDB `/movie/{id}/videos` → **YouTube chính chủ** | Chỉ nhận `site=YouTube`, `type=Trailer`, `official=true`. Ưu tiên bản tiếng Việt (vi), không có thì lấy bản tiếng Anh, rồi lấy bản mới nhất. Không có trailer chính thức thì ẩn khối Trailer, không lấy video khác thay vào |
+| Nơi xem ở VN (Netflix, FPT Play…) | TMDB `watch/providers` (dữ liệu **JustWatch**) | Lấy theo `VN`. Bắt buộc ghi "dữ liệu JustWatch" |
+| Điểm IMDb, Rotten Tomatoes, Metacritic | **OMDb API** theo `imdb_id` | Cache 24 giờ, gói free 1.000 lượt/ngày |
+| Điểm Trakt, bình luận cộng đồng | **Trakt API** theo `imdb_id` | Bình luận có cờ spoiler thì che bằng vé cào |
+| Điểm TMDB, review TMDB | TMDB | |
+
+- Ba nguồn nối với nhau bằng `imdb_id` (lấy từ TMDB `external_ids`).
+- **Không dùng:**
+  - cào web: Letterboxd, trang rạp CGV/Lotte/Galaxy, IMDb HTML
+  - ảnh từ Google Images
+  - trailer reup trên YouTube
+- Muốn thêm nguồn mới thì phải là API chính thức, có điều khoản cho phép dùng phi thương mại. Thêm vào bảng này trước khi code.
+- Poster CSS (`Poster.tsx`) chỉ dùng cho dữ liệu mẫu. Khi có ảnh TMDB thì giữ khung, viền, halftone, chỉ thay phần nền bằng ảnh thật.
+
 ## Cấu trúc code
 
 - `src/app/` — các route:
@@ -132,3 +155,4 @@ Chi phí mục tiêu: 0đ/tháng.
   - Thẻ quẹt dùng Motion drag; màn Trùng gu là một timeline GSAP.
   - Băng poster kéo được bằng chuột trên máy tính.
   - Match trên máy tính chia 2 cột: chồng thẻ bên trái, danh sách bên phải.
+- **16/10/2026** — Người dùng nhắc: dữ liệu, ảnh và trailer phải lấy qua API của nguồn uy tín để đúng nhất. Đã chốt bảng "Nguồn dữ liệu, ảnh, trailer" ở trên.
