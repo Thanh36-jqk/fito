@@ -1,0 +1,934 @@
+<meta charset="utf-8">
+<title>Fito</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Mali:wght@500;600&family=Nunito:wght@500;600;700;800&display=swap">
+<style>
+/* Layout: một cột kiểu app điện thoại (≤440px), thanh tab nổi dưới cùng; chất liệu scrapbook: sticker, cuống vé, grain. Chỉ chế độ tối. */
+:root{
+  color-scheme:dark;
+  --bg:#0D0E1A; --surface:#171829; --surface-2:#20223A; --line:#2C2E48;
+  --accent:#C6F432; --accent-2:#8B7CFF; --sticker:#FF6BD6;
+  --fg:#F4F4FA; --muted:#B3B5CF; --on-accent:#0D0E1A;
+  --good:#9BE36A; --mid:#FFC857; --bad:#FF8080;
+  --f-display:"Baloo 2","Nunito",system-ui,sans-serif;
+  --f-body:"Nunito",system-ui,sans-serif;
+  --f-hand:"Mali","Nunito",cursive;
+  --r-card:24px; --spring:cubic-bezier(.34,1.56,.64,1);
+  --tint:#6B4CFF;
+}
+:root[data-palette="keo"]{
+  --bg:#16121F; --surface:#211A2E; --surface-2:#2B2240; --line:#3A2F4F;
+  --accent:#FFB4A2; --accent-2:#B8A6FF; --sticker:#7FE0C4; --muted:#C3B4CC; --on-accent:#16121F;
+}
+:root[data-palette="hoanghon"]{
+  --bg:#120F0D; --surface:#1E1915; --surface-2:#2A231D; --line:#3A3029;
+  --accent:#FF8A3D; --accent-2:#4FD1C5; --sticker:#FFD23F; --muted:#C2B3A6; --on-accent:#120F0D;
+}
+@property --tint{syntax:"<color>";inherits:true;initial-value:#6B4CFF}
+
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;font-weight:600;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opacity:.07;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:12px}
+svg.i{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.num{font-variant-numeric:tabular-nums}
+
+.app{max-width:440px;margin:0 auto;padding-inline:16px;padding-block:12px 120px;min-height:100vh;position:relative;
+  background:radial-gradient(130% 55% at 50% -5%, color-mix(in srgb,var(--tint) 38%,transparent), transparent 72%);
+  transition:--tint 1s ease}
+
+/* ---------- header ---------- */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:6px 10px}
+.logo{font-family:var(--f-display);font-weight:800;font-size:30px;line-height:1;letter-spacing:-.01em;color:var(--fg);
+  text-shadow:2px 2px 0 var(--accent-2),-1px -1px 0 color-mix(in srgb,var(--accent) 70%,transparent)}
+.logo small{display:block;font-family:var(--f-hand);font-weight:500;font-size:12px;color:var(--muted);text-shadow:none;margin-top:4px}
+.top-r{display:flex;align-items:center;gap:8px}
+.online{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
+.online i{width:8px;height:8px;border-radius:50%;background:var(--good);box-shadow:0 0 0 3px color-mix(in srgb,var(--good) 25%,transparent)}
+.sticker{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 14px;border-radius:999px;font-family:var(--f-display);font-weight:700;font-size:14px;
+  background:var(--sticker);color:#111;border:3px solid #fff;box-shadow:3px 3px 0 #000;transform:rotate(var(--rot,-3deg));transition:transform .25s var(--spring)}
+.sticker:active{transform:rotate(0) scale(.94)}
+
+/* ---------- headline ---------- */
+.hello{font-family:var(--f-display);font-weight:800;font-size:34px;line-height:1.05;margin:8px 0 4px;text-wrap:balance}
+.hello .hl{position:relative;white-space:nowrap;color:var(--accent)}
+.hello .hl svg{position:absolute;left:-4px;right:-4px;bottom:-8px;width:calc(100% + 8px);height:14px;fill:none;stroke:var(--accent-2);stroke-width:4;stroke-linecap:round}
+
+/* ---------- marquee ---------- */
+.marquee{margin-block:16px 14px;border-radius:16px;background:#1a0f08;border:3px solid #3b2512;position:relative;overflow:hidden;padding-block:16px;
+  box-shadow:0 0 0 1px #000,0 8px 30px -10px color-mix(in srgb,var(--tint) 60%,transparent)}
+.marquee::before,.marquee::after{content:"";position:absolute;left:6px;right:6px;height:10px;
+  background:radial-gradient(circle,#FFE9A8 0 3px,rgba(255,200,90,.35) 4px,transparent 6px) 0 0/18px 10px repeat-x}
+.marquee::before{top:3px}.marquee::after{bottom:3px}
+.track{display:flex;width:max-content;animation:run 22s linear infinite}
+.track span{font-family:var(--f-display);font-weight:800;font-size:18px;letter-spacing:.08em;color:#FFE9A8;padding-right:28px;white-space:nowrap;text-shadow:0 0 12px rgba(255,200,90,.6)}
+@keyframes run{to{transform:translateX(-50%)}}
+
+/* ---------- chips ---------- */
+.chips{display:flex;gap:10px;overflow-x:auto;padding:6px 2px 10px;margin-inline:-16px;padding-inline:16px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;min-height:44px;padding:0 16px;border-radius:999px;background:var(--surface);border:2px solid var(--line);color:var(--fg);font-weight:800;font-size:14px;
+  transform:rotate(var(--rot,0deg));transition:transform .3s var(--spring),background .2s}
+.chip[aria-pressed="true"]{background:var(--accent);color:var(--on-accent);border-color:#fff;box-shadow:3px 3px 0 #000}
+.chip:active{transform:scale(.92)}
+
+/* ---------- section titles ---------- */
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin:22px 0 10px}
+.sec-h h2{font-family:var(--f-display);font-weight:800;font-size:22px;margin:0}
+.sec-h small{font-size:13px;color:var(--muted)}
+.note{font-family:var(--f-hand);font-size:14px;color:var(--accent-2);display:flex;align-items:center;gap:6px;transform:rotate(-2deg)}
+.note svg{width:40px;height:22px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round}
+
+/* ---------- poster art ---------- */
+.poster{position:relative;aspect-ratio:2/3;width:100%;max-width:100%;border-radius:18px;overflow:hidden;isolation:isolate;
+  background:linear-gradient(160deg,var(--c1),var(--c2));box-shadow:0 14px 30px -12px rgba(0,0,0,.7)}
+.poster .motif{position:absolute;inset:0;z-index:-1}
+.m-sun .motif{background:radial-gradient(circle at 50% 38%,#FFE38A 0 22%,transparent 23%),repeating-linear-gradient(0deg,transparent 0 10px,rgba(255,255,255,.08) 10px 12px)}
+.m-moon .motif{background:radial-gradient(circle at 55% 32%,#E9F8FF 0 18%,transparent 18.5%)}
+.m-moon .motif::after{content:"";position:absolute;width:36%;aspect-ratio:1;border-radius:50%;left:47%;top:15%;background:var(--c1)}
+.m-stripes .motif{background:repeating-linear-gradient(-30deg,rgba(255,255,255,.18) 0 14px,transparent 14px 34px)}
+.m-waves .motif{background:repeating-radial-gradient(circle at 50% 120%,rgba(255,255,255,.18) 0 8px,transparent 8px 22px)}
+.m-grid .motif{background:radial-gradient(circle,rgba(255,255,255,.35) 0 3px,transparent 4px) 0 0/22px 22px}
+.m-door .motif{background:linear-gradient(transparent 30%,rgba(0,0,0,.25) 30%) 50% 100%/44% 70% no-repeat,radial-gradient(circle at 63% 72%,#FFE38A 0 2.5%,transparent 3%)}
+.m-dune .motif{background:radial-gradient(120% 60% at 30% 100%,rgba(0,0,0,.25) 0 50%,transparent 51%),radial-gradient(120% 50% at 80% 105%,rgba(0,0,0,.25) 0 50%,transparent 51%)}
+.poster .halftone{position:absolute;inset:0;z-index:-1;background:radial-gradient(circle,rgba(0,0,0,.28) 1px,transparent 1.5px) 0 0/6px 6px;mix-blend-mode:multiply;opacity:.7}
+.poster .ptitle{position:absolute;left:10px;right:10px;bottom:28px;font-family:var(--f-display);font-weight:800;font-size:var(--pt,22px);line-height:.98;color:#fff;
+  text-shadow:2px 2px 0 rgba(0,0,0,.45);text-wrap:balance}
+.poster .pmeta{position:absolute;left:10px;bottom:9px;font-size:12px;font-weight:800;color:rgba(255,255,255,.85);letter-spacing:.06em}
+.poster .glare{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .2s;
+  background:radial-gradient(circle at var(--gx,50%) var(--gy,50%),rgba(255,255,255,.45),transparent 45%);mix-blend-mode:soft-light}
+.poster .tape{position:absolute;width:56px;height:18px;top:-4px;left:50%;margin-left:-28px;background:color-mix(in srgb,var(--sticker) 55%,#ffffff55);transform:rotate(-4deg);opacity:.85}
+
+/* ---------- strip ---------- */
+.strip{display:flex;gap:0;overflow-x:auto;scroll-snap-type:x mandatory;margin-inline:-16px;padding:18px calc(50% - 85px) 26px;scrollbar-width:none}
+.strip::-webkit-scrollbar{display:none}
+.slot{flex:none;width:170px;scroll-snap-align:center;transform:scale(var(--s,1));opacity:var(--o,1);transition:transform .12s linear,opacity .12s linear;perspective:700px}
+.slot .tilt{display:block;width:100%;border-radius:18px;transition:transform .2s ease;transform-style:preserve-3d}
+.slot .cap{margin-top:10px;text-align:center;font-weight:800;font-size:13px;color:var(--muted);display:flex;justify-content:center;gap:6px;align-items:center}
+
+/* ---------- score pill ---------- */
+.pill{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:999px;font-family:var(--f-display);font-weight:800;font-size:14px;line-height:1.6}
+.lv-good{background:var(--good);color:#0b1405}.lv-mid{background:var(--mid);color:#1d1400}.lv-bad{background:var(--bad);color:#1f0505}.lv-none{background:var(--surface-2);color:var(--muted)}
+
+/* ---------- ticket stub ---------- */
+.ticket{position:relative;background:var(--surface);border-radius:20px;
+  -webkit-mask:radial-gradient(circle 11px at 0 var(--ny,50%),#0000 98%,#000) left/51% 100% no-repeat,radial-gradient(circle 11px at 100% var(--ny,50%),#0000 98%,#000) right/51% 100% no-repeat;
+  mask:radial-gradient(circle 11px at 0 var(--ny,50%),#0000 98%,#000) left/51% 100% no-repeat,radial-gradient(circle 11px at 100% var(--ny,50%),#0000 98%,#000) right/51% 100% no-repeat}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.soon{--ny:72%;display:flex;flex-direction:column;text-align:left;padding:10px 10px 12px;transition:transform .25s var(--spring)}
+.soon:active{transform:scale(.96)}
+.soon .poster{--pt:17px;border-radius:14px}
+.soon .perf{border-top:2px dashed var(--line);margin:12px 4px 8px}
+.soon b{font-family:var(--f-display);font-weight:800;font-size:16px;line-height:1.15}
+.soon > span:not(.sticker){font-size:13px;color:var(--muted)}
+.soon .date{position:absolute;top:2px;right:2px;--rot:6deg;min-height:30px;padding:0 10px;font-size:13px;border-width:2px}
+
+/* ---------- bottom nav ---------- */
+.nav{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:40;width:min(408px,calc(100% - 32px));
+  background:color-mix(in srgb,var(--surface) 88%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:2px solid var(--line);border-radius:999px;padding:6px;
+  display:grid;grid-template-columns:repeat(4,1fr);box-shadow:0 18px 40px -16px #000}
+.nav .ind{position:absolute;top:6px;bottom:6px;left:6px;width:calc((100% - 12px)/4);border-radius:999px;background:var(--accent);border:2px solid #fff;box-shadow:2px 2px 0 #000;
+  transform:translateX(calc(var(--ix,0) * 100%)) rotate(-2deg);transition:transform .45s var(--spring)}
+.nav button{position:relative;z-index:1;min-height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;font-size:12px;font-weight:800;color:var(--muted);border-radius:999px;transition:color .25s}
+.nav button[aria-current="page"]{color:var(--on-accent)}
+.nav svg.i{width:20px;height:20px}
+
+/* ---------- mascot empty ---------- */
+.empty{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:48px 12px}
+.empty svg{width:130px;height:auto}
+.empty h3{font-family:var(--f-display);font-weight:800;font-size:22px;margin:0}
+.empty p{margin:0;color:var(--muted);max-width:30ch}
+.empty .hand{font-family:var(--f-hand);color:var(--accent-2);font-size:15px}
+
+/* ---------- detail sheet ---------- */
+.layer{position:fixed;inset:0;z-index:50;visibility:hidden;pointer-events:none}
+.layer.open{visibility:visible;pointer-events:auto}
+.scrim{position:absolute;inset:0;background:rgba(0,0,0,.6);opacity:0;transition:opacity .35s}
+.layer.open .scrim{opacity:1}
+.sheet{position:absolute;left:50%;bottom:0;width:min(440px,100%);height:94%;transform:translate(-50%,105%);transition:transform .42s cubic-bezier(.2,.9,.25,1.05);
+  background:var(--bg);border-radius:28px 28px 0 0;overflow:hidden;display:flex;flex-direction:column;border:2px solid var(--line);border-bottom:0}
+.layer.open .sheet{transform:translate(-50%,0)}
+.sheet-scroll{overflow-y:auto;flex:1;padding:0 16px 24px}
+.d-hero{position:relative;margin:0 -16px;padding:56px 16px 18px;display:grid;grid-template-columns:118px minmax(0,1fr);gap:14px;align-items:end;
+  background:linear-gradient(to bottom,transparent 0,var(--bg) 92%),radial-gradient(circle at 80% 0,var(--c2),transparent 60%),linear-gradient(160deg,var(--c1),var(--c2))}
+.d-hero .poster{--pt:15px;border:3px solid #fff;transform:rotate(-3deg);box-shadow:5px 5px 0 #000}
+.d-hero h2{font-family:var(--f-display);font-weight:800;font-size:28px;line-height:1.02;margin:0;text-wrap:balance}
+.d-hero .en{font-size:13px;color:var(--muted);margin-top:4px}
+.d-hero .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.tag{font-size:12px;font-weight:800;padding:3px 9px;border-radius:999px;background:rgba(0,0,0,.35);border:1.5px solid rgba(255,255,255,.25)}
+.x-btn{position:absolute;top:12px;right:12px;z-index:3;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:rgba(0,0,0,.45);border:2px solid rgba(255,255,255,.3)}
+.grab{position:absolute;top:8px;left:50%;width:44px;height:5px;margin-left:-22px;border-radius:9px;background:rgba(255,255,255,.4);z-index:3}
+
+.total{--ny:50%;display:flex;align-items:center;gap:14px;padding:16px 22px;margin-top:6px}
+.total .big{font-family:var(--f-display);font-weight:800;font-size:58px;line-height:.9;letter-spacing:-.02em;text-shadow:3px 3px 0 var(--accent-2)}
+.total .big small{font-size:18px;color:var(--muted);text-shadow:none}
+.total .meta{flex:1;min-width:0;border-left:2px dashed var(--line);padding-left:14px;font-size:13px;color:var(--muted)}
+.stamp{display:inline-block;font-family:var(--f-display);font-weight:800;font-size:20px;letter-spacing:.04em;padding:2px 12px;border:3.5px solid currentColor;border-radius:10px;transform:rotate(-8deg);margin-bottom:6px;background:transparent!important}
+.stamp.lv-good{color:var(--good)}.stamp.lv-mid{color:var(--mid)}.stamp.lv-bad{color:var(--bad)}.stamp.lv-none{color:var(--muted)}
+.layer.open .stamp{animation:slam .5s .55s var(--spring) backwards}
+@keyframes slam{from{transform:rotate(-20deg) scale(2.4);opacity:0}to{transform:rotate(-8deg) scale(1);opacity:1}}
+
+.rings{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin-top:16px}
+.ring{display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center}
+.ring svg{width:58px;height:58px;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:6}
+.ring .bgc{stroke:var(--surface-2)}
+.ring .fgc{stroke:var(--rc,var(--accent));stroke-linecap:round;stroke-dasharray:138.2;stroke-dashoffset:138.2;transition:stroke-dashoffset 1s cubic-bezier(.2,.8,.2,1)}
+.ring .rv{margin-top:-44px;height:30px;font-family:var(--f-display);font-weight:800;font-size:15px}
+.ring b{font-size:12px;margin-top:6px}
+.ring span{font-size:12px;color:var(--muted);line-height:1.2}
+
+.block{margin-top:24px}
+.block h3{font-family:var(--f-display);font-weight:800;font-size:19px;margin:0 0 10px;display:flex;align-items:center;gap:8px}
+.block p{margin:0;line-height:1.65}
+.trailer{position:relative;width:100%;aspect-ratio:16/9;max-width:100%;border-radius:18px;overflow:hidden;display:grid;place-items:center;
+  background:linear-gradient(120deg,var(--c1),var(--c2));border:2px solid var(--line)}
+.trailer::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(0,0,0,.35) 0 10px,transparent 10px 22px) top/100% 12px no-repeat,repeating-linear-gradient(90deg,rgba(0,0,0,.35) 0 10px,transparent 10px 22px) bottom/100% 12px no-repeat}
+.trailer .play{width:64px;height:64px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;border:3px solid #fff;box-shadow:3px 3px 0 #000;transition:transform .25s var(--spring)}
+.trailer:active .play{transform:scale(.9)}
+.where{display:flex;flex-wrap:wrap;gap:8px}
+.where .tag{font-size:13px;padding:6px 12px;background:var(--surface);border-color:var(--line)}
+.src{font-size:12px;color:var(--muted);margin-top:8px}
+
+.rev{background:var(--surface);border-radius:18px;padding:14px 16px;border:2px solid var(--line);margin-bottom:10px}
+.layer.open .rev{animation:rise .45s calc(.7s + var(--i) * .14s) cubic-bezier(.2,.8,.2,1) backwards}
+@keyframes rise{from{transform:translateY(16px);opacity:0}}
+.rev header{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;font-size:13px;color:var(--muted);margin-bottom:6px}
+.rev header b{color:var(--fg)}
+.rev .srcb{font-size:12px;font-weight:800;padding:1px 8px;border-radius:6px;background:var(--surface-2);color:var(--fg)}
+.rev p{font-size:15px;line-height:1.65}
+.spoiler{position:relative;border-radius:12px;overflow:hidden}
+.spoiler canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:grab;transition:opacity .5s}
+.spoiler canvas.gone{opacity:0;pointer-events:none}
+.spoiler p{padding:4px 2px}
+.reveal{margin-top:8px;min-height:44px;font-size:13px;font-weight:800;color:var(--accent-2);text-decoration:underline;text-underline-offset:3px}
+
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px 16px calc(14px + env(safe-area-inset-bottom,0px));border-top:2px solid var(--line);background:var(--bg)}
+.btn{min-height:52px;border-radius:16px;font-family:var(--f-display);font-weight:800;font-size:17px;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .25s var(--spring)}
+.btn:active{transform:scale(.95)}
+.btn-main{background:var(--accent);color:var(--on-accent);border:3px solid #fff;box-shadow:3px 3px 0 #000}
+.btn-ghost{background:var(--surface);border:2px solid var(--line)}
+
+/* ---------- match tab ---------- */
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--surface);border:2px solid var(--line);border-radius:999px;padding:4px;margin-top:10px;position:relative}
+.seg .ind{position:absolute;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);border-radius:999px;background:var(--surface-2);border:2px solid var(--accent-2);transform:translateX(calc(var(--ix,0)*100%));transition:transform .45s var(--spring)}
+.seg button{position:relative;z-index:1;min-height:44px;font-weight:800;font-size:14px;color:var(--muted)}
+.seg button[aria-selected="true"]{color:var(--fg)}
+.presence{display:flex;align-items:center;gap:10px;margin:16px 0 12px;font-size:14px;color:var(--muted)}
+.ava{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:17px;border:3px solid #fff;flex:none;box-shadow:2px 2px 0 #000}
+.ava.me{background:var(--accent);color:var(--on-accent)}
+.ava.you{background:var(--sticker);color:#111}
+.presence .ava{animation:bob 1.6s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-4px) rotate(-6deg)}}
+.dots{display:inline-flex;gap:3px;margin-left:2px}
+.dots i{width:5px;height:5px;border-radius:50%;background:var(--muted);animation:dot 1.2s infinite}
+.dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}
+@keyframes dot{40%{transform:translateY(-4px);opacity:1}0%,80%,100%{opacity:.4}}
+
+.deck{position:relative;height:min(430px,56vh);margin-inline:auto;max-width:330px}
+.card{position:absolute;inset:0;border-radius:26px;touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;will-change:transform}
+.card .poster{position:absolute;inset:0;aspect-ratio:auto;height:100%;border-radius:26px;border:3px solid #fff;--pt:34px}
+.card .poster .ptitle{bottom:84px}
+.card .poster .pmeta{display:none}
+.card .info{position:absolute;left:0;right:0;bottom:0;padding:14px 16px 16px;border-radius:0 0 24px 24px;background:linear-gradient(transparent,rgba(0,0,0,.75) 40%);display:flex;align-items:end;justify-content:space-between;gap:10px}
+.card .info span{font-size:13px;color:rgba(255,255,255,.88);font-weight:700}
+.card:nth-last-child(2){transform:translateY(12px) scale(.95) rotate(2deg)}
+.card:nth-last-child(3){transform:translateY(22px) scale(.9) rotate(-3deg)}
+.card:nth-last-child(n+4){display:none}
+.card .st{position:absolute;top:28px;font-family:var(--f-display);font-weight:800;font-size:30px;padding:0 12px;border:4px solid currentColor;border-radius:12px;opacity:0;background:rgba(0,0,0,.25)}
+.card .st-yes{left:18px;color:var(--good);transform:rotate(-14deg)}
+.card .st-no{right:18px;color:var(--bad);transform:rotate(14deg)}
+.deck-btns{display:flex;justify-content:center;gap:26px;margin-top:22px}
+.round{width:68px;height:68px;border-radius:50%;display:grid;place-items:center;border:3px solid #fff;box-shadow:3px 3px 0 #000;transition:transform .25s var(--spring)}
+.round:active{transform:scale(.88) rotate(-8deg)}
+.round svg.i{width:30px;height:30px;stroke-width:2.8}
+.round.no{background:var(--surface-2);color:var(--bad)}
+.round.yes{background:var(--accent);color:var(--on-accent)}
+.round.yes svg{fill:currentColor}
+.hint{text-align:center;font-family:var(--f-hand);color:var(--muted);font-size:14px;margin-top:12px}
+
+.mlist{display:flex;flex-direction:column;gap:12px;margin-top:6px}
+.mrow{--ny:50%;display:grid;grid-template-columns:72px minmax(0,1fr) auto;gap:14px;align-items:center;padding:12px 18px 12px 14px;text-align:left;transition:transform .25s var(--spring)}
+.mrow:active{transform:scale(.97)}
+.mrow .poster{--pt:11px;border-radius:10px}
+.mrow .poster .pmeta{display:none}
+.mrow .poster .ptitle{bottom:6px;left:6px;right:6px}
+.mrow b{font-family:var(--f-display);font-weight:800;font-size:18px;line-height:1.1;display:block}
+.mrow .mi span{font-size:13px;color:var(--muted);display:block}
+.mrow .seat{font-family:var(--f-display);font-size:13px;font-weight:800;color:var(--accent-2);text-align:center;border-left:2px dashed var(--line);padding-left:14px;line-height:1.2}
+.mrow .seat em{display:block;font-style:normal;font-size:22px;color:var(--fg)}
+
+/* ---------- match overlay ---------- */
+.mo{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;padding:24px 16px;overflow:hidden;
+  background:radial-gradient(circle at 50% 40%,color-mix(in srgb,var(--accent-2) 45%,var(--bg)),var(--bg) 70%)}
+.mo.open{display:flex}
+.mo-in{width:100%;max-width:380px;display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center}
+.mo h2{font-family:var(--f-display);font-weight:800;font-size:44px;line-height:1;margin:0;color:var(--accent);text-shadow:3px 3px 0 #000}
+.mo h2 span{display:inline-block;animation:bounce .6s calc(.55s + var(--i)*.04s) var(--spring) backwards}
+@keyframes bounce{from{transform:translateY(40px) scale(.4);opacity:0}}
+.halves{display:flex;justify-content:center;width:100%}
+.half{width:150px;height:96px;background:var(--surface);border:3px solid #fff;display:flex;align-items:center;justify-content:center;gap:10px;position:relative}
+.half.l{border-radius:18px 0 0 18px;border-right:2px dashed var(--line);animation:inL .6s var(--spring) backwards}
+.half.r{border-radius:0 18px 18px 0;border-left:0;animation:inR .6s var(--spring) backwards}
+@keyframes inL{from{transform:translateX(-130%) rotate(-12deg)}}
+@keyframes inR{from{transform:translateX(130%) rotate(12deg)}}
+.half .ava{width:52px;height:52px;font-size:24px}
+.half.l .ava{animation:bumpL .4s .6s ease-out}
+.half.r .ava{animation:bumpR .4s .6s ease-out}
+@keyframes bumpL{50%{transform:translateX(10px) scale(1.12)}}
+@keyframes bumpR{50%{transform:translateX(-10px) scale(1.12)}}
+.half small{font-size:12px;color:var(--muted);text-align:left;line-height:1.3}
+.half small b{display:block;color:var(--fg);font-size:14px}
+.mo .film{font-family:var(--f-hand);font-size:17px;color:var(--fg)}
+.booth{display:flex;gap:6px;padding:8px;background:#fff;border-radius:6px;transform:rotate(-2deg);box-shadow:5px 5px 0 #000;animation:rise .5s 1s ease-out backwards}
+.booth>div{width:68px;height:90px;border-radius:3px;overflow:hidden;display:grid;place-items:center;background:#111}
+.booth .poster{border-radius:0;height:100%;--pt:9px;box-shadow:none}
+.booth .poster .pmeta{display:none}
+.booth .poster .ptitle{bottom:5px;left:5px;right:5px}
+.booth .ava{width:46px;height:46px;font-size:22px;animation:none}
+.booth .dt{background:var(--accent);color:var(--on-accent);font-family:var(--f-display);font-weight:800;font-size:13px;line-height:1.1;padding:4px}
+.booth-cap{font-size:12px;color:var(--muted);margin-top:-8px}
+.mo .row{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%}
+.kernel{position:absolute;left:50%;top:42%;width:var(--sz,16px);height:var(--sz,16px);border-radius:48% 52% 45% 55%;
+  background:radial-gradient(circle at 35% 35%,#fff,#FFF1C7 55%,#F4C55B);box-shadow:-5px 3px 0 -2px #FFF6DA,5px 4px 0 -3px #FFF1C7;
+  animation:burst 1.6s cubic-bezier(.15,.7,.3,1) forwards;pointer-events:none}
+@keyframes burst{0%{transform:translate(-50%,-50%) scale(.2);opacity:1}70%{opacity:1}100%{transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) rotate(var(--r)) scale(1);opacity:0}}
+
+/* ---------- chọn phim (picker) ---------- */
+.cta{--ny:50%;display:flex;align-items:center;gap:12px;width:100%;margin-top:16px;padding:12px 22px 12px 18px;text-align:left;transition:transform .25s var(--spring)}
+.cta:active{transform:scale(.97) rotate(-.5deg)}
+.cta svg:first-child{width:52px;height:auto;flex:none;transform:rotate(-8deg)}
+.cta .ct{flex:1;min-width:0}
+.cta b{display:block;font-family:var(--f-display);font-weight:800;font-size:19px;line-height:1.15;color:var(--accent)}
+.cta span{display:block;font-size:13px;color:var(--muted);line-height:1.4}
+#picker{z-index:45}
+.pk-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:18px 16px 8px}
+.pk-btn{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--surface);border:2px solid var(--line);flex:none}
+.pk-btn[disabled]{visibility:hidden}
+.pk-dots{display:flex;gap:6px;align-items:center}
+.pk-dots i{width:8px;height:8px;border-radius:9px;background:var(--line);transition:width .35s var(--spring),background .3s}
+.pk-dots i.on{width:26px;background:var(--accent)}
+.pk-dots i.done{background:var(--accent-2)}
+.pk-step{animation:rise .4s cubic-bezier(.2,.8,.2,1) backwards}
+.pk-q{font-family:var(--f-display);font-weight:800;font-size:28px;line-height:1.05;margin:8px 0 4px;text-wrap:balance}
+.pk-sub{color:var(--muted);margin:0 0 18px;font-size:14px}
+.pk-opts{display:flex;flex-direction:column;gap:14px}
+.pk-opt{--ny:66%;display:block;width:100%;text-align:left;padding:16px 20px 18px;transition:transform .25s var(--spring)}
+.pk-opt:active{transform:scale(.97)}
+.pk-opt .fan{position:relative;height:118px;margin-bottom:10px}
+.pk-opt .fan .poster{position:absolute;width:74px;top:0;--pt:11px;border:2px solid #fff}
+.pk-opt .fan .poster .pmeta{display:none}
+.pk-opt .fan .poster .ptitle{bottom:6px;left:6px;right:6px}
+.pk-opt .perf{border-top:2px dashed var(--line);margin:0 -4px 10px}
+.pk-opt b{display:flex;align-items:center;gap:8px;font-family:var(--f-display);font-weight:800;font-size:22px;line-height:1.1}
+.pk-opt > span:not(.sticker){display:block;font-size:13px;color:var(--muted);margin-top:2px}
+.pk-opt .sticker{position:absolute;right:14px;top:14px;min-height:30px;font-size:13px;border-width:2px;padding:0 10px;--rot:5deg}
+.pk-g{margin-bottom:20px}
+.pk-g h4{margin:0 0 8px;font-size:13px;font-weight:800;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.pk-chips{display:flex;flex-wrap:wrap;gap:8px}
+.pk-chips .chip small{font-weight:700;opacity:.75;margin-left:4px}
+.pk-chips .chip[disabled]{opacity:.4;cursor:not-allowed}
+.pk-sum{display:flex;flex-wrap:wrap;gap:6px;margin:-8px 0 16px}
+.pk-sum .tag{background:var(--surface);border-color:var(--line);font-size:12px}
+.mrow .seat.rt{color:var(--muted)}
+#pkFoot{grid-template-columns:1fr}
+#pkFoot.two{grid-template-columns:1fr 1.4fr}
+
+/* ---------- toast ---------- */
+.toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom,0px));z-index:70;transform:translate(-50%,20px);opacity:0;transition:.3s var(--spring);
+  background:var(--fg);color:var(--bg);font-weight:800;font-size:14px;padding:10px 16px;border-radius:14px;box-shadow:3px 3px 0 #000;max-width:calc(100% - 32px);text-align:center;pointer-events:none}
+.toast.show{transform:translate(-50%,0);opacity:1}
+.foot{margin-top:28px;font-size:12px;color:var(--muted);text-align:center}
+
+@media (hover:hover) and (pointer:fine){ .slot:hover .glare{opacity:1} }
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;animation-delay:0s!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+  .track{animation:none}
+}
+</style>
+
+<div class="app" id="app">
+  <header class="top">
+    <div class="logo">Fito<small>sổ tay xem phim của Mây &amp; Nắng</small></div>
+    <div class="top-r">
+      <span class="online"><i></i>Nắng online</span>
+      <button class="sticker" id="paletteBtn" aria-label="Đổi bảng màu">Neon</button>
+    </div>
+  </header>
+
+  <!-- TAB RẠP -->
+  <section id="tab-rap" data-tab>
+    <h1 class="hello">Tối nay hai đứa <span class="hl">xem gì?<svg viewBox="0 0 100 14" preserveAspectRatio="none"><path d="M2 9 C 20 3, 35 13, 52 7 S 85 4, 98 8"/></svg></span></h1>
+    <button class="ticket cta" data-pick="">
+      <div data-bap="happy"></div>
+      <div class="ct"><b>Chưa biết xem gì?</b><span>Chọn ra rạp hay ở nhà, thể loại, độ dài. Bắp lọc ra list giùm.</span></div>
+      <svg class="i" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+    </button>
+    <div class="marquee" aria-label="Đang chiếu theo TMDB"><div class="track" id="track"></div></div>
+    <div class="chips" id="chips" role="group" aria-label="Lọc thể loại"></div>
+    <div class="sec-h"><h2>Đang chiếu</h2><span class="note">quẹt ngang nè<svg viewBox="0 0 40 22"><path d="M2 14 C 12 4, 24 20, 36 8"/><path d="M30 6 L37 7 L35 14"/></svg></span></div>
+    <div class="strip" id="strip"></div>
+    <div class="sec-h"><h2>Sắp chiếu</h2><small>theo TMDB</small></div>
+    <div class="grid" id="soon"></div>
+    <p class="foot">Bản mẫu, phim và điểm là dữ liệu giả. App thật lấy dữ liệu từ TMDB, OMDb, Trakt.</p>
+  </section>
+
+  <!-- TAB Ở NHÀ -->
+  <section id="tab-onha" data-tab hidden>
+    <h1 class="hello">Ở nhà thì <span class="hl">xem gì?<svg viewBox="0 0 100 14" preserveAspectRatio="none"><path d="M2 8 C 30 3, 60 13, 98 6"/></svg></span></h1>
+    <button class="ticket cta" data-pick="home">
+      <div data-bap="wow"></div>
+      <div class="ct"><b>Lọc phim trên mạng</b><span>Chọn thể loại, độ dài, nền tảng hai đứa đang dùng.</span></div>
+      <svg class="i" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+    </button>
+    <div class="sec-h"><h2>Có trên mạng</h2><small>dữ liệu JustWatch</small></div>
+    <div class="grid" id="homeGrid"></div>
+    <p class="foot">Bản mẫu, phim và điểm là dữ liệu giả.</p>
+  </section>
+
+  <!-- TAB MATCH -->
+  <section id="tab-match" data-tab hidden>
+    <h1 class="hello">Quẹt cho <span class="hl">trùng gu<svg viewBox="0 0 100 14" preserveAspectRatio="none"><path d="M2 8 C 25 12, 50 2, 98 7"/></svg></span></h1>
+    <div class="seg" role="tablist" id="seg">
+      <span class="ind"></span>
+      <button role="tab" aria-selected="true" data-sub="swipe" id="seg-swipe">Quẹt</button>
+      <button role="tab" aria-selected="false" data-sub="list" id="seg-list">Đã trùng gu</button>
+    </div>
+    <div id="sub-swipe">
+      <div class="presence"><span class="ava you">N</span><span>Nắng cũng đang quẹt</span><span class="dots"><i></i><i></i><i></i></span></div>
+      <div class="deck" id="deck"></div>
+      <div class="deck-btns" id="deckBtns">
+        <button class="round no" id="btnNo" aria-label="Thôi né"><svg class="i" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+        <button class="round yes" id="btnYes" aria-label="Chốt đơn"><svg class="i" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></button>
+      </div>
+      <p class="hint">kéo thẻ sang phải để chốt, sang trái để né</p>
+    </div>
+    <div id="sub-list" hidden>
+      <div class="chips" id="mchips" role="group" aria-label="Lọc nơi xem"></div>
+      <div class="mlist" id="mlist"></div>
+    </div>
+  </section>
+
+  <!-- TAB NHẬT KÝ -->
+  <section id="tab-nhatky" data-tab hidden>
+    <div class="empty">
+      <div data-bap="sad"></div>
+      <h3>Sổ còn trắng tinh</h3>
+      <p>Nhật ký chưa có trong bản mẫu này. Ở app thật, xem xong mỗi đứa chấm điểm và viết vài dòng.</p>
+      <span class="hand">phim này làm cậu thấy sao?</span>
+    </div>
+  </section>
+</div>
+
+<nav class="nav" id="nav" aria-label="Điều hướng">
+  <span class="ind"></span>
+  <button data-go="rap" aria-current="page"><svg class="i" viewBox="0 0 24 24"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></svg>Rạp</button>
+  <button data-go="onha"><svg class="i" viewBox="0 0 24 24"><rect width="20" height="15" x="2" y="7" rx="2"/><polyline points="17 2 12 7 7 2"/></svg>Ở nhà</button>
+  <button data-go="match"><svg class="i" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>Match</button>
+  <button data-go="nhatky"><svg class="i" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Nhật ký</button>
+</nav>
+
+<div class="layer" id="detail" aria-hidden="true">
+  <div class="scrim" data-close></div>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="dTitle">
+    <span class="grab"></span>
+    <button class="x-btn" data-close aria-label="Đóng"><svg class="i" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
+    <div class="sheet-scroll" id="dBody"></div>
+    <div class="actions">
+      <button class="btn btn-ghost" id="dSeen">Xem rồi nha</button>
+      <button class="btn btn-main" id="dWant"><svg class="i" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>Hóng</button>
+    </div>
+  </div>
+</div>
+
+<div class="layer" id="picker" aria-hidden="true">
+  <div class="scrim" data-pclose></div>
+  <div class="sheet" role="dialog" aria-modal="true" aria-label="Chọn phim">
+    <span class="grab"></span>
+    <div class="pk-head">
+      <button class="pk-btn" id="pkBack" aria-label="Quay lại"><svg class="i" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button>
+      <div class="pk-dots" id="pkDots" aria-hidden="true"></div>
+      <button class="pk-btn" data-pclose aria-label="Đóng"><svg class="i" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+    </div>
+    <div class="sheet-scroll" id="pkBody"></div>
+    <div class="actions" id="pkFoot"></div>
+  </div>
+</div>
+
+<div class="mo" id="mo" role="dialog" aria-modal="true" aria-label="Trùng gu"></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const FINE = matchMedia('(hover:hover) and (pointer:fine)').matches;
+const $ = s => document.querySelector(s);
+
+/* ---------- dữ liệu mẫu (phim giả) ---------- */
+const FILMS = [
+ {id:1,vi:'Mùa Hè Năm Ấy',en:'That Summer',year:2026,min:112,genres:['Tình cảm','Hài'],when:'now',c1:'#FF7AA8',c2:'#6B4CFF',motif:'sun',
+  sum:'Hai đứa bạn thân về quê ngoại một mùa hè, tìm lại cuốn sổ lưu bút chôn dưới gốc phượng từ năm lớp 9.',
+  sc:{imdb:{v:7.8,votes:12400},rt:{v:91},mc:{v:78},tmdb:{v:7.9,votes:860},trakt:{v:8.1,votes:1500}}},
+ {id:2,vi:'Ký Túc Xá Số 7',en:'Dorm 7',year:2026,min:98,genres:['Kinh dị'],when:'now',c1:'#24264F',c2:'#3FB68B',motif:'moon',
+  sum:'Phòng 7 khu B tắt đèn lúc 23 giờ, nhưng mỗi đêm vẫn có ai đó gõ cửa ba tiếng.',
+  sc:{imdb:{v:6.4,votes:3100},rt:{v:58},mc:{v:52},tmdb:{v:6.6,votes:240},trakt:{v:6.2,votes:40}}},
+ {id:3,vi:'Tốc Độ 404',en:'Error 404: Speed',year:2026,min:126,genres:['Hành động'],when:'now',c1:'#FF5A36',c2:'#B8126B',motif:'stripes',
+  sum:'Một shipper công nghệ vô tình nhận đơn hàng chứa chìa khoá của cả hệ thống đèn giao thông thành phố.',
+  sc:{imdb:{v:7.1,votes:8800},rt:{v:74},mc:null,tmdb:{v:7.3,votes:510},trakt:{v:7.0,votes:620}}},
+ {id:4,vi:'Nàng Tiên Cá Quận 4',en:'Mermaid of District 4',year:2026,min:104,genres:['Hài','Tình cảm'],when:'now',c1:'#2EC4C0',c2:'#2A3BFF',motif:'waves',
+  sum:'Cô nàng bán ốc ven kênh tuyên bố mình là tiên cá, và cả xóm quyết định tin cô.',
+  sc:{imdb:{v:5.6,votes:1900},rt:{v:41},mc:{v:45},tmdb:{v:5.9,votes:180},trakt:{v:5.4,votes:95}}},
+ {id:5,vi:'Robot Biết Khóc',en:'The Crying Robot',year:2026,min:95,genres:['Hoạt hình'],when:'now',c1:'#7BC41A',c2:'#2F5BFF',motif:'grid',
+  sum:'Robot dọn dẹp ở một tiệm net cũ học cách khóc sau khi chủ tiệm treo biển sang nhượng.',
+  sc:{imdb:{v:8.3,votes:22000},rt:{v:96},mc:{v:85},tmdb:{v:8.4,votes:1900},trakt:{v:8.5,votes:3300}}},
+ {id:6,vi:'Hẹn Em Ở Đà Lạt',en:'See You in Dalat',year:2026,min:108,genres:['Tình cảm'],when:'soon',date:'24/10',c1:'#E98AC9',c2:'#4C3A8F',motif:'sun',
+  sum:'Hai người lạ cùng thuê nhầm một homestay trong tuần sương mù dày nhất năm.',
+  sc:{imdb:null,rt:null,mc:null,tmdb:null,trakt:null}},
+ {id:7,vi:'Bão Cát',en:'Sandstorm',year:2026,min:131,genres:['Hành động'],when:'soon',date:'07/11',c1:'#E0A04A',c2:'#7A2E1C',motif:'dune',
+  sum:'Đội cứu hộ có 48 giờ để đưa đoàn làm phim ra khỏi đồi cát Mũi Né trước cơn bão.',
+  sc:{imdb:{v:6.9,votes:320},rt:null,mc:null,tmdb:null,trakt:null}},
+ {id:8,vi:'Đêm Trăng Rằm',en:'Mid-Autumn Night',year:2026,min:88,genres:['Hoạt hình'],when:'soon',date:'14/11',c1:'#FFB443',c2:'#1E2A6E',motif:'moon',
+  sum:'Chú thỏ ngọc bị lạc xuống phố đèn lồng Hội An đúng đêm rằm tháng Tám.',
+  sc:{imdb:null,rt:null,mc:null,tmdb:null,trakt:null}},
+ {id:9,vi:'Chuyện Nhà Bên',en:'Next Door Stories',year:2025,min:117,genres:['Hài'],when:'home',providers:['Netflix','FPT Play'],c1:'#5BC0EB',c2:'#1B3A5C',motif:'door',
+  sum:'Cả khu tập thể náo loạn khi nhà bên mở quán cà phê mèo ngay hành lang tầng ba.',
+  sc:{imdb:{v:7.4,votes:5600},rt:{v:82},mc:{v:70},tmdb:{v:7.5,votes:430},trakt:{v:7.6,votes:880}}},
+ {id:10,vi:'Cà Phê Muối',en:'Salted Coffee',year:2025,min:102,genres:['Tình cảm','Hài'],when:'home',providers:['Netflix'],c1:'#C98B5A',c2:'#3B2A4F',motif:'sun',
+  sum:'Cô barista Huế và anh khách Sài Gòn cãi nhau mỗi sáng vì một ly cà phê muối pha sai công thức.',
+  sc:{imdb:{v:7.2,votes:4100},rt:{v:86},mc:{v:71},tmdb:{v:7.4,votes:390},trakt:{v:7.3,votes:700}}},
+ {id:11,vi:'Thám Tử Hẻm 9',en:'Alley 9 Detective',year:2025,min:118,genres:['Hành động','Hài'],when:'home',providers:['FPT Play','Galaxy Play'],c1:'#FFCF3F',c2:'#C2185B',motif:'stripes',
+  sum:'Bà bán xôi đầu hẻm phá án nhanh hơn cả công an phường, chỉ nhờ nghe ngóng giờ khách mua xôi.',
+  sc:{imdb:{v:6.8,votes:2700},rt:{v:69},mc:{v:60},tmdb:{v:7.0,votes:260},trakt:{v:6.7,votes:310}}},
+ {id:12,vi:'Chuyến Xe Cuối',en:'The Last Bus',year:2024,min:92,genres:['Kinh dị'],when:'home',providers:['Netflix'],c1:'#1C2B3A',c2:'#B23A48',motif:'moon',
+  sum:'Chuyến xe buýt 23 giờ 50 không bao giờ dừng ở trạm cuối, và hành khách thì cứ ít dần.',
+  sc:{imdb:{v:6.1,votes:3900},rt:{v:55},mc:{v:49},tmdb:{v:6.3,votes:300},trakt:{v:6.0,votes:420}}},
+ {id:13,vi:'Bé Mèo Vũ Trụ',en:'Space Kitty',year:2025,min:85,genres:['Hoạt hình'],when:'home',providers:['VieON','Galaxy Play'],c1:'#8B7CFF',c2:'#0F6E8C',motif:'grid',
+  sum:'Một bé mèo hoang trèo nhầm lên tên lửa đồ chơi và trở thành phi hành gia đầu tiên của hẻm.',
+  sc:{imdb:{v:7.7,votes:6200},rt:{v:93},mc:{v:80},tmdb:{v:7.9,votes:540},trakt:{v:7.8,votes:900}}},
+ {id:14,vi:'Ngày Mai Tốt Nghiệp',en:'Graduation Tomorrow',year:2025,min:124,genres:['Tình cảm'],when:'home',providers:['Galaxy Play','VieON'],c1:'#FF9F80',c2:'#5B3E96',motif:'waves',
+  sum:'Đêm trước lễ tốt nghiệp, năm đứa bạn cùng lớp quyết định làm hết những gì cả ba năm chưa dám.',
+  sc:{imdb:{v:7.0,votes:1800},rt:{v:78},mc:null,tmdb:{v:7.2,votes:150},trakt:{v:7.1,votes:60}}},
+ {id:15,vi:'Đảo Không Tên',en:'Nameless Island',year:2024,min:133,genres:['Hành động'],when:'home',providers:['Netflix','Prime Video'],c1:'#2BB673',c2:'#123C69',motif:'dune',
+  sum:'Nhóm thợ lặn tìm thấy một hòn đảo không có trên bản đồ, cùng một trạm radio vẫn đang phát.',
+  sc:{imdb:{v:7.5,votes:15000},rt:{v:84},mc:{v:73},tmdb:{v:7.6,votes:1200},trakt:{v:7.4,votes:2100}}}
+];
+const F = id => FILMS.find(f => f.id === id);
+const REVIEWS = [
+ {src:'TMDB',who:'@popcorn_jun',d:'02/10/2026',t:'Nhịp phim nhanh, nhạc nền hay, xem xong muốn đi xem lại liền.'},
+ {src:'Trakt',who:'@midnight.reels',d:'05/10/2026',t:'Great chemistry between the leads. The third act drags a bit, but the ending lands.'},
+ {src:'Trakt',who:'@khoaitay',d:'09/10/2026',spoiler:true,t:'Đoạn cuối hoá ra người gửi thư suốt cả phim chính là đứa bạn thân ngồi cạnh. Mình khóc luôn.'}
+];
+
+/* ---------- điểm tổng: thang 10, bỏ nguồn thiếu và nguồn dưới 50 lượt ---------- */
+const SRC = [['imdb','IMDb',1],['rt','RT',10],['mc','MC',10],['tmdb','TMDB',1],['trakt','Trakt',1]];
+function counted(s){ return s && s.v != null && (s.votes == null || s.votes >= 50); }
+function total(f){
+  const vals = SRC.filter(([k]) => counted(f.sc[k])).map(([k,,div]) => f.sc[k].v / div);
+  return vals.length ? Math.round(vals.reduce((a,b)=>a+b,0) / vals.length * 10) / 10 : null;
+}
+function lvl(t){ return t == null ? 'none' : t >= 7.5 ? 'good' : t >= 6 ? 'mid' : 'bad'; }
+const STAMP = {good:'ĐỈNH NÓC',mid:'CŨNG ĐƯỢC',bad:'NÉ GẤP',none:'CHƯA ĐỦ ĐIỂM'};
+const fmt1 = n => n.toFixed(1).replace('.', ',');
+const fmtVotes = n => n >= 1000 ? fmt1(n/1000) + 'K lượt' : n + ' lượt';
+function pill(f){ const t = total(f); return `<span class="pill lv-${lvl(t)} num">${t == null ? '—' : fmt1(t)}</span>`; }
+
+/* ---------- state ---------- */
+const S = {
+  tab:'rap', genre:'Tất cả', sub:'swipe', mfilter:'Tất cả',
+  deck:[1,3,2,6,4,7,8],
+  wants:new Set([5,9]),
+  matches:[{id:5,at:'03/10',seat:'H07–08'},{id:9,at:'12/10',seat:'E11–12'}],
+};
+const PARTNER = new Set([1,3,6,5,9,10,13]);
+
+/* ---------- poster ---------- */
+function poster(f, extra=''){
+  return `<div class="poster m-${f.motif}" style="--c1:${f.c1};--c2:${f.c2}">${extra}<div class="motif"></div><div class="halftone"></div>
+    <div class="ptitle">${f.vi}</div><div class="pmeta num">${f.year} · ${f.min}P</div><div class="glare"></div></div>`;
+}
+
+/* ---------- mascot Bắp ---------- */
+function bap(mood){
+  const mouth = {happy:'<path d="M52 95 q8 9 16 0" stroke="#2A1D0F" stroke-width="3" fill="none" stroke-linecap="round"/>',
+    sad:'<path d="M52 99 q8 -7 16 0" stroke="#2A1D0F" stroke-width="3" fill="none" stroke-linecap="round"/>',
+    wow:'<ellipse cx="60" cy="97" rx="5" ry="6" fill="#2A1D0F"/>'}[mood];
+  return `<svg viewBox="0 0 120 130" role="img" aria-label="Bắp, xô bắp rang">
+   <g fill="#FFF4D6" stroke="#2A1D0F" stroke-width="3"><circle cx="34" cy="42" r="15"/><circle cx="86" cy="42" r="15"/><circle cx="58" cy="28" r="18"/><circle cx="46" cy="50" r="14"/><circle cx="74" cy="50" r="14"/></g>
+   <path d="M22 54 h76 l-10 70 h-56z" fill="#FF5A5F" stroke="#2A1D0F" stroke-width="3" stroke-linejoin="round"/>
+   <path d="M37 55 h15 l2 68 h-11z M68 55 h15 l-6 68 h-11z" fill="#FFF4D6"/>
+   <path d="M22 54 h76 l-10 70 h-56z" fill="none" stroke="#2A1D0F" stroke-width="3" stroke-linejoin="round"/>
+   <circle cx="49" cy="84" r="4.5" fill="#2A1D0F"/><circle cx="71" cy="84" r="4.5" fill="#2A1D0F"/>
+   <circle cx="42" cy="93" r="4" fill="#FF9DB0"/><circle cx="78" cy="93" r="4" fill="#FF9DB0"/>${mouth}</svg>`;
+}
+document.querySelectorAll('[data-bap]').forEach(el => el.outerHTML = bap(el.dataset.bap));
+
+/* ---------- toast + rung ---------- */
+let tt;
+function toast(msg){ const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(tt); tt = setTimeout(()=>t.classList.remove('show'), 2200); }
+function buzz(p){ try{ navigator.vibrate && navigator.vibrate(p); }catch(e){} }
+
+/* ---------- bảng màu ---------- */
+const PAL = [['neon','Neon'],['keo','Kẹo'],['hoanghon','Hoàng hôn']];
+let pi = 0;
+try{ const s = localStorage.getItem('phd-palette'); const k = PAL.findIndex(p=>p[0]===s); if(k>=0) pi = k; }catch(e){}
+function applyPal(){ document.documentElement.dataset.palette = PAL[pi][0]; $('#paletteBtn').textContent = PAL[pi][1]; }
+$('#paletteBtn').onclick = () => { pi = (pi+1) % PAL.length; applyPal(); try{ localStorage.setItem('phd-palette', PAL[pi][0]); }catch(e){} toast('Đổi sang bảng màu ' + PAL[pi][1]); };
+applyPal();
+
+/* ---------- tabs ---------- */
+const TABS = ['rap','onha','match','nhatky'];
+function go(tab){
+  S.tab = tab;
+  document.querySelectorAll('[data-tab]').forEach(s => s.hidden = s.id !== 'tab-' + tab);
+  document.querySelectorAll('#nav button').forEach(b => b.dataset.go === tab ? b.setAttribute('aria-current','page') : b.removeAttribute('aria-current'));
+  $('#nav').style.setProperty('--ix', TABS.indexOf(tab));
+  window.scrollTo({top:0});
+  if(tab === 'rap') requestAnimationFrame(updateStrip);
+  if(tab === 'match') renderDeck();
+}
+document.querySelectorAll('#nav button').forEach(b => b.onclick = () => go(b.dataset.go));
+
+/* ---------- RẠP ---------- */
+const now = FILMS.filter(f => f.when === 'now'), soon = FILMS.filter(f => f.when === 'soon');
+const mq = `ĐANG CHIẾU · ${now.length} PHIM · CẬP NHẬT THEO TMDB · CHIỀU NAY ĐI XEM GÌ ĐÂY · RỦ NHAU ĐI RẠP ĐI · `;
+$('#track').innerHTML = `<span>${mq}</span><span aria-hidden="true">${mq}</span>`;
+
+const GENRES = ['Tất cả','Hành động','Kinh dị','Hài','Tình cảm','Hoạt hình','Điểm ≥ 7,5'];
+function chipRow(el, list, cur, cb){
+  el.innerHTML = list.map((g,i)=>`<button class="chip" style="--rot:${[-2,1.5,-1,2,-1.5,1,-2][i%7]}deg" aria-pressed="${g===cur}">${g}</button>`).join('');
+  el.querySelectorAll('.chip').forEach((b,i)=> b.onclick = () => cb(list[i]));
+}
+function passGenre(f){ const g = S.genre; return g === 'Tất cả' || (g === 'Điểm ≥ 7,5' ? (total(f) ?? 0) >= 7.5 : f.genres.includes(g)); }
+function renderRap(){
+  chipRow($('#chips'), GENRES, S.genre, g => { S.genre = g; renderRap(); });
+  const n = now.filter(passGenre), s = soon.filter(passGenre);
+  $('#strip').innerHTML = n.length ? n.map(f => `<div class="slot" data-id="${f.id}" data-c="${f.c2}">
+      <button class="tilt" aria-label="Xem chi tiết ${f.vi}">${poster(f)}</button>
+      <div class="cap">${pill(f)}<span>${f.genres[0]}</span></div></div>`).join('')
+    : `<div class="empty" style="width:100%;padding:24px">${bap('sad')}<p>Không có phim đang chiếu hợp bộ lọc này. Thử chip khác nha.</p></div>`;
+  $('#soon').innerHTML = s.length ? s.map(f => `<button class="ticket soon" data-id="${f.id}">
+      ${poster(f)}<span class="sticker date num">${f.date}</span><div class="perf"></div><b>${f.vi}</b><span>${f.genres.join(' · ')} · ${f.min} phút</span></button>`).join('')
+    : `<p style="color:var(--muted);grid-column:1/-1">Chưa có phim sắp chiếu hợp bộ lọc.</p>`;
+  document.querySelectorAll('#strip .slot').forEach(sl => {
+    const id = +sl.dataset.id, tilt = sl.querySelector('.tilt');
+    tilt.onclick = () => openDetail(id);
+    if(FINE && !RM){
+      tilt.onpointermove = e => { const r = tilt.getBoundingClientRect(), x = (e.clientX-r.left)/r.width, y = (e.clientY-r.top)/r.height;
+        tilt.style.transform = `rotateY(${(x-.5)*18}deg) rotateX(${(.5-y)*18}deg)`;
+        tilt.querySelector('.poster').style.setProperty('--gx', x*100+'%'); tilt.querySelector('.poster').style.setProperty('--gy', y*100+'%'); };
+      tilt.onpointerleave = () => tilt.style.transform = '';
+    }
+  });
+  document.querySelectorAll('#soon .soon').forEach(b => b.onclick = () => openDetail(+b.dataset.id));
+  requestAnimationFrame(updateStrip);
+}
+let lastTint;
+function updateStrip(){
+  const st = $('#strip'); if(!st || S.tab !== 'rap') return;
+  const r = st.getBoundingClientRect(), cx = r.left + r.width/2; let best, bd = 1e9;
+  st.querySelectorAll('.slot').forEach(sl => {
+    const b = sl.getBoundingClientRect(), d = Math.min(Math.abs(b.left + b.width/2 - cx) / 190, 1);
+    sl.style.setProperty('--s', (1.08 - d*.24).toFixed(3)); sl.style.setProperty('--o', (1 - d*.5).toFixed(3));
+    if(d < bd){ bd = d; best = sl; }
+  });
+  if(best && best.dataset.c !== lastTint){ lastTint = best.dataset.c; $('#app').style.setProperty('--tint', lastTint); }
+}
+$('#strip').addEventListener('scroll', () => requestAnimationFrame(updateStrip), {passive:true});
+addEventListener('resize', () => requestAnimationFrame(updateStrip));
+
+/* ---------- CHI TIẾT ---------- */
+let curId = null, lastFocus = null;
+function openDetail(id){
+  const f = F(id), t = total(f), lv = lvl(t); curId = id; lastFocus = document.activeElement;
+  const nCount = SRC.filter(([k]) => counted(f.sc[k])).length;
+  const rings = SRC.map(([k,label,div]) => {
+    const s = f.sc[k], has = s && s.v != null, norm = has ? s.v/div : 0;
+    const shown = !has ? '—' : k === 'rt' ? s.v + '%' : k === 'mc' ? s.v : fmt1(s.v);
+    const sub = !has ? 'chưa có' : s.votes != null ? (s.votes < 50 ? 'ít lượt, không tính' : fmtVotes(s.votes)) : 'nhà phê bình';
+    return `<div class="ring"><svg viewBox="0 0 58 58"><circle class="bgc" cx="29" cy="29" r="22"/><circle class="fgc" cx="29" cy="29" r="22" data-n="${norm}" style="--rc:var(--${has ? lvl(norm) === 'none' ? 'muted' : lvl(norm) : 'muted'})"/></svg>
+      <div class="rv num">${shown}</div><b>${label}</b><span class="num">${sub}</span></div>`;
+  }).join('');
+  const where = f.when === 'home'
+    ? `<div class="where">${f.providers.map(p=>`<span class="tag">${p}</span>`).join('')}</div><p class="src">Dữ liệu nơi xem: JustWatch</p>`
+    : `<div class="where"><span class="tag">${f.when === 'now' ? 'Đang chiếu ngoài rạp' : 'Ra rạp ' + f.date}</span><span class="tag">CGV · Lotte · Galaxy</span></div><p class="src">Lịch theo TMDB, có thể lệch với rạp thật</p>`;
+  const revs = t == null
+    ? `<div class="empty" style="padding:16px">${bap('wow')}<p>Chưa có bình luận. Phim chưa ra rạp mà.</p></div>`
+    : REVIEWS.map((r,i) => `<article class="rev" style="--i:${i}"><header><span class="srcb">${r.src}</span><b>${r.who}</b><span class="num">${r.d}</span></header>
+        ${r.spoiler ? `<div class="spoiler"><p>${r.t}</p><canvas aria-hidden="true"></canvas></div><button class="reveal">Có spoiler. Cào để đọc hoặc bấm vào đây</button>` : `<p>${r.t}</p>`}</article>`).join('');
+  $('#dBody').innerHTML = `
+    <div class="d-hero" style="--c1:${f.c1};--c2:${f.c2}">${poster(f)}
+      <div><h2 id="dTitle">${f.vi}</h2><div class="en">${f.en} · <span class="num">${f.year} · ${f.min} phút</span></div>
+      <div class="tags">${f.genres.map(g=>`<span class="tag">${g}</span>`).join('')}</div></div></div>
+    <div class="ticket total"><div class="big num" id="dBig">${t == null ? '—' : '0,0'}<small>/10</small></div>
+      <div class="meta"><span class="stamp lv-${lv}">${STAMP[lv]}</span><br>${t == null ? 'Chưa nguồn nào đủ điểm' : `Trung bình ${nCount} nguồn có điểm`}</div></div>
+    <div class="rings">${rings}</div>
+    <div class="block"><h3>Trailer</h3><button class="trailer" id="dTrailer" style="--c1:${f.c1};--c2:${f.c2}" aria-label="Phát trailer"><span class="play"><svg class="i" viewBox="0 0 24 24" style="fill:currentColor"><polygon points="7 4 20 12 7 20 7 4"/></svg></span></button></div>
+    <div class="block"><h3>Xem ở đâu</h3>${where}</div>
+    <div class="block"><h3>Tóm tắt</h3><p>${f.sum}</p></div>
+    <div class="block"><h3>Bình luận</h3>${revs}</div>
+    <p class="foot">Dữ liệu phim từ TMDB. Bản mẫu, mọi điểm và bình luận là giả.</p>`;
+  $('#dWant').innerHTML = $('#dWant').innerHTML.replace(/Hóng|Đã hóng/, S.wants.has(id) ? 'Đã hóng' : 'Hóng');
+  const L = $('#detail'); L.classList.add('open'); L.setAttribute('aria-hidden','false'); document.body.style.overflow = 'hidden';
+  $('#dBody').scrollTop = 0; $('.x-btn').focus({preventScroll:true});
+  $('#dTrailer').onclick = () => toast('App thật sẽ mở trailer trên YouTube');
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    document.querySelectorAll('#dBody .fgc').forEach((c,i) => { c.style.transitionDelay = (i*90) + 'ms'; c.style.strokeDashoffset = 138.2 * (1 - c.dataset.n/10); });
+    if(t != null) countUp($('#dBig'), t);
+    document.querySelectorAll('#dBody .spoiler').forEach(initScratch);
+  }));
+}
+function countUp(el, to){
+  const sm = '<small>/10</small>';
+  if(RM){ el.innerHTML = fmt1(to) + sm; return; }
+  const t0 = performance.now(), dur = 1000;
+  (function step(t){ const p = Math.min((t-t0)/dur, 1), e = 1 - Math.pow(1-p, 3);
+    el.innerHTML = fmt1(to*e) + sm; if(p < 1) requestAnimationFrame(step); })(t0);
+}
+function closeDetail(){ const L = $('#detail'); L.classList.remove('open'); L.setAttribute('aria-hidden','true'); if(!$('#picker').classList.contains('open')) document.body.style.overflow = ''; lastFocus && lastFocus.focus && lastFocus.focus({preventScroll:true}); }
+document.querySelectorAll('[data-close]').forEach(b => b.onclick = closeDetail);
+$('#dWant').onclick = () => { S.wants.add(curId); if(!S.matches.some(m=>m.id===curId) && PARTNER.has(curId)){ closeDetail(); addMatch(curId); } else { toast('Đã thêm vào danh sách hóng'); openDetail(curId); } };
+$('#dSeen').onclick = () => toast('Nhật ký sẽ có ở bản sau. Nhớ chấm điểm nha!');
+
+/* ---------- cào spoiler ---------- */
+function initScratch(box){
+  const cv = box.querySelector('canvas'), btn = box.nextElementSibling, r = box.getBoundingClientRect(), dpr = devicePixelRatio || 1;
+  cv.width = r.width*dpr; cv.height = r.height*dpr; const c = cv.getContext('2d'); c.scale(dpr,dpr);
+  const g = c.createLinearGradient(0,0,r.width,r.height); g.addColorStop(0,'#C9CCD9'); g.addColorStop(.5,'#F2F3F8'); g.addColorStop(1,'#9EA2B6');
+  c.fillStyle = g; c.fillRect(0,0,r.width,r.height);
+  c.strokeStyle = 'rgba(0,0,0,.08)'; c.lineWidth = 2; for(let x=-r.height; x<r.width; x+=10){ c.beginPath(); c.moveTo(x,r.height); c.lineTo(x+r.height,0); c.stroke(); }
+  c.fillStyle = '#3A3D52'; c.font = '800 15px Nunito, sans-serif'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('CÀO ĐỂ ĐỌC SPOILER', r.width/2, r.height/2);
+  c.globalCompositeOperation = 'destination-out';
+  let down = false, moves = 0;
+  const gone = () => { cv.classList.add('gone'); btn.remove(); };
+  const scratch = e => { const b = cv.getBoundingClientRect(); c.beginPath(); c.arc(e.clientX-b.left, e.clientY-b.top, 20, 0, 7); c.fill();
+    if(++moves % 8 === 0){ const d = c.getImageData(0,0,cv.width,cv.height).data; let clear = 0, n = 0; for(let i=3; i<d.length; i+=64){ n++; if(d[i] === 0) clear++; } if(clear/n > .5) gone(); } };
+  cv.onpointerdown = e => { down = true; cv.setPointerCapture(e.pointerId); scratch(e); };
+  cv.onpointermove = e => down && scratch(e);
+  cv.onpointerup = cv.onpointercancel = () => down = false;
+  btn.onclick = gone;
+}
+
+/* ---------- QUẸT ---------- */
+function renderDeck(){
+  const d = $('#deck');
+  if(!S.deck.length){
+    d.innerHTML = `<div class="empty" style="padding-top:20px">${bap('happy')}<h3>Hết phim để quẹt rồi</h3><p>Đợi Nắng quẹt xong rồi xem ai trùng gu nha.</p>
+      <button class="btn btn-ghost" id="again" style="padding:0 18px">Quẹt lại từ đầu (bản mẫu)</button></div>`;
+    $('#deckBtns').hidden = true; $('#again').onclick = () => { S.deck = [1,3,2,6,4,7,8].filter(id=>!S.matches.some(m=>m.id===id)); $('#deckBtns').hidden = false; renderDeck(); };
+    return;
+  }
+  $('#deckBtns').hidden = false;
+  d.innerHTML = S.deck.slice(0,3).reverse().map(id => { const f = F(id); return `<div class="card" data-id="${id}">${poster(f)}
+    <div class="info"><span>${f.genres.join(' · ')} · ${f.when === 'soon' ? 'ra rạp ' + f.date : f.min + ' phút'}</span>${pill(f)}</div>
+    <span class="st st-yes">CHỐT ĐƠN</span><span class="st st-no">THÔI NÉ</span></div>`; }).join('');
+  bindTop();
+}
+function bindTop(){
+  const card = $('#deck .card:last-child'); if(!card) return;
+  let x0, y0, dx = 0, dy = 0, drag = false;
+  const yes = card.querySelector('.st-yes'), no = card.querySelector('.st-no');
+  card.onpointerdown = e => { drag = true; x0 = e.clientX; y0 = e.clientY; dx = dy = 0; card.setPointerCapture(e.pointerId); card.style.transition = 'none'; card.style.cursor = 'grabbing'; };
+  card.onpointermove = e => { if(!drag) return; dx = e.clientX - x0; dy = e.clientY - y0;
+    card.style.transform = `translate(${dx}px,${dy*.4}px) rotate(${dx*.07}deg)`;
+    yes.style.opacity = Math.max(0, Math.min(1, dx/100)); no.style.opacity = Math.max(0, Math.min(1, -dx/100)); };
+  card.onpointerup = card.onpointercancel = () => { if(!drag) return; drag = false; card.style.cursor = '';
+    if(Math.abs(dx) < 6 && Math.abs(dy) < 6){ card.style.transform = ''; openDetail(+card.dataset.id); return; }
+    if(Math.abs(dx) > 110) fling(dx > 0 ? 'want' : 'skip');
+    else { card.style.transition = 'transform .45s var(--spring)'; card.style.transform = ''; yes.style.opacity = no.style.opacity = 0; } };
+}
+function fling(dec){
+  const card = $('#deck .card:last-child'); if(!card || card.dataset.flying) return; card.dataset.flying = 1;
+  const id = +card.dataset.id, dir = dec === 'want' ? 1 : -1;
+  card.querySelector(dec === 'want' ? '.st-yes' : '.st-no').style.opacity = 1;
+  card.style.transition = RM ? 'none' : 'transform .45s cubic-bezier(.3,.6,.4,1.15), opacity .45s';
+  card.style.transform = `translate(${dir*520}px,-40px) rotate(${dir*28}deg)`; card.style.opacity = 0;
+  buzz(dec === 'want' ? 18 : 8);
+  setTimeout(() => {
+    S.deck = S.deck.filter(x => x !== id);
+    if(dec === 'want'){ S.wants.add(id); if(PARTNER.has(id) && !S.matches.some(m=>m.id===id)) addMatch(id); }
+    renderDeck();
+  }, RM ? 0 : 430);
+}
+$('#btnYes').onclick = () => fling('want');
+$('#btnNo').onclick = () => fling('skip');
+
+/* sub tabs */
+function setSub(sub){
+  S.sub = sub; $('#sub-swipe').hidden = sub !== 'swipe'; $('#sub-list').hidden = sub !== 'list';
+  $('#seg').style.setProperty('--ix', sub === 'swipe' ? 0 : 1);
+  $('#seg-swipe').setAttribute('aria-selected', sub === 'swipe'); $('#seg-list').setAttribute('aria-selected', sub === 'list');
+  if(sub === 'list') renderList();
+}
+$('#seg-swipe').onclick = () => setSub('swipe'); $('#seg-list').onclick = () => setSub('list');
+
+/* ---------- MATCH list ---------- */
+function renderList(){
+  $('#seg-list').textContent = `Đã trùng gu (${S.matches.length})`;
+  chipRow($('#mchips'), ['Tất cả','Rạp','Ở nhà'], S.mfilter, v => { S.mfilter = v; renderList(); });
+  const list = S.matches.filter(m => { const w = F(m.id).when; return S.mfilter === 'Tất cả' || (S.mfilter === 'Ở nhà' ? w === 'home' : w !== 'home'); }).slice().reverse();
+  $('#mlist').innerHTML = list.length ? list.map(m => { const f = F(m.id); return `<button class="ticket mrow" data-id="${f.id}">${poster(f)}
+      <div class="mi"><b>${f.vi}</b><span>${f.when === 'home' ? f.providers.join(' · ') : f.when === 'now' ? 'Đang chiếu ngoài rạp' : 'Ra rạp ' + f.date}</span><span class="num">trùng gu ${m.at}</span></div>
+      <div class="seat">GHẾ ĐÔI<em class="num">${m.seat}</em>${pill(f)}</div></button>`; }).join('')
+    : `<div class="empty">${bap('sad')}<p>Chưa trùng gu phim nào ở mục này.</p></div>`;
+  document.querySelectorAll('#mlist .mrow').forEach(b => b.onclick = () => openDetail(+b.dataset.id));
+}
+
+/* ---------- MATCH! overlay ---------- */
+function addMatch(id){
+  const seat = 'H' + String(9 + S.matches.length*2).padStart(2,'0') + '–' + String(10 + S.matches.length*2).padStart(2,'0');
+  S.matches.push({id, at:'15/10', seat}); $('#seg-list').textContent = `Đã trùng gu (${S.matches.length})`;
+  showMatch(id);
+}
+function showMatch(id){
+  const f = F(id), mo = $('#mo'), title = 'TRÙNG GU RỒI!';
+  mo.innerHTML = `<div class="mo-in">
+    <div class="halves"><div class="half l"><span class="ava me">M</span><small><b>Mây</b>chốt đơn</small></div><div class="half r"><small><b>Nắng</b>cũng chốt</small><span class="ava you">N</span></div></div>
+    <h2 aria-label="${title}">${Array.from(title).map((ch,i)=>`<span style="--i:${i}" aria-hidden="true">${ch === ' ' ? '&nbsp;' : ch}</span>`).join('')}</h2>
+    <div class="film">cả hai cùng muốn xem <b>${f.vi}</b></div>
+    <div class="booth"><div>${poster(f)}</div><div><span class="ava me">M</span></div><div><span class="ava you">N</span></div><div class="dt num">15.10<br>2026<br>#${S.matches.length}</div></div>
+    <div class="booth-cap">dải photobooth để đăng story · lưu ảnh có ở app thật</div>
+    <div class="row"><button class="btn btn-ghost" id="moClose">Để sau</button><button class="btn btn-main" id="moOpen">Xem chi tiết</button></div></div>`;
+  mo.classList.add('open'); buzz([30,60,30]);
+  if(!RM) setTimeout(() => { for(let i=0;i<22;i++){ const k = document.createElement('span'); k.className = 'kernel';
+      const a = Math.random()*Math.PI*2, d = 120 + Math.random()*170;
+      k.style.cssText = `--dx:${Math.cos(a)*d}px;--dy:${Math.sin(a)*d - 40}px;--r:${Math.random()*540-270}deg;--sz:${12+Math.random()*10}px;animation-delay:${Math.random()*.15}s`;
+      mo.appendChild(k); setTimeout(()=>k.remove(), 1900); } }, 600);
+  $('#moClose').onclick = closeMatch; $('#moOpen').onclick = () => { closeMatch(); openDetail(id); };
+  $('#moOpen').focus({preventScroll:true});
+}
+function closeMatch(){ $('#mo').classList.remove('open'); }
+
+addEventListener('keydown', e => { if(e.key === 'Escape'){ if($('#mo').classList.contains('open')) closeMatch(); else if($('#detail').classList.contains('open')) closeDetail(); else if($('#picker').classList.contains('open')) closePicker(); }
+  if(S.tab === 'match' && S.sub === 'swipe' && !$('#detail').classList.contains('open') && !$('#mo').classList.contains('open')){ if(e.key === 'ArrowRight') fling('want'); if(e.key === 'ArrowLeft') fling('skip'); } });
+
+/* ---------- CHỌN PHIM: nơi xem → thể loại → thêm tiêu chí → list ---------- */
+const P = {step:0, where:null, genres:new Set(), len:'any', min:0, plats:new Set(), sort:'score'};
+const LENS = [['any','Gì cũng được'],['short','Ngắn, dưới 100 phút'],['mid','Vừa, 100–120 phút'],['long','Dài, trên 120 phút']];
+const MINS = [[0,'Gì cũng được'],[6,'Từ 6 trở lên'],[7,'Từ 7 trở lên'],[7.5,'Đỉnh nóc, từ 7,5']];
+const SORTS = [['score','Điểm cao nhất'],['new','Mới nhất'],['short','Ngắn nhất']];
+const WHERE = {cinema:{label:'Ra rạp', sub:'Phim đang chiếu ngoài rạp ở VN', ok:f => f.when === 'now'},
+               home:{label:'Ở nhà', sub:'Phim có trên Netflix, FPT Play, Galaxy Play…', ok:f => f.when === 'home'}};
+const ICON_T = '<svg class="i" viewBox="0 0 24 24"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></svg>';
+const ICON_TV = '<svg class="i" viewBox="0 0 24 24"><rect width="20" height="15" x="2" y="7" rx="2"/><polyline points="17 2 12 7 7 2"/></svg>';
+const pool = () => FILMS.filter(WHERE[P.where].ok);
+const okGenre = f => !P.genres.size || f.genres.some(g => P.genres.has(g));
+const okLen = f => P.len === 'any' || (P.len === 'short' ? f.min < 100 : P.len === 'mid' ? f.min >= 100 && f.min <= 120 : f.min > 120);
+const okMin = f => !P.min || (total(f) ?? 0) >= P.min;
+const okPlat = f => P.where !== 'home' || !P.plats.size || f.providers.some(p => P.plats.has(p));
+function results(){
+  const r = pool().filter(f => okGenre(f) && okLen(f) && okMin(f) && okPlat(f));
+  return r.sort(P.sort === 'score' ? (a,b) => (total(b) ?? 0) - (total(a) ?? 0) : P.sort === 'new' ? (a,b) => b.year - a.year || b.id - a.id : (a,b) => a.min - b.min);
+}
+function openPicker(where){
+  Object.assign(P, {step: where ? 1 : 0, where: where || null, len:'any', min:0, sort:'score'}); P.genres.clear(); P.plats.clear();
+  const L = $('#picker'); L.classList.add('open'); L.setAttribute('aria-hidden','false'); document.body.style.overflow = 'hidden';
+  renderPicker();
+}
+function closePicker(){ const L = $('#picker'); L.classList.remove('open'); L.setAttribute('aria-hidden','true'); document.body.style.overflow = ''; }
+document.querySelectorAll('[data-pclose]').forEach(b => b.onclick = closePicker);
+$('#pkBack').onclick = () => { if(P.step > 0){ P.step--; renderPicker(); } };
+document.querySelectorAll('[data-pick]').forEach(b => b.onclick = () => openPicker(b.dataset.pick));
+
+function chipGroup(title, items, isOn, onTap){
+  return `<div class="pk-g"><h4>${title}</h4><div class="pk-chips">${items.map((it,i) =>
+    `<button class="chip" style="--rot:${[-1.5,1,-1,1.5][i%4]}deg" data-k="${i}" aria-pressed="${isOn(it)}"${it.dis ? ' disabled' : ''}>${it.label}${it.n != null ? `<small class="num">${it.n}</small>` : ''}</button>`).join('')}</div></div>`;
+}
+function bindGroup(root, idx, items, onTap){
+  root.querySelectorAll('.pk-g')[idx].querySelectorAll('.chip').forEach(b => b.onclick = () => { onTap(items[+b.dataset.k]); renderPicker(true); });
+}
+function renderPicker(keepScroll){
+  const body = $('#pkBody'), foot = $('#pkFoot'), sc = body.scrollTop;
+  $('#pkBack').disabled = P.step === 0;
+  $('#pkDots').innerHTML = [0,1,2,3].map(i => `<i class="${i === P.step ? 'on' : i < P.step ? 'done' : ''}"></i>`).join('');
+  foot.className = 'actions'; let html = '';
+
+  if(P.step === 0){
+    const fan = list => list.slice(0,3).map((f,i) => poster(f).replace('style="', `style="left:${i*54}px;transform:rotate(${[-8,2,10][i]}deg);z-index:${3-i};`)).join('');
+    html = `<div class="pk-step"><h2 class="pk-q">Hôm nay xem ở đâu?</h2><p class="pk-sub">Chọn một cái, Bắp lọc tiếp cho.</p><div class="pk-opts">
+      ${Object.entries(WHERE).map(([k,w]) => { const n = FILMS.filter(w.ok); return `<button class="ticket pk-opt" data-w="${k}">
+        <span class="sticker num">${n.length} phim</span><div class="fan">${fan(n)}</div><div class="perf"></div>
+        <b>${k === 'cinema' ? ICON_T : ICON_TV}${w.label}</b><span>${w.sub}</span></button>`; }).join('')}</div></div>`;
+    foot.innerHTML = `<p class="hint" style="margin:0">hoặc quẹt thử ở tab Match</p>`;
+  }
+
+  if(P.step === 1){
+    const all = [...new Set(pool().flatMap(f => f.genres))];
+    const items = [{label:'Gì cũng được', any:true}, ...all.map(g => ({label:g, g, n:pool().filter(f => f.genres.includes(g)).length}))];
+    html = `<div class="pk-step"><h2 class="pk-q">Thèm thể loại gì?</h2><p class="pk-sub">${WHERE[P.where].label} · chọn bao nhiêu cũng được</p>
+      ${chipGroup('Thể loại', items, it => it.any ? !P.genres.size : P.genres.has(it.g))}</div>`;
+    const n = pool().filter(okGenre).length;
+    foot.innerHTML = `<button class="btn btn-main" id="pkNext"${n ? '' : ' disabled'}>Tiếp<small class="num" style="font-size:14px;opacity:.75">· ${n} phim</small></button>`;
+  }
+
+  if(P.step === 2){
+    const plats = [...new Set(pool().flatMap(f => f.providers || []))];
+    const cnt = test => pool().filter(f => okGenre(f) && test(f)).length;
+    html = `<div class="pk-step"><h2 class="pk-q">Thêm chút nữa nha</h2><p class="pk-sub">Không chắc thì để "Gì cũng được".</p>
+      ${chipGroup('Độ dài', LENS.map(([k,l]) => ({label:l, k})), it => P.len === it.k)}
+      ${chipGroup('Điểm tổng', MINS.map(([k,l]) => ({label:l, k})), it => P.min === it.k)}
+      ${P.where === 'home' ? chipGroup('Nền tảng hai đứa có', plats.map(p => { const n = cnt(f => f.providers.includes(p)); return {label:p, p, n, dis:!n && !P.plats.has(p)}; }), it => P.plats.has(it.p)) : ''}
+      ${chipGroup('Sắp xếp', SORTS.map(([k,l]) => ({label:l, k})), it => P.sort === it.k)}</div>`;
+    const n = results().length;
+    foot.innerHTML = `<button class="btn btn-main" id="pkNext">${n ? `Xem ${n} phim hợp gu` : 'Xem kết quả'}</button>`;
+  }
+
+  if(P.step === 3){
+    const r = results();
+    const tags = [WHERE[P.where].label, ...(P.genres.size ? [...P.genres] : ['Mọi thể loại']),
+      ...(P.len !== 'any' ? [LENS.find(l => l[0] === P.len)[1]] : []), ...(P.min ? ['Điểm ≥ ' + fmt1(P.min)] : []), ...P.plats];
+    html = `<div class="pk-step"><h2 class="pk-q">${r.length ? `Bắp lọc được ${r.length} phim` : 'Hụt mất rồi'}</h2>
+      <div class="pk-sum" style="margin-top:8px">${tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+      ${r.length ? `<div class="mlist">${r.map(f => `<button class="ticket mrow" data-id="${f.id}">${poster(f)}
+        <div class="mi"><b>${f.vi}</b><span>${f.when === 'home' ? f.providers.join(' · ') : 'Đang chiếu ngoài rạp'}</span><span>${f.genres.join(' · ')}</span></div>
+        <div class="seat rt">PHÚT<em class="num">${f.min}</em>${pill(f)}</div></button>`).join('')}</div>`
+      : `<div class="empty" style="padding-top:12px">${bap('sad')}<p>Không phim nào hợp hết tiêu chí. Thử nới bớt thể loại hoặc điểm nha.</p></div>`}</div>`;
+    foot.className = 'actions' + (r.length ? ' two' : '');
+    foot.innerHTML = `<button class="btn btn-ghost" id="pkEdit">Đổi tiêu chí</button>${r.length ? `<button class="btn btn-main" id="pkSwipe">Quẹt ${r.length} phim này</button>` : ''}`;
+  }
+
+  body.innerHTML = html;
+  if(!keepScroll) body.scrollTop = 0; else body.scrollTop = sc;
+  if(keepScroll) body.querySelectorAll('.pk-step').forEach(s => s.style.animation = 'none');
+
+  if(P.step === 0) body.querySelectorAll('.pk-opt').forEach(b => b.onclick = () => { P.where = b.dataset.w; P.step = 1; renderPicker(); });
+  if(P.step === 1){
+    const all = [...new Set(pool().flatMap(f => f.genres))], items = [{any:true}, ...all.map(g => ({g}))];
+    bindGroup(body, 0, items, it => { if(it.any) P.genres.clear(); else P.genres.has(it.g) ? P.genres.delete(it.g) : P.genres.add(it.g); });
+  }
+  if(P.step === 2){
+    let gi = 0;
+    bindGroup(body, gi++, LENS.map(([k]) => ({k})), it => P.len = it.k);
+    bindGroup(body, gi++, MINS.map(([k]) => ({k})), it => P.min = it.k);
+    if(P.where === 'home'){ const plats = [...new Set(pool().flatMap(f => f.providers || []))];
+      bindGroup(body, gi++, plats.map(p => ({p})), it => P.plats.has(it.p) ? P.plats.delete(it.p) : P.plats.add(it.p)); }
+    bindGroup(body, gi++, SORTS.map(([k]) => ({k})), it => P.sort = it.k);
+  }
+  if(P.step === 3){
+    body.querySelectorAll('.mrow').forEach(b => b.onclick = () => openDetail(+b.dataset.id));
+    $('#pkEdit').onclick = () => { P.step = 2; renderPicker(); };
+    const sw = $('#pkSwipe'); if(sw) sw.onclick = () => {
+      const ids = results().map(f => f.id).filter(id => !S.matches.some(m => m.id === id));
+      S.deck = [...ids, ...S.deck.filter(id => !ids.includes(id))];
+      closePicker(); go('match'); setSub('swipe'); toast(`Đã xếp ${ids.length} phim lên đầu chồng quẹt`);
+    };
+  }
+  const nx = $('#pkNext'); if(nx) nx.onclick = () => { P.step++; renderPicker(); };
+}
+
+/* ---------- Ở NHÀ grid ---------- */
+function renderHome(){
+  $('#homeGrid').innerHTML = FILMS.filter(f => f.when === 'home').map(f => `<button class="ticket soon" data-id="${f.id}">
+    ${poster(f)}<span class="sticker date">${f.providers[0]}</span><div class="perf"></div><b>${f.vi}</b><span>${f.genres.join(' · ')} · ${f.min} phút</span><div style="margin-top:6px">${pill(f)}</div></button>`).join('');
+  document.querySelectorAll('#homeGrid .soon').forEach(b => b.onclick = () => openDetail(+b.dataset.id));
+}
+renderHome();
+
+/* ---------- boot ---------- */
+renderRap(); renderDeck();
+const start = (location.hash || '').slice(1);
+if(TABS.includes(start)) go(start);
+document.fonts && document.fonts.ready.then(() => requestAnimationFrame(updateStrip));
+</script>

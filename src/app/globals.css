@@ -1,0 +1,160 @@
+@import "tailwindcss";
+
+/* Token chép từ prototype/vibe.html. Chỉ chế độ tối; đổi bảng màu bằng data-palette trên <html>. */
+:root {
+  color-scheme: dark;
+  --bg: #0D0E1A; --surface: #171829; --surface-2: #20223A; --line: #2C2E48;
+  --accent: #C6F432; --accent-2: #8B7CFF; --sticker: #FF6BD6;
+  --fg: #F4F4FA; --muted: #B3B5CF; --on-accent: #0D0E1A;
+  --good: #9BE36A; --mid: #FFC857; --bad: #FF8080;
+  --f-display: var(--font-baloo), "Nunito", system-ui, sans-serif;
+  --f-body: var(--font-nunito), system-ui, sans-serif;
+  --f-hand: var(--font-mali), var(--font-nunito), cursive;
+  --r-card: 24px;
+  --spring: cubic-bezier(.34, 1.56, .64, 1);
+  --rail: 248px;
+}
+:root[data-palette="keo"] {
+  --bg: #16121F; --surface: #211A2E; --surface-2: #2B2240; --line: #3A2F4F;
+  --accent: #FFB4A2; --accent-2: #B8A6FF; --sticker: #7FE0C4; --muted: #C3B4CC; --on-accent: #16121F;
+}
+:root[data-palette="hoanghon"] {
+  --bg: #120F0D; --surface: #1E1915; --surface-2: #2A231D; --line: #3A3029;
+  --accent: #FF8A3D; --accent-2: #4FD1C5; --sticker: #FFD23F; --muted: #C2B3A6; --on-accent: #120F0D;
+}
+@property --tint { syntax: "<color>"; inherits: true; initial-value: #6B4CFF; }
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --color-sticker: var(--sticker);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-on-accent: var(--on-accent);
+  --color-good: var(--good);
+  --color-mid: var(--mid);
+  --color-bad: var(--bad);
+  --font-display: var(--f-display);
+  --font-sans: var(--f-body);
+  --font-hand: var(--f-hand);
+  --radius-card: var(--r-card);
+}
+
+/* ---------- nền ---------- */
+html { background: var(--bg); }
+body {
+  min-height: 100dvh;
+  background:
+    radial-gradient(130% 55% at 50% -5%, color-mix(in srgb, var(--tint) 34%, transparent), transparent 72%) fixed,
+    var(--bg);
+  color: var(--fg);
+  font-family: var(--f-body);
+  font-size: 15px; font-weight: 600; line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  transition: --tint 1s ease;
+}
+/* grain tĩnh */
+body::after {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 90; opacity: .07; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 12px; }
+.num { font-variant-numeric: tabular-nums; }
+
+/* ---------- khung app ---------- */
+.shell { min-height: 100dvh; }
+.main {
+  width: 100%; max-width: 1180px; margin-inline: auto;
+  padding-inline: 16px;
+  padding-block: 12px calc(120px + env(safe-area-inset-bottom, 0px));
+}
+@media (min-width: 640px) { .main { padding-inline: 28px; } }
+@media (min-width: 1024px) {
+  .shell { display: grid; grid-template-columns: var(--rail) minmax(0, 1fr); }
+  .main { padding-inline: 40px; padding-block: 36px 64px; }
+}
+
+/* ---------- logo ---------- */
+.logo {
+  font-family: var(--f-display); font-weight: 800; font-size: 30px; line-height: 1; letter-spacing: -.01em; color: var(--fg);
+  text-shadow: 2px 2px 0 var(--accent-2), -1px -1px 0 color-mix(in srgb, var(--accent) 70%, transparent);
+}
+.logo small { display: block; font-family: var(--f-hand); font-weight: 500; font-size: 12px; color: var(--muted); text-shadow: none; margin-top: 4px; }
+
+/* ---------- sticker + chip ---------- */
+.sticker {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 14px; border-radius: 999px;
+  font-family: var(--f-display); font-weight: 700; font-size: 14px;
+  background: var(--sticker); color: #111; border: 3px solid #fff; box-shadow: 3px 3px 0 #000;
+  transform: rotate(var(--rot, -3deg)); transition: transform .25s var(--spring);
+}
+.sticker:active { transform: rotate(0) scale(.94); }
+.chip {
+  flex: none; min-height: 44px; padding: 0 16px; border-radius: 999px;
+  background: var(--surface); border: 2px solid var(--line); color: var(--fg); font-weight: 800; font-size: 14px;
+  transform: rotate(var(--rot, 0deg)); transition: transform .3s var(--spring), background .2s;
+}
+.chip[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); border-color: #fff; box-shadow: 3px 3px 0 #000; }
+.chip:active { transform: scale(.92); }
+
+/* ---------- tiêu đề ---------- */
+.hello { font-family: var(--f-display); font-weight: 800; font-size: clamp(34px, 4.2vw, 52px); line-height: 1.05; margin: 8px 0 4px; text-wrap: balance; }
+.hello .hl { position: relative; white-space: nowrap; color: var(--accent); }
+.hello .hl svg { position: absolute; left: -4px; bottom: -8px; width: calc(100% + 8px); height: 14px; fill: none; stroke: var(--accent-2); stroke-width: 4; stroke-linecap: round; }
+.note { font-family: var(--f-hand); font-size: 14px; color: var(--accent-2); display: inline-flex; align-items: center; gap: 6px; transform: rotate(-2deg); }
+
+/* ---------- bảng đèn rạp ---------- */
+.marquee {
+  margin-block: 16px 14px; border-radius: 16px; background: #1a0f08; border: 3px solid #3b2512; position: relative; overflow: hidden; padding-block: 16px;
+  box-shadow: 0 0 0 1px #000, 0 8px 30px -10px color-mix(in srgb, var(--tint) 60%, transparent);
+}
+.marquee::before, .marquee::after {
+  content: ""; position: absolute; left: 6px; right: 6px; height: 10px;
+  background: radial-gradient(circle, #FFE9A8 0 3px, rgba(255, 200, 90, .35) 4px, transparent 6px) 0 0 / 18px 10px repeat-x;
+}
+.marquee::before { top: 3px; }
+.marquee::after { bottom: 3px; }
+.marquee .track { display: flex; width: max-content; animation: marquee-run 22s linear infinite; }
+.marquee .track span {
+  font-family: var(--f-display); font-weight: 800; font-size: 18px; letter-spacing: .08em; color: #FFE9A8;
+  padding-right: 28px; white-space: nowrap; text-shadow: 0 0 12px rgba(255, 200, 90, .6);
+}
+@keyframes marquee-run { to { transform: translateX(-50%); } }
+
+/* ---------- cuống vé ---------- */
+.ticket {
+  position: relative; background: var(--surface); border-radius: 20px;
+  -webkit-mask: radial-gradient(circle 11px at 0 var(--ny, 50%), #0000 98%, #000) left / 51% 100% no-repeat,
+                radial-gradient(circle 11px at 100% var(--ny, 50%), #0000 98%, #000) right / 51% 100% no-repeat;
+  mask: radial-gradient(circle 11px at 0 var(--ny, 50%), #0000 98%, #000) left / 51% 100% no-repeat,
+        radial-gradient(circle 11px at 100% var(--ny, 50%), #0000 98%, #000) right / 51% 100% no-repeat;
+}
+.perf { border-top: 2px dashed var(--line); }
+
+/* ---------- màn trống ---------- */
+.empty { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; padding: 48px 12px; }
+.empty svg { width: 130px; height: auto; }
+.empty h3 { font-family: var(--f-display); font-weight: 800; font-size: 22px; margin: 0; }
+.empty p { margin: 0; color: var(--muted); max-width: 34ch; }
+.empty .hand { font-family: var(--f-hand); color: var(--accent-2); font-size: 15px; }
+
+/* ---------- chuyển trang (React ViewTransition) ---------- */
+::view-transition-old(.tab-swap) { animation: 140ms ease-out both vt-fade reverse; }
+::view-transition-new(.tab-swap) { animation: 220ms ease-out 80ms both vt-fade, 360ms var(--spring) both vt-rise; }
+@keyframes vt-fade { from { opacity: 0; } }
+@keyframes vt-rise { from { transform: translateY(14px); } }
+
+/* ---------- giảm chuyển động ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important; animation-iteration-count: 1 !important; animation-delay: 0s !important;
+    transition-duration: .01ms !important; scroll-behavior: auto !important;
+  }
+  .marquee .track { animation: none; }
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+}
