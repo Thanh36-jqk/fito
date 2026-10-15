@@ -70,6 +70,7 @@ Chỉ 2 user trong `allowed_users` được đọc và ghi. Phim nhận diện b
 | Bảng | Cột chính | Ghi chú |
 |---|---|---|
 | `allowed_users` | email (PK), display_name, avatar_letter | 2 dòng, nhập tay. Trigger chặn đăng ký email khác |
+| `imdb_ratings` | tconst (PK), rating, votes, updated_at | ~623.000 dòng (từ 50 lượt), nạp hằng tuần từ IMDb Datasets |
 | `movie_cache` | tmdb_id (PK), imdb_id, title_vi, title_en, year, runtime, genres[], poster_path, backdrop_path, trailer_key, providers_vn (jsonb), scores (jsonb), score_total, tmdb_fetched_at, omdb_fetched_at, trakt_fetched_at | Mỗi nguồn một mốc thời gian để làm mới riêng |
 | `swipes` | user_id, tmdb_id, decision (want / skip), created_at. PK (user_id, tmdb_id) | Quẹt lại thì ghi đè |
 | `matches` (view) | tmdb_id, matched_at | Phim có 2 dòng `want` từ 2 user khác nhau. Realtime lắng nghe `swipes` |
@@ -118,7 +119,9 @@ Mỗi màn có 3 trạng thái bắt buộc:
 
 ### Pha 2 — Dữ liệu và điểm
 - [ ] `lib/tmdb.ts`: now_playing, upcoming, discover theo nền tảng VN, chi tiết, tìm kiếm
-- [ ] `lib/omdb.ts`, `lib/trakt.ts`: lấy điểm và bình luận theo imdb_id
+- [ ] `lib/omdb.ts` (chỉ RT + Metacritic), `lib/trakt.ts`: lấy điểm và bình luận theo imdb_id
+- [ ] Bảng `imdb_ratings` + job GitHub Actions hằng tuần nạp IMDb Datasets (điểm IMDb cho mọi phim)
+- [ ] Trang chi tiết đầy đủ: diễn viên/ekip có ảnh, tagline, nước, ngôn ngữ, độ tuổi, bộ sưu tập, phim tương tự, gợi ý, logo (TMDB, thiếu thì Fanart.tv)
 - [ ] `lib/score.ts`: chuẩn hoá thang 10, tính điểm tổng, có test Vitest
 - [ ] Cache vào `movie_cache` theo mốc thời gian từng nguồn
 - [ ] Tab Rạp: băng poster cuộn, nghiêng 3D, nền đổi màu theo poster
@@ -130,7 +133,8 @@ Mỗi màn có 3 trạng thái bắt buộc:
 - [ ] Luồng chọn phim 4 bước như bản mẫu
 - [ ] Chip lọc nhanh + khung lọc nâng cao, lưu trên URL
 - [ ] Sắp xếp theo điểm tổng, độ hot, ngày ra mắt
-- [ ] Tìm theo tên Việt và tên Anh, đợi 300ms sau khi ngừng gõ mới tìm
+- [ ] Tìm theo tên Việt, tên Anh, tên gốc, tên thay thế, phủ toàn bộ ~1,26 triệu phim của TMDB; đợi 300ms sau khi ngừng gõ mới tìm
+- [ ] "Đào sâu" bằng TMDB discover: quốc gia, ngôn ngữ gốc, thập niên, từ khoá, Phổ biến / Ít người biết
 - [ ] Cài đặt: chọn bảng màu, nền tảng đang dùng
 
 ### Pha 4 — Hai người
@@ -162,6 +166,7 @@ Mỗi dòng chỉ có hai kết quả: đạt hoặc không đạt.
 - [ ] Lọc được theo điểm, thể loại, năm, độ dài, nền tảng
 - [ ] Đổi bộ lọc thì danh sách cập nhật dưới 1 giây
 - [ ] Tìm được bằng tên Việt lẫn tên Anh
+- [ ] Tìm và mở được phim niche không chiếu ở VN, ví dụ *Snakes and Earrings* (TMDB 38551), có đủ điểm IMDb
 
 **Hai người**
 - [ ] Quẹt trùng thì phim vào Match; máy kia thấy trong dưới 2 giây, không cần tải lại

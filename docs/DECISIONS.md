@@ -90,7 +90,11 @@ Chi phí mục tiêu: 0đ/tháng.
 | **Poster, ảnh nền** | **TMDB Images** (`image.tmdb.org`), endpoint `/movie/{id}/images` | Poster ưu tiên tiếng Việt, rồi poster không chữ, rồi tiếng Anh (`include_image_language=vi,null,en`). Cỡ: poster `w500` (list) / `w780` (chi tiết), ảnh nền `w1280`. Qua `next/image`, chỉ cho phép host `image.tmdb.org` |
 | **Trailer** | TMDB `/movie/{id}/videos` → **YouTube chính chủ** | Chỉ nhận `site=YouTube`, `type=Trailer`, `official=true`. Ưu tiên bản tiếng Việt (vi), không có thì lấy bản tiếng Anh, rồi lấy bản mới nhất. Không có trailer chính thức thì ẩn khối Trailer, không lấy video khác thay vào |
 | Nơi xem ở VN (Netflix, FPT Play…) | TMDB `watch/providers` (dữ liệu **JustWatch**) | Lấy theo `VN`. Bắt buộc ghi "dữ liệu JustWatch" |
-| Điểm IMDb, Rotten Tomatoes, Metacritic | **OMDb API** theo `imdb_id` | Cache 24 giờ, gói free 1.000 lượt/ngày |
+| Diễn viên, đạo diễn, ekip (kèm ảnh chân dung) | TMDB `credits` | Ảnh chân dung `w185` từ `image.tmdb.org` |
+| Tagline, nước sản xuất, ngôn ngữ, kinh phí, doanh thu, phân loại độ tuổi, ngày ra rạp theo nước, từ khoá, bộ sưu tập, phim tương tự, gợi ý | TMDB (`append_to_response=credits,videos,images,release_dates,keywords,similar,recommendations,reviews,watch/providers,external_ids`) | Một lần gọi lấy đủ cho trang chi tiết |
+| Logo chữ tên phim trong suốt | TMDB `images.logos`; thiếu thì **Fanart.tv** (API chính thức, khoá miễn phí) | Dùng cho trang chi tiết và thẻ quẹt |
+| **Điểm IMDb + số lượt** | **IMDb Non-Commercial Datasets** (`datasets.imdbws.com/title.ratings.tsv.gz`) | File chính thức, cập nhật hằng ngày, dùng cá nhân phi thương mại. Có điểm của **mọi** phim, không tốn lượt gọi API |
+| Rotten Tomatoes, Metacritic | **OMDb API** theo `imdb_id` | Chỉ dùng cho 2 điểm này nên ít tốn lượt (1.000 lượt/ngày). Cache 24 giờ |
 | Điểm Trakt, bình luận cộng đồng | **Trakt API** theo `imdb_id` | Bình luận có cờ spoiler thì che bằng vé cào |
 | Điểm TMDB, review TMDB | TMDB | |
 
@@ -100,6 +104,33 @@ Chi phí mục tiêu: 0đ/tháng.
   - ảnh từ Google Images
   - trailer reup trên YouTube
 - Muốn thêm nguồn mới thì phải là API chính thức, có điều khoản cho phép dùng phi thương mại. Thêm vào bảng này trước khi code.
+### Độ phủ: lấy đủ phim, kể cả phim niche không chiếu rạp
+
+Yêu cầu: phải tìm và lọc ra được cả những phim ít người biết, không chiếu ở VN. Ví dụ: *Snakes and Earrings* (蛇にピアス, Nhật, 2008).
+
+**Đã kiểm chứng ngày 16/10/2026:**
+- File xuất ID hằng ngày của TMDB (`files.tmdb.org/p/exports/movie_ids_MM_DD_YYYY.json.gz`, không cần khoá) có **1.258.757 phim**.
+  - Snakes and Earrings có ở đó: TMDB id `38551`, độ phổ biến 3,18.
+  - Chỉ khoảng 6.500 phim có độ phổ biến ≥ 10, nên phim kiểu này nằm ngoài nhóm "hot".
+- IMDb Datasets có 759.509 phim lẻ. Snakes and Earrings là `tt1254249`: 6,1 điểm, 1.032 lượt.
+
+**Cách làm** (không lưu cả 1,26 triệu phim chi tiết; Supabase free chỉ có 500MB):
+1. **Tìm kiếm phủ toàn bộ kho:** `/tim` gọi TMDB `/search/movie`.
+   - Tìm theo tên Việt, tên Anh, tên gốc (kể cả chữ Nhật, Hàn, Trung) và tên thay thế (`alternative_titles`).
+   - Phim nào trong 1,26 triệu phim cũng tìm ra được.
+2. **"Đào sâu" trong Chọn phim và Ở nhà:** dùng TMDB `/discover/movie` với bộ lọc:
+   - quốc gia (`with_origin_country`), ngôn ngữ gốc (`with_original_language`), thập niên, từ khoá (`with_keywords`, ví dụ "dựa trên tiểu thuyết")
+   - độ phổ biến: **Phổ biến / Ít người biết**
+   - "Ít người biết" = độ phổ biến thấp, điểm ≥ 7, số lượt đánh giá trong khoảng 50–2.000 → đào ra phim hay mà ít người xem
+   - Discover không bắt buộc phim phải đang chiếu hay có trên nền tảng VN.
+3. **Cache theo nhu cầu:** phim chỉ vào `movie_cache` khi có người mở hoặc phim đó hiện trong list.
+   - Cron hằng ngày làm nóng sẵn khoảng 150 phim hot và phim đang chiếu ở VN.
+4. **Điểm IMDb cho mọi phim:** job hằng tuần chạy bằng **GitHub Actions** (miễn phí; Vercel Hobby giới hạn thời gian chạy function).
+   - Tải `title.ratings.tsv.gz` (~9MB), giữ các mục từ 50 lượt trở lên (~623.000 dòng, ~50MB), ghi vào bảng `imdb_ratings`.
+   - Phim niche nào cũng có điểm IMDb ngay, không tốn lượt OMDb.
+5. **Phim không có ở VN:** `watch/providers` cho VN trống thì ghi rõ "Chưa thấy trên nền tảng nào ở VN (dữ liệu JustWatch)". Không đoán.
+6. Luôn để `include_adult=false`.
+
 - Poster CSS (`Poster.tsx`) chỉ dùng cho dữ liệu mẫu. Khi có ảnh TMDB thì giữ khung, viền, halftone, chỉ thay phần nền bằng ảnh thật.
 
 ## Cấu trúc code
@@ -131,7 +162,7 @@ Chi phí mục tiêu: 0đ/tháng.
 
 ## Việc người dùng tự làm (không gửi khoá qua chat)
 
-- Đăng ký khoá TMDB (API Read Access Token), OMDb (gói FREE), Trakt client_id.
+- Đăng ký khoá TMDB (API Read Access Token), OMDb (gói FREE), Trakt client_id, Fanart.tv (personal API key, miễn phí). IMDb Datasets không cần khoá.
 - Tạo tài khoản Supabase và Vercel (đăng nhập bằng GitHub).
 - Chọn 2 email được phép dùng app.
 - Tự dán khoá vào `.env.local` và biến môi trường trên Vercel.
@@ -160,3 +191,7 @@ Chi phí mục tiêu: 0đ/tháng.
   - Kết quả: không có API công khai, không có `robots.txt`. Trang phim trả về một **trang thử thách chống bot** bằng JavaScript thay vì dữ liệu.
   - Không vượt lớp chống bot. Vẫn **không cào web rạp**.
   - Lịch chiếu và đặt vé: dùng link mở trang rạp (CGV/Lotte/Galaxy) trong trình duyệt.
+- **16/10/2026** — Chốt mục tiêu **lấy đủ phim, kể cả phim niche** (mục "Độ phủ").
+  - Thêm IMDb Datasets (điểm IMDb cho mọi phim) và Fanart.tv (logo).
+  - OMDb chỉ còn lấy RT và Metacritic.
+  - Đã kiểm chứng TMDB và IMDb đều có *Snakes and Earrings*.
