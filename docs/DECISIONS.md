@@ -81,10 +81,30 @@ Chi phí mục tiêu: 0đ/tháng.
 
 ## Cấu trúc code
 
-- `src/app/` — route. Các tab: `/` (Rạp), `/o-nha`, `/match`, `/nhat-ky`.
-- `src/components/` — `AppShell`, `Nav`, `PaletteToggle`, `Bap`, `SmoothScroll`…
-- `src/app/globals.css` — token màu, font, class component chép từ bản mẫu.
+- `src/app/` — các route:
+  - Tab: `/` (Rạp), `/o-nha`, `/match`, `/nhat-ky`.
+  - Chi tiết phim: `/phim/[id]` là trang riêng. Khi bấm từ list, `@modal/(.)phim/[id]` chặn route và mở dạng sheet (intercepting + parallel routes). Nội dung đọc `params` phải nằm trong `<Suspense>`, vì `cacheComponents` yêu cầu điều hướng tức thì.
+- `src/components/`:
+  - `film/`: Poster, ScorePill, TicketCard, PosterStrip, RapView, PickCta
+  - `detail/`: Sheet, DetailBody, DetailActions, Scratch, DetailSkeleton
+  - `picker/`: luồng Chọn phim 4 bước
+  - `match/`: Deck, MatchView, MatchOverlay
+  - dùng chung: Nav, Providers, Toast…
+- `src/lib/`:
+  - `films.ts`: **DỮ LIỆU MẪU**, thay ở pha 2
+  - `score.ts`: điểm tổng, mức điểm, chữ trên con dấu
+  - `store.tsx`: trạng thái hai người trong bộ nhớ, thay bằng Supabase ở pha 4
+  - `useMedia.ts`
+  - `palette.ts`
+- `src/app/globals.css` — token màu, font, class dùng chung.
+- `src/styles/fito.css` — class component chép từ bản mẫu, thêm bố cục máy tính. Import trong `layout.tsx`, không dùng `@import` trong `globals.css` (Turbopack bỏ qua).
 - `prototype/vibe.html` — bản mẫu tham chiếu. Không sửa trừ khi người dùng yêu cầu.
+
+### Lưu ý kỹ thuật đã gặp
+
+- Không dùng thuộc tính `hidden` cho những thứ cần hiện lại ở một breakpoint. `!important` của Tailwind preflight nằm trong layer nên thắng `!important` viết ngoài layer. Dùng class `max-lg:hidden` thay thế.
+- Script trong `<head>` dùng `InlineScript`, theo docs Next "preventing-flash-before-hydration".
+- Khi tab trình duyệt bị ẩn, rAF gần như dừng, nên Motion và GSAP trông như "kẹt". Muốn test animation thì dùng Playwright headless hoặc để tab hiển thị.
 
 ## Việc người dùng tự làm (không gửi khoá qua chat)
 
@@ -107,3 +127,8 @@ Chi phí mục tiêu: 0đ/tháng.
 - **15/10/2026** — Chốt stack ở trên, ưu tiên hiệu ứng (Motion + GSAP + Lenis + ViewTransition; Rive để sau).
 - **15/10/2026** — Nhấn mạnh: **web app** dùng tốt trên cả máy tính lẫn điện thoại, không chỉ bố cục điện thoại.
 - **15/10/2026** — Bắt đầu pha 1: dựng khung app (Next.js + token + thanh điều hướng responsive).
+- **16/10/2026** — Chuyển giao diện Rạp, Ở nhà, Chi tiết, Chọn phim, Quẹt, Match, màn Trùng gu từ bản mẫu vào app thật, chạy với **dữ liệu mẫu** (`src/lib/films.ts`), trong lúc người dùng đăng ký khoá API và Supabase.
+  - Chi tiết mở dạng sheet: modal giữa màn từ 768px; mở trực tiếp bằng link thì là trang riêng.
+  - Thẻ quẹt dùng Motion drag; màn Trùng gu là một timeline GSAP.
+  - Băng poster kéo được bằng chuột trên máy tính.
+  - Match trên máy tính chia 2 cột: chồng thẻ bên trái, danh sách bên phải.

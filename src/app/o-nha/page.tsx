@@ -1,16 +1,27 @@
 import type { Metadata } from "next";
-import { EmptyState } from "@/components/EmptyState";
 import { Hello } from "@/components/Hello";
+import { PickCta } from "@/components/film/PickCta";
+import { TicketCard } from "@/components/film/TicketCard";
+import { FILMS } from "@/lib/films";
 
 export const metadata: Metadata = { title: "Ở nhà" };
 
 export default function ONhaPage() {
+  const home = FILMS.filter((f) => f.when === "home");
   return (
     <section>
       <Hello lead="Ở nhà thì" highlight="xem gì?" />
-      <EmptyState mood="happy" title="Sofa đã sẵn sàng" hand="Netflix · FPT Play · Galaxy Play · VieON">
-        Phim có trên các nền tảng xem ở VN sẽ hiện ở đây, lọc theo nền tảng hai đứa đang dùng.
-      </EmptyState>
+      <PickCta where="home" title="Lọc phim trên mạng" sub="Chọn thể loại, độ dài, nền tảng hai đứa đang dùng." />
+      <div className="sec-h">
+        <h2>Có trên mạng</h2>
+        <small>dữ liệu JustWatch</small>
+      </div>
+      <div className="grid-tickets">
+        {home.map((f) => (
+          <TicketCard key={f.id} film={f} />
+        ))}
+      </div>
+      <p className="foot">Dữ liệu mẫu, phim và điểm là giả.</p>
     </section>
   );
 }

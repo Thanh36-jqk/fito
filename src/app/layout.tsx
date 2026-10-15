@@ -1,11 +1,13 @@
 import type { Metadata, Viewport } from "next";
 import { Baloo_2, Mali, Nunito } from "next/font/google";
 import { Suspense, ViewTransition } from "react";
+import { InlineScript } from "@/components/InlineScript";
 import { Nav } from "@/components/Nav";
 import { MobileHeader } from "@/components/MobileHeader";
 import { Providers } from "@/components/Providers";
 import { PALETTE_SCRIPT } from "@/lib/palette";
 import "./globals.css";
+import "@/styles/fito.css";
 
 const baloo = Baloo_2({ variable: "--font-baloo", subsets: ["latin", "vietnamese"], weight: ["600", "700", "800"] });
 const nunito = Nunito({ variable: "--font-nunito", subsets: ["latin", "vietnamese"], weight: ["500", "600", "700", "800"] });
@@ -22,7 +24,7 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children, modal }: LayoutProps<"/">) {
   return (
     <html
       lang="vi"
@@ -32,7 +34,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <head>
         {/* Đặt bảng màu đã lưu trước khi vẽ để không nháy màu */}
-        <script dangerouslySetInnerHTML={{ __html: PALETTE_SCRIPT }} />
+        <InlineScript html={PALETTE_SCRIPT} />
       </head>
       <body>
         <Providers>
@@ -45,6 +47,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               <ViewTransition default="tab-swap">{children}</ViewTransition>
             </main>
           </div>
+          {modal}
         </Providers>
       </body>
     </html>

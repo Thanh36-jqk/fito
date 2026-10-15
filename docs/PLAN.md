@@ -114,6 +114,8 @@ Mỗi màn có 3 trạng thái bắt buộc:
 - [ ] Proxy (middleware): chưa đăng nhập thì chuyển về `/login`
 - [ ] `.env.example`, README, deploy lần đầu lên Vercel
 
+> **16/10/2026:** Giao diện của pha 2, 3, 4 đã làm xong với dữ liệu mẫu: Rạp, Ở nhà, Chi tiết, Chọn phim, Quẹt, Match, màn Trùng gu. Các mục bên dưới chỉ được tick khi đã chạy bằng dữ liệu thật hoặc Supabase.
+
 ### Pha 2 — Dữ liệu và điểm
 - [ ] `lib/tmdb.ts`: now_playing, upcoming, discover theo nền tảng VN, chi tiết, tìm kiếm
 - [ ] `lib/omdb.ts`, `lib/trakt.ts`: lấy điểm và bình luận theo imdb_id
