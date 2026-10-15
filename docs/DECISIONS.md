@@ -156,3 +156,7 @@ Chi phí mục tiêu: 0đ/tháng.
   - Băng poster kéo được bằng chuột trên máy tính.
   - Match trên máy tính chia 2 cột: chồng thẻ bên trái, danh sách bên phải.
 - **16/10/2026** — Người dùng nhắc: dữ liệu, ảnh và trailer phải lấy qua API của nguồn uy tín để đúng nhất. Đã chốt bảng "Nguồn dữ liệu, ảnh, trailer" ở trên.
+- **16/10/2026** — Thử lấy dữ liệu từ cgv.vn theo yêu cầu.
+  - Kết quả: không có API công khai, không có `robots.txt`. Trang phim trả về một **trang thử thách chống bot** bằng JavaScript thay vì dữ liệu.
+  - Không vượt lớp chống bot. Vẫn **không cào web rạp**.
+  - Lịch chiếu và đặt vé: dùng link mở trang rạp (CGV/Lotte/Galaxy) trong trình duyệt.
