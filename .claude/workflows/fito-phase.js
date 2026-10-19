@@ -1,7 +1,7 @@
 export const meta = {
   name: 'fito-phase',
   description: 'Fito: lên kế hoạch → xây theo đợt (sở hữu file riêng) → review 2 góc nhìn → sửa → kiểm định build/test/Playwright',
-  whenToUse: 'Thực hiện một pha trong docs/PLAN.md của Fito một cách có kiểm soát. args: {phase, goal, outOfScope, root?, rootBash?, port?, extraRules?, maxTasks?, agentTypes?}',
+  whenToUse: 'Thực hiện một pha trong docs/PLAN.md của Fito một cách có kiểm soát. args: {phase, goal, outOfScope, root?, rootBash?, port?, extraRules?, maxTasks?, agentTypes?, minorModel?}',
   phases: [
     { title: 'Plan', detail: 'đọc docs + code, chia task theo file sở hữu, chốt hợp đồng chung' },
     { title: 'Build', detail: 'chạy task theo đợt, task cùng đợt song song, không đụng file nhau' },
@@ -18,6 +18,15 @@ const OUT = A.outOfScope || ''
 const MAX_TASKS = Math.min(Math.max(A.maxTasks || 4, 1), 6)
 // Agent chuyên của Fito (.claude/agents/*.md); chưa nạp được thì lùi về agent mặc định
 const TYPES = A.agentTypes === false ? null : { plan: 'fito-planner', build: 'fito-builder', review: 'fito-reviewer', fix: 'fito-builder', verify: 'fito-verifier' }
+// Model theo mức quan trọng: việc core dùng model chính (mạnh nhất), việc phụ dùng model rẻ hơn.
+// Bỏ model (undefined) = dùng model của phiên chính.
+const CORE = { effort: 'high' }
+const MINOR = { model: A.minorModel || 'sonnet', effort: 'medium' }
+const CORE_PATHS = /(^|\/)(src\/lib\/|src\/app\/api\/|src\/proxy|supabase\/|src\/app\/auth\/|scripts\/|next\.config|package\.json)/i
+function tierOf(t) {
+  if (t.tier === 'core' || t.tier === 'minor') return t.tier
+  return t.owns.some(o => CORE_PATHS.test(o.split('\\').join('/'))) ? 'core' : 'minor'
+}
 async function run(kind, prompt, opts) {
   if (TYPES) {
     try { return await agent(prompt, { ...opts, agentType: TYPES[kind] }) }
@@ -59,8 +68,9 @@ const PLAN_SCHEMA = {
           owns: { type: 'array', items: { type: 'string' }, description: 'files/dirs this task alone may edit or create' },
           instructions: { type: 'string' },
           done_when: { type: 'array', items: { type: 'string' } },
+          tier: { type: 'string', enum: ['core', 'minor'], description: 'core = data/API, business logic, shared state/types, security, routing, anything other tasks depend on. minor = CSS/visual polish, copy, icons, docs/README, isolated leaf UI.' },
         },
-        required: ['id', 'title', 'wave', 'owns', 'instructions', 'done_when'],
+        required: ['id', 'title', 'wave', 'owns', 'instructions', 'done_when', 'tier'],
       },
     },
     acceptance: { type: 'array', items: { type: 'string' }, description: 'end-to-end checks for the verifier' },
@@ -141,7 +151,7 @@ Do this:
 4. Split the work into at most ${MAX_TASKS} tasks. Each task lists the files/dirs it alone owns. Two tasks in the same wave must NEVER own the same file. Shared foundations (types, API client, Poster, store, CSS entry files, next.config) go in wave 1. Put UI areas in wave 2 so they run in parallel. If an area needs CSS, give it its own CSS file created in wave 1 and imported once in layout.
 5. Each task's instructions must be concrete enough that a separate engineer can implement it without asking, including exact Vietnamese UI copy where new.
 6. Acceptance checks must be verifiable: commands, URLs on http://localhost:${PORT} to open, exact texts/elements that must appear for this phase's goal, no console errors, no horizontal overflow at 390px, desktop layout at 1366px, no secret from .env.local in the client bundle.
-Do not edit any files.`, { label: 'tech-lead plan', phase: 'Plan', schema: PLAN_SCHEMA, effort: 'high' })
+Do not edit any files.`, { label: 'tech-lead plan', phase: 'Plan', schema: PLAN_SCHEMA, ...CORE })
 
 if (!plan || !plan.tasks || !plan.tasks.length) {
   return { error: 'Planner returned no tasks', plan }
@@ -162,7 +172,7 @@ for (const t of tasks) {
   placed.push({ ...t, wave: w })
 }
 const waves = [...new Set(placed.map(t => t.wave))].sort((a, b) => a - b)
-log(`Kế hoạch: ${placed.length} task, ${waves.length} đợt`)
+log(`Kế hoạch: ${placed.length} task, ${waves.length} đợt — ${placed.map(t => `${t.id}:${tierOf(t)}`).join(', ')} (core = model chính, minor = ${MINOR.model})`)
 
 // ---------------- Build ----------------
 phase('Build')
@@ -186,7 +196,7 @@ FILE OWNERSHIP — you may edit/create ONLY: ${t.owns.join(', ')}
 Other tasks own: ${others.filter(o => o.id !== t.id).map(o => `${o.id}: ${o.owns.join(', ')}`).join(' | ')}
 If you need a change in a file you do not own, do NOT edit it — describe it in "needs".
 Finish by running: cd ${RB} && npx tsc --noEmit && npx eslint <your files>. Report results honestly.`,
-    { label: `build ${t.id}`, phase: 'Build', schema: BUILD_SCHEMA }).then(r => r && { task: t.id, ...r })))
+    { label: `build ${t.id} (${tierOf(t)})`, phase: 'Build', schema: BUILD_SCHEMA, ...(tierOf(t) === 'core' ? CORE : MINOR) }).then(r => r && { task: t.id, ...r })))
   builds.push(...res.filter(Boolean))
   const missing = inWave.filter(t => !res.some(r => r && r.task === t.id))
   if (missing.length) log(`Đợt ${w}: task không trả kết quả: ${missing.map(t => t.id).join(', ')}`)
@@ -205,7 +215,7 @@ ${l.prompt}
 Contract that was supposed to be followed:
 ${plan.contract}
 Report only real, evidenced problems (file + concrete evidence). No style nitpicks.`,
-  { label: `review ${l.key}`, phase: 'Review', schema: FINDINGS_SCHEMA, effort: 'high' })))
+  { label: `review ${l.key}`, phase: 'Review', schema: FINDINGS_SCHEMA, ...(l.key === 'data-security' ? CORE : { ...MINOR, effort: 'high' }) })))
 const findings = reviews.filter(Boolean).flatMap(r => r.findings)
 const actionable = findings.filter(f => f.severity !== 'low')
 log(`Review: ${findings.length} phát hiện (${actionable.length} cao/vừa), ${needs.length} yêu cầu chéo từ builder`)
@@ -222,7 +232,7 @@ You are the integration engineer (fix round ${round}). Apply these items; you ma
 ${todo.map((x, i) => `${i + 1}. ${x}`).join('\n')}
 Contract:
 ${plan.contract}
-Run npx tsc --noEmit and npm run lint at the end.`, { label: `fix round ${round}`, phase: 'Fix', schema: FIX_SCHEMA })
+Run npx tsc --noEmit and npm run lint at the end.`, { label: `fix round ${round}`, phase: 'Fix', schema: FIX_SCHEMA, ...CORE })
     if (fx) fixes.push(fx)
   }
   phase('Verify')
@@ -237,7 +247,7 @@ Run in ${RB}, in order, and record real output summaries:
 6. Smoke test with Playwright MCP (ToolSearch "select:mcp__playwright__browser_navigate,mcp__playwright__browser_resize,mcp__playwright__browser_evaluate,mcp__playwright__browser_console_messages,mcp__playwright__browser_click,mcp__playwright__browser_wait_for") against the running dev server http://localhost:${PORT} at 390x844 and 1366x820:
 ${plan.acceptance.map(a => '   - ' + a).join('\n')}
    Also: no console errors, no horizontal overflow, images load (naturalWidth > 0).
-pass = true only if every step succeeds. List each failure concretely.`, { label: `verify round ${round}`, phase: 'Verify', schema: VERIFY_SCHEMA, effort: 'high' })
+pass = true only if every step succeeds. List each failure concretely.`, { label: `verify round ${round}`, phase: 'Verify', schema: VERIFY_SCHEMA, ...MINOR })
   if (!verify || verify.pass) break
   todo = verify.failures
   log(`Kiểm định vòng ${round} chưa đạt: ${todo.length} lỗi`)
