@@ -11,7 +11,8 @@ import { Toast } from "./Toast";
 export function Providers({ children }: { children: React.ReactNode }) {
   const calm = useReducedMotionPref();
   return (
-    <MotionConfig reducedMotion="user">
+    // Giảm chuyển động: bỏ hẳn cả hiệu ứng mờ dần của Motion, không chỉ transform
+    <MotionConfig reducedMotion="user" skipAnimations={calm}>
       <FitoProvider>
         {!calm && <ReactLenis root options={{ lerp: 0.12, autoRaf: true }} />}
         {children}

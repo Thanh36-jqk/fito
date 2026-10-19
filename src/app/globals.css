@@ -139,6 +139,8 @@ body::after {
   mask: radial-gradient(circle 11px at 0 var(--ny, 50%), #0000 98%, #000) left / 51% 100% no-repeat,
         radial-gradient(circle 11px at 100% var(--ny, 50%), #0000 98%, #000) right / 51% 100% no-repeat;
 }
+/* mask cắt mất viền focus bên ngoài, nên vé bấm được thì vẽ viền vào trong */
+.ticket:focus-visible { outline-offset: -4px; }
 .perf { border-top: 2px dashed var(--line); }
 
 /* ---------- màn trống ---------- */

@@ -18,7 +18,18 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps<"/phim/[id]">): Promise<Metadata> {
   const id = parseMovieId((await params).id);
   const r = id == null ? null : await getDetailForRoute(id);
-  return { title: r?.ok ? r.data.title : "Không tìm thấy phim" };
+  const film = r?.ok ? r.data : null;
+  if (!film) return { title: "Không tìm thấy phim" };
+  const clip = (s: string, n: number) => (s.length > n ? s.slice(0, n - 1).trimEnd() + "…" : s);
+  const description = film.overview?.text
+    ? clip(film.overview.text, 160)
+    : `${film.year ?? "—"} · ${film.genres.join(", ") || "—"}`;
+  // openGraph ở đây thay hẳn của layout (merge nông) nên ghi đủ trường; ảnh lấy từ opengraph-image.tsx
+  return {
+    title: film.title,
+    description,
+    openGraph: { type: "video.movie", siteName: "Fito", locale: "vi_VN", title: film.title, description },
+  };
 }
 
 /* Mở trực tiếp bằng link (hoặc tải lại trang). Bấm từ list thì @modal/(.)phim/[id] chặn và mở dạng sheet. */

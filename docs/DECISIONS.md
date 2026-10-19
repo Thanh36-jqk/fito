@@ -74,7 +74,7 @@ Chọn **bản ổn định mới nhất đã ra được ít nhất ~1 tuần**
 | Dữ liệu client | TanStack Query | chưa cài | chưa cần: dữ liệu lấy ở Server Component + `'use cache'` |
 | DB, đăng nhập, realtime | Supabase (`@supabase/supabase-js`, `@supabase/ssr`) | @supabase/supabase-js 2.117.3, @supabase/ssr 0.12.7 | Đăng nhập link email (token_hash), RLS theo allowed_users, Realtime cho swipes |
 | Hosting | Vercel Hobby + Vercel Cron | | Tự deploy khi push main |
-| PWA | Next PWA guide hoặc `@serwist/next` | | Pha 5 |
+| PWA | Next PWA guide (tự làm) | không cài thư viện | Tự làm theo guide Next 16.4: app/manifest.ts + public/sw.js, không cài serwist |
 | Test | Vitest (+ Playwright ở pha 5) | 4.1.11 | Hàm chọn trailer, tên/tóm tắt, điểm tổng (`src/`) và hàm parse dòng IMDb (`scripts/`) |
 
 Chi phí mục tiêu: 0đ/tháng.
@@ -166,6 +166,13 @@ Yêu cầu: phải tìm và lọc ra được cả những phim ít người bi�
   - `useMedia.ts`
   - `palette.ts`
   - `supabase/`: `env.ts` (biến public, `hasSupabase`), `client.ts` (trình duyệt), `server.ts` (server, đọc cookie)
+- PWA và chia sẻ link:
+  - `src/app/manifest.ts` — manifest (`/manifest.webmanifest`)
+  - `public/sw.js` — service worker JS thuần: cache offline.html, icon và poster `/_next/image` của TMDB
+  - `public/offline.html` — trang "Mất mạng rồi", CSS và SVG inline
+  - `public/icons/` + `scripts/make-icons.mjs` — icon PWA tự vẽ (vé + Bắp), cùng `src/app/icon.svg`, `apple-icon.png`, `favicon.ico`
+  - `src/lib/og.ts` + `src/app/opengraph-image.tsx`, `src/app/phim/[id]/opengraph-image.tsx` — ảnh Open Graph (server-only)
+  - `src/components/RegisterSW.tsx` — đăng ký service worker, chỉ ở production
 - `src/proxy.ts` — làm mới phiên Supabase, chưa đăng nhập thì về `/login`; không có biến Supabase thì cho qua.
 - `supabase/migrations/` — SQL chạy tay trong Supabase SQL Editor.
 - `scripts/` — script Node chạy ngoài app (nạp IMDb ratings), có test Vitest.
@@ -244,3 +251,17 @@ Yêu cầu: phải tìm và lọc ra được cả những phim ít người bi�
   - Eager cho 6 poster đầu mỗi lưới/băng (`EAGER_N` trong `Poster.tsx`), vì poster thứ 2 cùng hàng cũng có thể là LCP và Next cảnh báo khi nó lazy.
   - Chọn phim bước 0–1: `/api/discover` lỗi thì hiện "TMDB đang trục trặc" + "Thử lại". Bước 1 Ra rạp lỗi thì hiện đủ chip thể loại, không có số, vẫn bấm Tiếp được.
   - Phim mẫu (id âm) không có điểm TMDB nữa (`sc.tmdb = null` trong `films.ts`) và chi tiết phim mẫu ẩn ô điểm TMDB, để không ghi điểm giả là của TMDB. Điểm tổng phim mẫu tính từ 4 nguồn còn lại.
+- **19/10/2026** — Pha 5A (PWA, đánh bóng, chuẩn bị deploy, chưa cần Supabase).
+  - Manifest và icon tự vẽ (vé + Bắp) bằng ImageResponse trong `scripts/make-icons.mjs`, không tải ảnh ngoài.
+  - Service worker chỉ đăng ký ở production. Cache `fito-shell-v1` giữ offline.html và icon; `fito-posters-v1` giữ tối đa 150 ảnh `/_next/image` của image.tmdb.org theo kiểu cache-first. Không cache HTML, `/api`, `/auth`, `/login`. Điều hướng lúc mất mạng thì hiện offline.html "Mất mạng rồi".
+  - OG cho `/` và `/phim/[id]`: poster TMDB w500 tải ở server qua `'use cache'` 24 giờ, lỗi thì vẽ khung thay thế. Font là Geist mặc định của ImageResponse vì repo không có file ttf Baloo 2. Tên phim CJK có thể khiến ImageResponse tải font dự phòng từ Google Fonts lúc render.
+  - Noindex qua metadata `robots`, không có robots.txt, để bot xem trước link đọc được thẻ OG.
+  - `metadataBase` lấy từ `VERCEL_PROJECT_PRODUCTION_URL`, ở máy là http://localhost:3000.
+  - proxy matcher bỏ qua sw.js, offline.html, opengraph-image, vì khi bật Supabase các file này phải công khai.
+  - Không có vercel.json, chưa có Cron.
+  - Kết quả đánh bóng (rà 390x844 và 1366x768: 10 URL, mở sheet từ poster, Chọn phim đủ 4 bước, quẹt ở /match, 3 bảng màu; Tab qua từng trang; giảm chuyển động):
+    - Lỗi thật: không có. Không tràn ngang, không có vùng chạm dưới 44px, không lỗi console, không cảnh báo LCP của next/image. Focus thấy rõ ở mọi phần tử (`.search-box input` và `.login-input` đã có quầng `box-shadow` khi `:focus-visible`; placeholder `.login-input` không còn opacity, đo 7.72:1).
+    - Báo nhầm đã xác minh: link đang chọn của Nav (hàm audit đo 1.00 vì viên `layoutId` là phần tử anh em, không phải tổ tiên). Màu thật `--on-accent` trên `--accent`: Neon 14.97, Kẹo 10.79, Hoàng hôn 8.14. `span.pill.lv-*` ở /match đo lại khi đứng yên: 7.99–12.17:1 (số thấp lần trước do đo lúc đang animate opacity).
+    - `overflow` = -15 ở trang có thanh cuộn dọc là bề rộng thanh cuộn của Chromium; `scrollWidth - clientWidth` = 0 ở cả 375, 390 và 1366px.
+    - Giảm chuyển động: marquee đứng yên, html không có class lenis, sheet mở không lò xo, màn Trùng gu không chạy timeline, `document.getAnimations().length === 0` sau 1 giây trên /, /match và các tab. Motion in một cảnh báo dev "You have Reduced Motion enabled" khi bật giảm chuyển động, không phải lỗi.
+  - Production (`next build` + `next start -p 3100`): build qua không cần sửa; 8 trang và các URL PWA/OG trả 200; SW điều khiển trang, poster cache 19 mục đều là `/_next/image?url=https%3A%2F%2Fimage.tmdb.org…`; tắt server rồi mở /o-nha thấy "Mất mạng rồi"; quét `.next/static` không thấy token TMDB.

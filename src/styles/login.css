@@ -39,8 +39,9 @@
   background: var(--surface-2); border: 2px solid var(--line); color: var(--fg); font-size: 16px;
   transition: border-color .2s;
 }
-.login-input::placeholder { color: var(--muted); opacity: .7; }
-.login-input:focus-visible { outline: none; border-color: var(--accent); }
+/* không giảm opacity: bảng Hoàng hôn sẽ tụt dưới 4.5:1 */
+.login-input::placeholder { color: var(--muted); opacity: 1; }
+.login-input:focus-visible { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 45%, transparent); }
 .login-form .btn-main { margin-top: 4px; }
 .login-err { display: flex; align-items: flex-start; gap: 8px; margin: 2px 0 0; color: var(--bad); font-size: 14px; line-height: 1.45; }
 

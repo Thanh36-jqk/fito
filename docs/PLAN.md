@@ -147,9 +147,10 @@ Mỗi màn có 3 trạng thái bắt buộc:
 - [ ] Nhật ký: đánh dấu đã xem, mỗi người chấm điểm và ghi chú
 
 ### Pha 5 — Hoàn thiện
-- [ ] PWA: manifest, icon, cài lên màn hình chính, cache poster
+- [x] PWA: manifest, icon, cài lên màn hình chính, cache poster
 - [ ] Vercel Cron làm mới ~150 phim hot mỗi ngày
-- [ ] Kiểm tra tương phản, vùng chạm, giảm chuyển động
+- [x] Kiểm tra tương phản, vùng chạm, giảm chuyển động
+- [x] Chuẩn bị deploy Vercel: README, Open Graph, noindex
 - [ ] Playwright cho luồng đăng nhập → xem chi tiết → quẹt → match
 - [ ] (Tuỳ chọn) AI tóm tắt bình luận sang tiếng Việt
 
@@ -178,15 +179,15 @@ Mỗi dòng chỉ có hai kết quả: đạt hoặc không đạt.
 **Bảo mật**
 - [ ] Email thứ 3 không đăng nhập được
 - [ ] Chưa đăng nhập thì không xem được trang hay API nào
-- [ ] Không có khoá API nào trong mã gửi xuống trình duyệt
+- [x] Không có khoá API nào trong mã gửi xuống trình duyệt
 
 **Giao diện và hiệu năng**
 - [ ] Hiệu ứng mượt, không giật trên điện thoại tầm trung
-- [ ] Không tràn ngang ở 375px; bố cục máy tính dùng tốt từ 1024px trở lên
+- [x] Không tràn ngang ở 375px; bố cục máy tính dùng tốt từ 1024px trở lên
 - [ ] OMDb dưới 1.000 lượt/ngày khi dùng bình thường
 - [ ] Một nguồn API hỏng thì app vẫn chạy
-- [ ] Cài được như app
-- [ ] Tương phản chữ ≥ 4.5:1, vùng chạm ≥ 44px, tắt hiệu ứng khi máy bật giảm chuyển động
+- [ ] Cài được như app (chờ thử trên điện thoại qua HTTPS sau khi deploy)
+- [x] Tương phản chữ ≥ 4.5:1, vùng chạm ≥ 44px, tắt hiệu ứng khi máy bật giảm chuyển động
 - [ ] Chi phí chạy 0đ/tháng
 
 ## Rủi ro và cách xử lý

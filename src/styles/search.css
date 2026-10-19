@@ -12,6 +12,8 @@
 }
 .search-box input::placeholder { color: var(--muted); font-weight: 600; }
 .search-box input:focus { border-color: var(--accent); }
+/* viền 2px chưa đủ rõ khi dùng bàn phím: thêm quầng sáng */
+.search-box input:focus-visible { box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 45%, transparent); }
 .search-box input:disabled { opacity: .6; }
 .search-box input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
 .search-box .search-ico { position: absolute; left: 16px; top: 50%; translate: 0 -50%; color: var(--muted); pointer-events: none; }
