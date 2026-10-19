@@ -11,7 +11,7 @@ export default function LoginPage() {
     <section className="login">
       <div className="login-intro">
         <Hello lead="Xé vé vào" highlight="Fito" />
-        <p>Sổ tay chọn phim của riêng hai đứa. Nhập email, tớ gửi link đăng nhập qua thư, khỏi cần mật khẩu.</p>
+        <p>Sổ tay chọn phim của riêng hai đứa. Nhập email và mật khẩu hai đứa đã có, đăng nhập một lần là ở lại.</p>
         <span className="note">
           chỉ hai đứa mình thôi nha
           <svg viewBox="0 0 40 22" aria-hidden className="login-arrow">
