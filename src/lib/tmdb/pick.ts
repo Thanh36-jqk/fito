@@ -126,7 +126,8 @@ const isoDay = (s: string | undefined) => {
 };
 const genreLabels = (ids: number[] | undefined) => (ids ?? []).map((id) => GENRE_VI[id]).filter((g): g is string => !!g);
 
-export function toCard(vi: TmdbListItem, en?: TmdbListItem | null): MovieCard {
+/* vnDates: list có region=VN thì release_date là ngày ra rạp ở VN (phim cũ chiếu lại ra năm sai), nên bỏ năm. */
+export function toCard(vi: TmdbListItem, en?: TmdbListItem | null, vnDates = false): MovieCard {
   const { title, enTitle } = pickTitle({
     vi: vi.title,
     en: en?.title,
@@ -140,7 +141,7 @@ export function toCard(vi: TmdbListItem, en?: TmdbListItem | null): MovieCard {
     enTitle,
     originalTitle: clean(vi.original_title) ?? title,
     originalLanguage: vi.original_language,
-    year: yearOf(releaseDate),
+    year: vnDates ? null : yearOf(releaseDate),
     releaseDate,
     runtime: null,
     genres: genreLabels(vi.genre_ids),
@@ -152,7 +153,7 @@ export function toCard(vi: TmdbListItem, en?: TmdbListItem | null): MovieCard {
   };
 }
 
-export function mergeLists(vi: TmdbListItem[], en: TmdbListItem[]): MovieCard[] {
+export function mergeLists(vi: TmdbListItem[], en: TmdbListItem[], vnDates = false): MovieCard[] {
   const enById = new Map(en.map((e) => [e.id, e]));
   const seen = new Set<number>();
   const out: MovieCard[] = [];
@@ -160,7 +161,7 @@ export function mergeLists(vi: TmdbListItem[], en: TmdbListItem[]): MovieCard[] 
     // similar/recommendations không có include_adult nên tự lọc phim 18+
     if (seen.has(item.id) || item.adult) continue;
     seen.add(item.id);
-    out.push(toCard(item, enById.get(item.id) ?? null));
+    out.push(toCard(item, enById.get(item.id) ?? null, vnDates));
   }
   return out;
 }

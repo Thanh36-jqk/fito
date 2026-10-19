@@ -1,0 +1,44 @@
+/* Khu vực Cài đặt (/cai-dat): style riêng của T4. Chỉ dùng token màu. */
+
+/* ---------- bảng màu ---------- */
+.pal-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+@media (min-width: 640px) { .pal-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+.pal-card { position: relative; display: block; width: 100%; text-align: left; padding: 14px 14px 16px; }
+/* .ticket có mask nên viền phải vẽ vào trong mới không bị cắt */
+.pal-card[aria-pressed="true"] { outline: 3px solid var(--accent); outline-offset: -3px; }
+.pal-card:focus-visible { outline: 3px solid var(--accent-2); outline-offset: -8px; }
+.pal-card b { display: block; font-family: var(--f-display); font-weight: 800; font-size: 20px; }
+.pal-on { position: absolute; right: 10px; top: 10px; min-height: 30px; font-size: 13px; --rot: 5deg; }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .pal-card { transition: transform .25s var(--spring); }
+  .pal-card:hover { transform: translateY(-3px) rotate(-.5deg); }
+}
+
+/* Cảnh thu nhỏ, mọi màu lấy từ biến của chính bảng (đặt ở globals.css) */
+.pal-preview {
+  position: relative; height: 110px; border-radius: 16px; margin-bottom: 10px; overflow: hidden;
+  background: var(--bg); border: 2px solid var(--line);
+}
+.pal-preview .pv-card {
+  position: absolute; left: 12px; top: 12px; width: 56%; height: 54px; padding: 10px; border-radius: 10px;
+  display: flex; flex-direction: column; gap: 8px; background: var(--surface);
+}
+.pal-preview .pv-card i { display: block; height: 6px; border-radius: 3px; background: var(--line); }
+.pal-preview .pv-card i + i { width: 60%; }
+.pal-preview .pv-chip {
+  position: absolute; left: 12px; bottom: 12px; padding: 3px 12px; border-radius: 999px;
+  background: var(--accent); color: var(--on-accent); font-family: var(--f-display); font-weight: 800; font-size: 13px;
+}
+.pal-preview .pv-line {
+  position: absolute; right: 14px; bottom: 18px; width: 36%; height: 14px;
+  fill: none; stroke: var(--accent-2); stroke-width: 4; stroke-linecap: round;
+}
+.pal-preview .pv-dot {
+  position: absolute; right: 18px; top: 40px; width: 28px; height: 28px; border-radius: 50%;
+  background: var(--sticker); border: 3px solid var(--fg);
+}
+
+/* ---------- nền tảng ---------- */
+.set-plats { flex-wrap: wrap; overflow: visible; }
+.set-note { margin: 10px 0 0; font-size: 13px; color: var(--muted); }

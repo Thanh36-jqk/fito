@@ -130,12 +130,15 @@ Mỗi màn có 3 trạng thái bắt buộc:
 - [ ] Nguồn lỗi thì hiện "—", trang vẫn chạy
 
 ### Pha 3 — Lọc, tìm, chọn phim, cài đặt
-- [ ] Luồng chọn phim 4 bước như bản mẫu
-- [ ] Chip lọc nhanh + khung lọc nâng cao, lưu trên URL
-- [ ] Sắp xếp theo điểm tổng, độ hot, ngày ra mắt
-- [ ] Tìm theo tên Việt, tên Anh, tên gốc, tên thay thế, phủ toàn bộ ~1,26 triệu phim của TMDB; đợi 300ms sau khi ngừng gõ mới tìm
-- [ ] "Đào sâu" bằng TMDB discover: quốc gia, ngôn ngữ gốc, thập niên, từ khoá, Phổ biến / Ít người biết
-- [ ] Cài đặt: chọn bảng màu, nền tảng đang dùng
+- [x] Luồng chọn phim 4 bước như bản mẫu
+- [x] Chip lọc nhanh + khung lọc nâng cao, lưu trên URL
+- [x] Sắp xếp theo điểm tổng, độ hot, ngày ra mắt
+- [x] Tìm theo tên Việt, tên Anh, tên gốc, tên thay thế, phủ toàn bộ ~1,26 triệu phim của TMDB; đợi 300ms sau khi ngừng gõ mới tìm
+- [x] "Đào sâu" bằng TMDB discover: quốc gia, ngôn ngữ gốc, thập niên, từ khoá, Phổ biến / Ít người biết (từ khoá chưa làm)
+- [x] Cài đặt: chọn bảng màu, nền tảng đang dùng (nền tảng lưu localStorage, pha 4 lưu theo tài khoản)
+- [x] Trang Ở nhà: bộ lọc trên URL, Đào sâu, lưới + "Xem thêm", đủ 3 trạng thái (đang tải, rỗng, TMDB lỗi)
+- [x] Trang Cài đặt (bảng màu, nền tảng, đăng xuất)
+- [x] `transitionTypes` "tab" cho link điều hướng (4 tab, Tìm phim, Cài đặt)
 
 ### Pha 4 — Hai người
 - [ ] Chồng thẻ quẹt: kéo bằng tay hoặc bấm nút, ghi vào `swipes`

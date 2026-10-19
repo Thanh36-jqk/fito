@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 import enJson from "./__fixtures__/movie-38551.en.json";
 import viJson from "./__fixtures__/movie-38551.vi.json";
-import { pickCertification, pickLogo, pickProvidersVN, pickText, pickTitle, pickTrailer, toDetail } from "./pick";
-import type { TmdbMovieFull, TmdbVideo } from "./types";
+import { mergeLists, pickCertification, pickLogo, pickProvidersVN, pickText, pickTitle, pickTrailer, toDetail } from "./pick";
+import type { TmdbListItem, TmdbMovieFull, TmdbVideo } from "./types";
 
 // Fixture thật lấy từ TMDB ngày 16/10/2026 (phim 38551 "Snakes and Earrings").
 const vi = viJson as unknown as TmdbMovieFull;
@@ -182,5 +182,17 @@ describe("toDetail(fixture 38551)", () => {
     expect(d.imdbId).toBe("tt1254249");
     expect(d.isSample).toBe(false);
     expect(d.providersVN).toBeNull();
+  });
+});
+
+describe("mergeLists vnDates", () => {
+  const laputa: TmdbListItem = { id: 10515, title: "Laputa", original_title: "天空の城ラピュタ", original_language: "ja", release_date: "2026-09-25", poster_path: null, backdrop_path: null };
+  it("list region=VN: giữ ngày ra rạp VN, bỏ năm", () => {
+    const [c] = mergeLists([laputa], [], true);
+    expect(c.releaseDate).toBe("2026-09-25");
+    expect(c.year).toBeNull();
+  });
+  it("list thường vẫn có năm", () => {
+    expect(mergeLists([laputa], [])[0].year).toBe(2026);
   });
 });

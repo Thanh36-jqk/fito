@@ -14,11 +14,16 @@
   --spring: cubic-bezier(.34, 1.56, .64, 1);
   --rail: 248px;
 }
-:root[data-palette="keo"] {
+/* Ô xem trước bảng màu (Cài đặt) dùng .pal-preview[data-palette] */
+.pal-preview[data-palette="neon"] {
+  --bg: #0D0E1A; --surface: #171829; --surface-2: #20223A; --line: #2C2E48;
+  --accent: #C6F432; --accent-2: #8B7CFF; --sticker: #FF6BD6; --muted: #B3B5CF; --on-accent: #0D0E1A;
+}
+:root[data-palette="keo"], .pal-preview[data-palette="keo"] {
   --bg: #16121F; --surface: #211A2E; --surface-2: #2B2240; --line: #3A2F4F;
   --accent: #FFB4A2; --accent-2: #B8A6FF; --sticker: #7FE0C4; --muted: #C3B4CC; --on-accent: #16121F;
 }
-:root[data-palette="hoanghon"] {
+:root[data-palette="hoanghon"], .pal-preview[data-palette="hoanghon"] {
   --bg: #120F0D; --surface: #1E1915; --surface-2: #2A231D; --line: #3A3029;
   --accent: #FF8A3D; --accent-2: #4FD1C5; --sticker: #FFD23F; --muted: #C2B3A6; --on-accent: #120F0D;
 }

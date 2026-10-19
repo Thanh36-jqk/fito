@@ -12,16 +12,23 @@ function subscribe(cb: () => void) {
 const getSnapshot = () => (document.documentElement.dataset.palette as PaletteId) || "neon";
 const getServerSnapshot = (): PaletteId => "neon";
 
+export function usePalette(): PaletteId {
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+}
+
+export function setPalette(id: PaletteId) {
+  document.documentElement.dataset.palette = id;
+  try {
+    localStorage.setItem(PALETTE_KEY, id);
+  } catch {}
+}
+
 export function PaletteToggle({ className = "" }: { className?: string }) {
-  const current = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const current = usePalette();
 
   function next() {
     const i = PALETTES.findIndex((p) => p.id === current);
-    const id = PALETTES[(i + 1) % PALETTES.length].id;
-    document.documentElement.dataset.palette = id;
-    try {
-      localStorage.setItem(PALETTE_KEY, id);
-    } catch {}
+    setPalette(PALETTES[(i + 1) % PALETTES.length].id);
   }
 
   const label = PALETTES.find((p) => p.id === current)?.label;

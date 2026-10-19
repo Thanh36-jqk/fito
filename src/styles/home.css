@@ -1,3 +1,14 @@
 /* Khu vực Rạp và Ở nhà (trang chủ, /o-nha): style riêng của T2. */
 .home-chips .chip small { font-weight: 700; opacity: .75; margin-left: 4px; }
 .home-chips .chip:disabled { opacity: .4; cursor: not-allowed; }
+
+/* Ở nhà: Đào sâu, trạng thái lọc, Xem thêm */
+.home-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 10px 0; }
+.home-deep-btn small { font-weight: 700; opacity: .75; margin-left: 4px; }
+.home-pending { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); }
+.home-clear { min-height: 44px; padding-inline: 8px; font-weight: 800; font-size: 14px; color: var(--accent-2); text-decoration: underline; text-underline-offset: 3px; }
+.home-deep { --ny: 0%; padding: 16px 18px 4px; margin-bottom: 14px; }
+.home-more { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 20px; }
+@media (min-width: 1024px) {
+  .home-deep { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 24px; }
+}

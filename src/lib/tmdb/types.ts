@@ -16,7 +16,13 @@ export type TmdbListItem = {
   vote_count?: number;
 };
 
-export type TmdbPaged<T> = { page: number; total_pages: number; total_results: number; results: T[] };
+export type TmdbPaged<T> = {
+  page: number;
+  total_pages: number;
+  total_results: number;
+  results: T[];
+  dates?: { minimum: string; maximum: string }; // chỉ now_playing/upcoming
+};
 
 export type TmdbVideo = {
   key: string;

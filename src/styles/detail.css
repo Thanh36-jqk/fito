@@ -45,3 +45,6 @@ iframe.trailer { border: 0; display: block; }
 .rail { display: flex; gap: 12px; overflow-x: auto; padding: 6px 2px 10px; scrollbar-width: none; overscroll-behavior-x: contain; }
 .rail::-webkit-scrollbar { display: none; }
 .rail .ticket { flex: none; width: 148px; }
+
+/* Điểm tổng chưa đủ nguồn: chữ thay cho số */
+.total .big.none { font-size: 24px; line-height: 1.1; letter-spacing: 0; text-shadow: none; color: var(--muted); max-width: 6.5em; }

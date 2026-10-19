@@ -223,3 +223,24 @@ Yêu cầu: phải tìm và lọc ra được cả những phim ít người bi�
 - **16/10/2026** — Bình luận TMDB gộp bản vi + en (bỏ trùng, mới nhất trước, tối đa 5). Độ tuổi VN lấy từ trường `note` của `release_dates` khi `certification` rỗng (P, K, T13, T16, T18, C).
 - **16/10/2026** — `next/image` chỉ cho phép `https://image.tmdb.org/t/p/**`. Logo `.svg` bị bỏ qua.
 - **16/10/2026** — Pha 1B (bản gọn cho 2 người): migration Supabase 0001 (6 bảng/view, RLS, trigger chặn email lạ, swipes vào Realtime), đăng nhập link email + /auth/callback, proxy chuyển về /login (không có biến Supabase thì cho qua), nút Đăng xuất, script nạp IMDb ratings + GitHub Actions hằng tuần. Cột watch_log.where đổi thành place vì where là từ khoá SQL. Cài @supabase/supabase-js 2.117.3 (2.118.0 mới ra 1 ngày), @supabase/ssr 0.12.7, vitest 4.1.11 (không dùng 5.0.3 vì cần peer @types/node ^22, dự án đang dùng ^20).
+- **16/10/2026** — Pha 3: Chọn phim, Đào sâu, Ở nhà lọc trên URL, Cài đặt.
+  - Ở nhà là kho phim TMDB discover lọc theo gu, không lọc nền tảng. Nền tảng hai đứa tự đánh dấu ở /cai-dat (localStorage `fito-platforms`), pha 4 lưu theo tài khoản.
+  - Ra rạp trong Chọn phim dùng discover với `region=VN`, `with_release_type=2|3`, `release_date` trong khoảng `dates` của now_playing. Kiểm 19/10/2026: ra 33 phim, trùng now_playing.
+  - Tham số URL: `noi`, `theloai`, `dai`, `diem`, `sx`, `quocgia`, `ngonngu`, `thapnien`, `noitieng`, `trang` (`src/lib/discover.ts`).
+  - Ít người biết = `vote_average ≥ 7`, `vote_count` 50–2000, sort `vote_average.desc`. Phổ biến = `vote_count ≥ 1000`. Ở nhà luôn có sàn 20 lượt; "Điểm cao nhất" sàn 300; lọc điểm sàn 50 (khớp `MIN_VOTES`).
+  - Bỏ sắp xếp "Ngắn nhất" vì TMDB discover không sắp theo độ dài, thay bằng "Hot nhất".
+  - Thể loại: id theo `/genre/movie/list?language=vi-VN` (19 id khớp `GENRE_VI`, kiểm 19/10). Nhãn TMDB có chữ "Phim " ở đầu nên giữ nhãn ngắn của app; bỏ "Phim truyền hình" khỏi chip.
+  - `GET /api/discover` (route handler) phục vụ Chọn phim và "Xem thêm"; token chỉ ở server.
+  - Store giữ snapshot `MovieCard` (`cards`) cho phim thật trong chồng quẹt. Phim thật chưa thành match tới pha 4.
+  - `tab-swap` chỉ chạy với `transitionTypes` "tab".
+  - Poster đầu mỗi danh sách dùng `loading="eager"` + `fetchPriority="high"` (docs Next 16 khuyên dùng thay `preload`).
+  - Điểm tổng không đủ nguồn: ô lớn hiện chữ "Chưa đủ điểm", không đóng dấu.
+  - Phim mẫu: bình luận gắn nhãn "Mẫu", không ghi TMDB/JustWatch.
+  - `total_results` của discover bị TMDB chặn trên, nên từ 10.000 trở lên hiện "10.000+".
+  - Bảng màu xem trước dùng `.pal-preview[data-palette]`.
+  - Trang Ở nhà bỏ JustWatch và chip nền tảng. Bộ lọc nằm trên URL (cùng khoá với `/api/discover`), trang 1 render ở server, "Xem thêm" gọi `/api/discover`. Đã xoá `getHomeVN`, `getWatchRegions`, `HomeData`.
+  - Cài đặt lưu nền tảng ở localStorage `fito-platforms` theo từng máy; pha sau mới lưu theo tài khoản. Header điện thoại ẩn Online dưới 480px vì có thêm nút Cài đặt.
+  - List có `region=VN` (now_playing, upcoming, Ra rạp) trả `release_date` là ngày ra rạp ở VN, nên phim cũ chiếu lại bị ra năm sai (Laputa 1986 thành 2026). Các list này để `year = null`, giữ `releaseDate` để sắp "Mới nhất". Dòng Ra rạp trong Chọn phim hiện "RA RẠP dd/mm" thay cho "NĂM"; thẻ quẹt phim rạp hiện "ra rạp dd/mm".
+  - Eager cho 6 poster đầu mỗi lưới/băng (`EAGER_N` trong `Poster.tsx`), vì poster thứ 2 cùng hàng cũng có thể là LCP và Next cảnh báo khi nó lazy.
+  - Chọn phim bước 0–1: `/api/discover` lỗi thì hiện "TMDB đang trục trặc" + "Thử lại". Bước 1 Ra rạp lỗi thì hiện đủ chip thể loại, không có số, vẫn bấm Tiếp được.
+  - Phim mẫu (id âm) không có điểm TMDB nữa (`sc.tmdb = null` trong `films.ts`) và chi tiết phim mẫu ẩn ô điểm TMDB, để không ghi điểm giả là của TMDB. Điểm tổng phim mẫu tính từ 4 nguồn còn lại.

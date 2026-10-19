@@ -8,8 +8,8 @@ export default function MatchPage() {
   return (
     <section>
       <Hello lead="Quẹt cho" highlight="trùng gu" />
-      {/* Quẹt / Match vẫn dùng phim mẫu: báo rõ để không lẫn với dữ liệu thật */}
-      <p className="hint mb-0">Dữ liệu mẫu, điểm là giả</p>
+      {/* Chồng quẹt trộn phim mẫu và phim thật: báo rõ để không lẫn */}
+      <p className="hint mb-0">Phim mẫu có điểm giả. Phim cậu đưa từ Chọn phim là phim thật.</p>
       <MatchView />
     </section>
   );

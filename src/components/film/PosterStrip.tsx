@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useRef } from "react";
 import { DASH, type MovieCard } from "@/lib/movie";
-import { Poster } from "./Poster";
+import { EAGER_N, Poster } from "./Poster";
 import { ScorePill } from "./ScorePill";
 
 /*
@@ -143,7 +143,7 @@ export function PosterStrip({ films }: { films: MovieCard[] }) {
         }
       }}
     >
-      {films.map((f) => (
+      {films.map((f, i) => (
         <div key={f.id} className="slot" data-c={f.sample?.c2}>
           <Link
             href={`/phim/${f.id}`}
@@ -164,7 +164,7 @@ export function PosterStrip({ films }: { films: MovieCard[] }) {
             }}
             onPointerLeave={(e) => (e.currentTarget.style.transform = "")}
           >
-            <Poster film={f} sizes="(min-width: 1024px) 210px, 170px" />
+            <Poster film={f} eager={i < EAGER_N} sizes="(min-width: 1024px) 210px, 170px" />
           </Link>
           <div className="cap">
             <ScorePill film={f} />

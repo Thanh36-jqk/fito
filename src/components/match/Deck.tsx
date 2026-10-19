@@ -4,8 +4,7 @@ import { animate, motion, useMotionValue, useTransform } from "motion/react";
 import { Heart, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
-import { getFilm, type Film } from "@/lib/films";
-import { buzz, useFito } from "@/lib/store";
+import { buzz, itemOf, useFito, type SwipeItem } from "@/lib/store";
 import { useReducedMotionPref } from "@/lib/useMedia";
 import { EmptyState } from "../EmptyState";
 import { Poster } from "../film/Poster";
@@ -13,22 +12,20 @@ import { ScorePill } from "../film/ScorePill";
 
 type Fling = (want: boolean) => void;
 
-function CardFace({ film }: { film: Film }) {
+function CardFace({ item, top }: { item: SwipeItem; top: boolean }) {
   return (
     <>
-      <Poster film={film} />
+      <Poster film={item.card} eager={top} sizes="(min-width: 1024px) 380px, 90vw" />
       <div className="info">
-        <span>
-          {film.genres.join(" · ")} · {film.when === "soon" ? "ra rạp " + film.date : film.min + " phút"}
-        </span>
-        <ScorePill film={film} />
+        <span>{item.sub}</span>
+        <ScorePill film={item.card} />
       </div>
     </>
   );
 }
 
 /* Thẻ trên cùng: kéo nghiêng theo tay, tem hiện dần, thả qua ngưỡng thì bay đi kiểu lò xo. */
-function TopCard({ film, flingRef, onDone }: { film: Film; flingRef: React.RefObject<Fling | null>; onDone: (want: boolean) => void }) {
+function TopCard({ item, flingRef, onDone }: { item: SwipeItem; flingRef: React.RefObject<Fling | null>; onDone: (want: boolean) => void }) {
   const router = useRouter();
   const calm = useReducedMotionPref();
   const x = useMotionValue(0);
@@ -61,12 +58,12 @@ function TopCard({ film, flingRef, onDone }: { film: Film; flingRef: React.RefOb
       onDragEnd={(_, info) => {
         if (Math.abs(info.offset.x) > 110 || Math.abs(info.velocity.x) > 700) flingRef.current?.(info.offset.x > 0);
       }}
-      onTap={() => !busy.current && router.push(`/phim/${film.id}`, { scroll: false })}
+      onTap={() => !busy.current && router.push(`/phim/${item.card.id}`, { scroll: false })}
       initial={{ scale: 0.95, y: 12 }}
       animate={{ scale: 1, y: 0 }}
       transition={{ type: "spring", stiffness: 400, damping: 30 }}
     >
-      <CardFace film={film} />
+      <CardFace item={item} top />
       <motion.span className="st st-yes" style={{ opacity: yes }}>CHỐT ĐƠN</motion.span>
       <motion.span className="st st-no" style={{ opacity: no }}>THÔI NÉ</motion.span>
     </motion.div>
@@ -81,8 +78,8 @@ const BACK = [
 export function Deck() {
   const { state, dispatch } = useFito();
   const flingRef = useRef<Fling | null>(null);
-  const films = state.deck.map(getFilm).filter(Boolean) as Film[];
-  const top = films[0];
+  const items = state.deck.map((id) => itemOf(state, id)).filter((x): x is SwipeItem => !!x);
+  const top = items[0];
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -106,12 +103,12 @@ export function Deck() {
   return (
     <>
       <div className="deck">
-        {films.slice(1, 3).map((f, i) => (
-          <motion.div key={f.id} className="card" style={{ zIndex: 2 - i }} animate={BACK[i]} transition={{ type: "spring", stiffness: 300, damping: 26 }} aria-hidden>
-            <CardFace film={f} />
+        {items.slice(1, 3).map((it, i) => (
+          <motion.div key={it.card.id} className="card" style={{ zIndex: 2 - i }} animate={BACK[i]} transition={{ type: "spring", stiffness: 300, damping: 26 }} aria-hidden>
+            <CardFace item={it} top={false} />
           </motion.div>
         ))}
-        <TopCard key={top.id} film={top} flingRef={flingRef} onDone={(want) => dispatch({ type: "swipe", id: top.id, want })} />
+        <TopCard key={top.card.id} item={top} flingRef={flingRef} onDone={(want) => dispatch({ type: "swipe", id: top.card.id, want })} />
       </div>
       <div className="deck-btns">
         <button type="button" className="round no" aria-label="Thôi né" onClick={() => flingRef.current?.(false)}>

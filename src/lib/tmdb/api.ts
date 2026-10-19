@@ -3,8 +3,9 @@ import "server-only";
 // Lấy dữ liệu TMDB có cache ('use cache' + cacheLife). Lỗi thì throw bên trong scope có cache để không bị cache;
 // phần phụ có thể lỗi (en-US, rạp) được gộp bên ngoài cache bằng settle().
 import { cacheLife, cacheTag } from "next/cache";
+import { discoverParams, effectiveSort, sortCinema, type Filters } from "@/lib/discover";
 import { getFilm, sampleDetail } from "@/lib/films";
-import { PLATFORMS, type HomeData, type MovieCard, type MovieDetail, type Result, type SearchPage } from "@/lib/movie";
+import type { MovieCard, MovieDetail, MoviePage, Result, SearchPage } from "@/lib/movie";
 import { TmdbError, tmdbGet } from "./client";
 import { clean, mergeLists, toDetail } from "./pick";
 import type { TmdbListItem, TmdbMovieFull, TmdbPaged } from "./types";
@@ -22,7 +23,7 @@ async function fetchListPage(path: string, params: Params): Promise<TmdbPaged<Tm
   return tmdbGet<TmdbPaged<TmdbListItem>>(path, { ...params, include_adult: false });
 }
 
-/* Trang 1..min(total_pages, maxPages), mỗi trang gọi song song vi-VN và en-US. */
+/* Trang 1..min(total_pages, maxPages), mỗi trang gọi song song vi-VN và en-US. Có region thì ngày là ngày ra rạp VN, bỏ năm. */
 async function fetchPagesViEn(path: string, params: Params, maxPages: number): Promise<MovieCard[]> {
   const pair = (page: number) =>
     Promise.all([
@@ -36,6 +37,7 @@ async function fetchPagesViEn(path: string, params: Params, maxPages: number): P
   return mergeLists(
     all.flatMap(([vi]) => vi.results),
     all.flatMap(([, en]) => en.results),
+    "region" in params,
   );
 }
 
@@ -59,49 +61,25 @@ export async function getUpcomingVN(): Promise<MovieCard[]> {
   });
 }
 
-async function getWatchRegions(): Promise<string[]> {
-  "use cache";
-  cacheLife(DETAIL_LIFE);
-  cacheTag("tmdb", "watch-regions");
-  const data = await tmdbGet<{ results: { iso_3166_1: string }[] }>("/watch/providers/regions", { language: "vi-VN" });
-  return data.results.map((r) => r.iso_3166_1);
+/* Khoảng ngày của now_playing VN (TMDB trả trong `dates`), dùng cho Ra rạp trong Chọn phim. */
+async function nowPlayingWindow(): Promise<{ min: string; max: string }> {
+  const { dates } = await fetchListPage("/movie/now_playing", { region: "VN", language: "vi-VN", page: 1 });
+  if (!dates) throw new TmdbError("/movie/now_playing", 0);
+  return { min: dates.minimum, max: dates.maximum };
 }
 
-export async function getHomeVN(): Promise<HomeData> {
-  "use cache";
-  cacheLife(LIST_LIFE);
-  cacheTag("tmdb", "home");
-  const regionSupported = (await getWatchRegions()).includes("VN");
-
-  const byId = new Map<number, MovieCard>();
-  if (regionSupported) {
-    const withId = PLATFORMS.filter((p) => p.tmdbId != null);
-    const pages = await Promise.all(
-      withId.map((p) => {
-        const params = {
-          watch_region: "VN",
-          with_watch_providers: p.tmdbId!,
-          with_watch_monetization_types: "flatrate|free|ads|rent|buy",
-          sort_by: "popularity.desc",
-          page: 1,
-        };
-        return Promise.all([
-          fetchListPage("/discover/movie", { ...params, language: "vi-VN" }),
-          fetchListPage("/discover/movie", { ...params, language: "en-US" }),
-        ]);
-      }),
-    );
-    pages.forEach(([vi, en], i) => {
-      for (const card of mergeLists(vi.results, en.results)) {
-        const cur = byId.get(card.id) ?? card;
-        if (!cur.providers.includes(withId[i].label)) cur.providers = [...cur.providers, withId[i].label];
-        byId.set(card.id, cur);
-      }
-    });
+/* Không cache ở tầng này: fetchListPage đã cache 6 giờ. Lỗi thì throw, nơi gọi bọc bằng settle(). */
+export async function discoverMovies(f: Filters, page: number): Promise<MoviePage> {
+  if (f.where === "cinema") {
+    const list = await fetchPagesViEn("/discover/movie", discoverParams(f, await nowPlayingWindow()), 3);
+    return { page: 1, totalPages: 1, total: list.length, results: sortCinema(list, effectiveSort(f)) };
   }
-  const byPlatform = [...byId.values()].sort((a, b) => b.popularity - a.popularity);
-  const fallback = byPlatform.length ? [] : (await fetchPagesViEn("/movie/popular", {}, 2)).slice(0, 40);
-  return { regionSupported, byPlatform, fallback };
+  const params = { ...discoverParams(f), page };
+  const [vi, en] = await Promise.all([
+    fetchListPage("/discover/movie", { ...params, language: "vi-VN" }),
+    fetchListPage("/discover/movie", { ...params, language: "en-US" }),
+  ]);
+  return { page, totalPages: Math.min(vi.total_pages, 500), total: vi.total_results, results: mergeLists(vi.results, en.results) };
 }
 
 /* Bản vi-VN đầy đủ. 404 thì trả null (được cache); lỗi khác throw để không bị cache. */
@@ -154,7 +132,7 @@ async function withEnTitles(vi: TmdbMovieFull, en: TmdbMovieFull): Promise<TmdbM
     (["similar", "recommendations"] as const).map(async (k) => {
       const enList = en[k]?.results ?? [];
       const have = new Set(enList.map((m) => m.id));
-      const missing = (vi[k]?.results ?? []).slice(0, 12).filter((m) => !have.has(m.id) && needsEn(m));
+      const missing = (vi[k]?.results ?? []).filter((m) => !m.adult).slice(0, 12).filter((m) => !have.has(m.id) && needsEn(m));
       if (!missing.length) return;
       const titles = await Promise.all(missing.map((m) => settle(getEnTitle(m.id))));
       const extra = missing.flatMap((m, i) => {

@@ -4,8 +4,8 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
-import { getFilm, ME, PARTNER } from "@/lib/films";
-import { buzz, useFito } from "@/lib/store";
+import { ME, PARTNER } from "@/lib/films";
+import { buzz, itemOf, useFito, type SwipeItem } from "@/lib/store";
 import { Poster } from "../film/Poster";
 
 gsap.registerPlugin(useGSAP);
@@ -19,12 +19,12 @@ const TITLE = "TRÙNG GU RỒI!";
 export function MatchOverlay() {
   const { state, dispatch } = useFito();
   const id = state.justMatched;
-  if (id == null || !getFilm(id)) return null;
-  return <Overlay key={id} id={id} n={state.matches.length} onClose={() => dispatch({ type: "closeMatch" })} />;
+  const item = id == null ? null : itemOf(state, id);
+  if (id == null || !item) return null;
+  return <Overlay key={id} id={id} item={item} n={state.matches.length} onClose={() => dispatch({ type: "closeMatch" })} />;
 }
 
-function Overlay({ id, n, onClose }: { id: number; n: number; onClose: () => void }) {
-  const film = getFilm(id)!;
+function Overlay({ id, item, n, onClose }: { id: number; item: SwipeItem; n: number; onClose: () => void }) {
   const router = useRouter();
   const root = useRef<HTMLDivElement>(null);
   const openBtn = useRef<HTMLButtonElement>(null);
@@ -101,9 +101,9 @@ function Overlay({ id, n, onClose }: { id: number; n: number; onClose: () => voi
             <span key={i} aria-hidden>{ch === " " ? " " : ch}</span>
           ))}
         </h2>
-        <div className="film">cả hai cùng muốn xem <b>{film.vi}</b></div>
+        <div className="film">cả hai cùng muốn xem <b>{item.card.title}</b></div>
         <div className="booth">
-          <div><Poster film={film} bare /></div>
+          <div><Poster film={item.card} bare /></div>
           <div><span className="ava me">{ME.letter}</span></div>
           <div><span className="ava you">{PARTNER.letter}</span></div>
           <div className="dt num">{date}<br />{d.getFullYear()}<br />#{n}</div>

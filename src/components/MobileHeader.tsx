@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Search } from "lucide-react";
+import { Search, Settings } from "lucide-react";
 import { Online } from "./Online";
 import { PaletteToggle } from "./PaletteToggle";
 import { SignOutButton } from "./SignOutButton";
@@ -12,9 +12,12 @@ export function MobileHeader() {
         Fito<small>sổ tay xem phim của hai đứa</small>
       </div>
       <div className="flex items-center gap-2">
-        <Online className="hidden min-[400px]:flex" />
-        <Link href="/tim" className="icon-btn search-btn" aria-label="Tìm phim">
+        <Online className="hidden min-[480px]:flex" />
+        <Link href="/tim" transitionTypes={["tab"]} className="icon-btn search-btn" aria-label="Tìm phim">
           <Search className="size-5" aria-hidden />
+        </Link>
+        <Link href="/cai-dat" transitionTypes={["tab"]} className="icon-btn search-btn" aria-label="Cài đặt">
+          <Settings className="size-5" aria-hidden />
         </Link>
         <PaletteToggle />
         <SignOutButton />

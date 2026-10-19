@@ -103,7 +103,7 @@ function Where({ film }: { film: MovieDetail }) {
               </a>
             ))}
           </div>
-          <p className="src">Lịch theo TMDB, có thể lệch với rạp thật</p>
+          <p className="src">{film.isSample ? "Lịch mẫu, không phải lịch thật" : "Lịch theo TMDB, có thể lệch với rạp thật"}</p>
         </>
       )}
       {pv ? (
@@ -120,7 +120,7 @@ function Where({ film }: { film: MovieDetail }) {
               </div>
             </div>
           ))}
-          {pv.link && (
+          {pv.link && !film.isSample && (
             <a className="d-link" href={pv.link} {...EXT}>
               Xem trên JustWatch <ExternalLink className="size-3.5" aria-hidden />
             </a>
@@ -129,7 +129,7 @@ function Where({ film }: { film: MovieDetail }) {
       ) : (
         <p>Chưa thấy trên nền tảng nào ở VN</p>
       )}
-      <p className="src">Dữ liệu nơi xem: JustWatch</p>
+      <p className="src">{film.isSample ? "Nơi xem mẫu" : "Dữ liệu nơi xem: JustWatch"}</p>
     </div>
   );
 }
@@ -253,26 +253,36 @@ export function DetailBody({ film }: { film: MovieDetail }) {
 
       <div className="d-top">
         <div className="ticket total">
-          <div className="big num">
-            {t == null ? DASH : <CountUp to={t} />}
-            <small>/10</small>
-          </div>
-          <div className="meta">
-            <motion.span
-              className={`stamp lv-${lv}`}
-              initial={{ scale: 2.4, rotate: -20, opacity: 0 }}
-              animate={{ scale: 1, rotate: -8, opacity: 1 }}
-              transition={{ type: "spring", stiffness: 420, damping: 14, delay: 0.55 }}
-            >
-              {STAMP[lv]}
-            </motion.span>
-            <br />
-            {t == null ? "Chưa nguồn nào đủ điểm" : `Trung bình ${nCount} nguồn có điểm`}
-          </div>
+          {t == null ? (
+            <>
+              <div className="big none">Chưa đủ điểm</div>
+              <div className="meta">Chưa nguồn nào đủ {MIN_VOTES} lượt đánh giá</div>
+            </>
+          ) : (
+            <>
+              <div className="big num">
+                <CountUp to={t} />
+                <small>/10</small>
+              </div>
+              <div className="meta">
+                <motion.span
+                  className={`stamp lv-${lv}`}
+                  initial={{ scale: 2.4, rotate: -20, opacity: 0 }}
+                  animate={{ scale: 1, rotate: -8, opacity: 1 }}
+                  transition={{ type: "spring", stiffness: 420, damping: 14, delay: 0.55 }}
+                >
+                  {STAMP[lv]}
+                </motion.span>
+                <br />
+                Trung bình {nCount} nguồn có điểm
+              </div>
+            </>
+          )}
         </div>
 
         <div className="rings">
-          {SOURCES.map(({ key, label, div }, i) => {
+          {/* Phim mẫu không ghi nguồn TMDB. */}
+          {SOURCES.filter(({ key }) => !(film.isSample && key === "tmdb")).map(({ key, label, div }, i) => {
             const s = film.sc[key];
             const has = !!s && s.v != null;
             const norm = has ? s.v / div : 0;

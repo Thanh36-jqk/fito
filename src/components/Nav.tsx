@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
-import { BookOpen, Heart, Search, Ticket, Tv, type LucideIcon } from "lucide-react";
+import { BookOpen, Heart, Search, Settings, Ticket, Tv, type LucideIcon } from "lucide-react";
 import { Online } from "./Online";
 import { PaletteToggle } from "./PaletteToggle";
 import { SignOutButton } from "./SignOutButton";
@@ -40,6 +40,7 @@ export function Nav() {
 
       <Link
         href="/tim"
+        transitionTypes={["tab"]}
         className="search-link hidden lg:flex"
         aria-current={pathname.startsWith("/tim") ? "page" : undefined}
       >
@@ -66,6 +67,7 @@ export function Nav() {
               )}
               <Link
                 href={href}
+                transitionTypes={["tab"]}
                 aria-current={active ? "page" : undefined}
                 className={`relative flex min-h-[52px] flex-col items-center justify-center gap-px rounded-full text-[12px] font-extrabold transition-colors duration-300
                             lg:min-h-14 lg:flex-row lg:justify-start lg:gap-3 lg:px-5 lg:font-display lg:text-[17px]
@@ -80,6 +82,14 @@ export function Nav() {
       </ul>
 
       <div className="mt-auto hidden flex-col items-start gap-4 px-3 lg:flex">
+        <Link
+          href="/cai-dat"
+          transitionTypes={["tab"]}
+          className="search-link flex"
+          aria-current={pathname.startsWith("/cai-dat") ? "page" : undefined}
+        >
+          <Settings className="size-5" aria-hidden /> Cài đặt
+        </Link>
         <Online className="flex" />
         <PaletteToggle />
         <SignOutButton />

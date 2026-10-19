@@ -1,0 +1,10 @@
+/* Khu vực Chọn phim (picker): style riêng của T2. Chỉ dùng token màu. */
+.pk-deep { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 44px; margin-bottom: 12px; font-family: var(--f-display); font-weight: 800; font-size: 15px; color: var(--accent-2); }
+.pk-deep[aria-expanded="true"] svg:last-child { rotate: 180deg; }
+@media (prefers-reduced-motion: no-preference) { .pk-deep svg:last-child { transition: rotate .25s var(--spring); } }
+.pk-note { font-size: 13px; color: var(--muted); margin: -8px 0 16px; }
+.pk-note a { color: var(--accent-2); text-decoration: underline; text-underline-offset: 2px; }
+.pk-skel { height: 96px; opacity: .6; }
+.pk-opt .fan:empty { min-height: 118px; }
+.pk-err { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 4px 0 12px; font-size: 14px; color: var(--muted); }
+.pk-err .btn { flex: none; min-height: 44px; }

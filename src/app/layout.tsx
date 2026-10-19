@@ -11,6 +11,8 @@ import "@/styles/fito.css";
 import "@/styles/home.css";
 import "@/styles/detail.css";
 import "@/styles/search.css";
+import "@/styles/picker.css";
+import "@/styles/settings.css";
 
 const baloo = Baloo_2({ variable: "--font-baloo", subsets: ["latin", "vietnamese"], weight: ["600", "700", "800"] });
 const nunito = Nunito({ variable: "--font-nunito", subsets: ["latin", "vietnamese"], weight: ["500", "600", "700", "800"] });
@@ -47,8 +49,8 @@ export default function RootLayout({ children, modal }: LayoutProps<"/">) {
             </Suspense>
             <main className="main">
               <MobileHeader />
-              {/* Gõ ở /tim (transitionTypes "search") thì không chạy hiệu ứng chuyển trang */}
-              <ViewTransition default={{ search: "none", default: "tab-swap" }}>{children}</ViewTransition>
+              {/* Chỉ điều hướng có type "tab" (link thanh điều hướng/header) mới chạy tab-swap; gõ tìm, lọc, Suspense hiện nội dung thì không */}
+              <ViewTransition default={{ tab: "tab-swap", default: "none" }}>{children}</ViewTransition>
             </main>
           </div>
           {modal}

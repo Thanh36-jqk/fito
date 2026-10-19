@@ -4,6 +4,9 @@ import { isSampleFilm, tmdbImg, type MovieCard } from "@/lib/movie";
 
 type Art = { c1: string; c2: string; motif: Motif; title: string; meta: string };
 
+// Số poster đầu mỗi danh sách tải eager: phủ hàng đầu (~6 cột ở 1366px), vì poster nào cùng hàng cũng có thể là LCP
+export const EAGER_N = 6;
+
 const metaOf = (c: MovieCard) => [c.year, c.runtime ? `${c.runtime}P` : null].filter((x) => x != null).join(" · ");
 
 /*
@@ -19,6 +22,7 @@ export function Poster({
   size = "w500",
   sizes = "(min-width: 1024px) 210px, (min-width: 768px) 180px, 45vw",
   preload = false,
+  eager = false,
 }: {
   film: Film | MovieCard;
   bare?: boolean;
@@ -28,6 +32,7 @@ export function Poster({
   size?: "w500" | "w780";
   sizes?: string;
   preload?: boolean;
+  eager?: boolean; // poster đầu danh sách: tải ngay, ưu tiên cao (Next 16 khuyên dùng thay preload)
 }) {
   let art: Art;
   if (isSampleFilm(film)) {
@@ -37,7 +42,16 @@ export function Poster({
   } else if (film.posterPath) {
     return (
       <div className={`poster has-img ${bare ? "bare" : ""} ${className}`} style={style}>
-        <Image className="pimg" src={tmdbImg(film.posterPath, size)} alt="" fill sizes={sizes} preload={preload} />
+        <Image
+          className="pimg"
+          src={tmdbImg(film.posterPath, size)}
+          alt=""
+          fill
+          sizes={sizes}
+          preload={preload}
+          loading={eager && !preload ? "eager" : undefined}
+          fetchPriority={eager && !preload ? "high" : undefined}
+        />
         <div className="halftone" />
         <div className="glare" />
         {children}

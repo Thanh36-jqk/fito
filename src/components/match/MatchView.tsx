@@ -3,8 +3,8 @@
 import { motion } from "motion/react";
 import Link from "next/link";
 import { useState } from "react";
-import { getFilm, PARTNER, whereLabel } from "@/lib/films";
-import { useFito } from "@/lib/store";
+import { PARTNER } from "@/lib/films";
+import { itemOf, useFito } from "@/lib/store";
 import { EmptyState } from "../EmptyState";
 import { Poster } from "../film/Poster";
 import { ScorePill } from "../film/ScorePill";
@@ -16,12 +16,11 @@ function MatchList() {
   const { state } = useFito();
   const [f, setF] = useState<(typeof FILTERS)[number]>("Tất cả");
   const list = state.matches
-    .filter((m) => !!getFilm(m.id))
-    .filter((m) => {
-      const w = getFilm(m.id)!.when;
-      return f === "Tất cả" || (f === "Ở nhà" ? w === "home" : w !== "home");
+    .flatMap((m) => {
+      const item = itemOf(state, m.id);
+      return item ? [{ m, item }] : [];
     })
-    .slice()
+    .filter(({ item }) => f === "Tất cả" || item.place === (f === "Ở nhà" ? "home" : "cinema"))
     .reverse();
 
   return (
@@ -39,25 +38,22 @@ function MatchList() {
       </div>
       {list.length ? (
         <div className="mlist wide">
-          {list.map((m) => {
-            const film = getFilm(m.id)!;
-            return (
-              <motion.div key={m.id} layout initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
-                <Link href={`/phim/${film.id}`} scroll={false} className="ticket mrow">
-                  <Poster film={film} bare />
-                  <div className="mi">
-                    <b>{film.vi}</b>
-                    <span>{whereLabel(film)}</span>
-                    <span className="num">trùng gu {m.at}</span>
-                  </div>
-                  <div className="seat">
-                    GHẾ ĐÔI<em className="num">{m.seat}</em>
-                    <ScorePill film={film} />
-                  </div>
-                </Link>
-              </motion.div>
-            );
-          })}
+          {list.map(({ m, item }) => (
+            <motion.div key={m.id} layout initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
+              <Link href={`/phim/${item.card.id}`} scroll={false} className="ticket mrow">
+                <Poster film={item.card} bare />
+                <div className="mi">
+                  <b>{item.card.title}</b>
+                  <span>{item.where}</span>
+                  <span className="num">trùng gu {m.at}</span>
+                </div>
+                <div className="seat">
+                  GHẾ ĐÔI<em className="num">{m.seat}</em>
+                  <ScorePill film={item.card} />
+                </div>
+              </Link>
+            </motion.div>
+          ))}
         </div>
       ) : (
         <EmptyState mood="sad" title="Chưa trùng gu phim nào ở mục này" />

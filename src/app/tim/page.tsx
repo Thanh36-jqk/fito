@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { EmptyState } from "@/components/EmptyState";
 import { Hello } from "@/components/Hello";
+import { EAGER_N } from "@/components/film/Poster";
 import { TicketCard } from "@/components/film/TicketCard";
 import { ResultsSkeleton, SearchBox, SearchBoxShell } from "@/components/search/SearchBox";
 import { searchMovies, settle } from "@/lib/tmdb/api";
@@ -73,8 +74,8 @@ async function Results({ searchParams }: Pick<PageProps<"/tim">, "searchParams">
         <small>{`${total.toLocaleString("vi-VN")} phim · theo TMDB`}</small>
       </div>
       <div className="grid-tickets">
-        {results.map((f) => (
-          <TicketCard key={f.id} film={f} sticker={f.year ? String(f.year) : null} showScore />
+        {results.map((f, i) => (
+          <TicketCard key={f.id} film={f} sticker={f.year ? String(f.year) : null} showScore eager={i < EAGER_N} />
         ))}
       </div>
       {totalPages > 1 && (

@@ -39,7 +39,7 @@
 @media (min-width: 1024px) { .chips { margin-inline: 0; padding-inline: 2px; flex-wrap: wrap; overflow: visible; } }
 
 /* ---------- tiêu đề mục ---------- */
-.sec-h { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin: 22px 0 10px; }
+.sec-h { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 8px; margin: 22px 0 10px; }
 .sec-h h2 { font-family: var(--f-display); font-weight: 800; font-size: 22px; margin: 0; }
 .sec-h small { font-size: 13px; color: var(--muted); }
 .note svg { width: 40px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; }

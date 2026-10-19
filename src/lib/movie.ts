@@ -38,7 +38,7 @@ export type Trailer = { key: string; name: string; lang: string | null; publishe
 export type LangText = { text: string; lang: "vi" | "en" };
 export type MovieReview = {
   id: string;
-  src: "TMDB" | "Trakt";
+  src: "TMDB" | "Trakt" | "Mẫu";
   author: string;
   date: string | null; // ISO
   text: string;
@@ -71,8 +71,8 @@ export type MovieDetail = MovieCard & {
   isSample: boolean;
 };
 
+export type MoviePage = { page: number; totalPages: number; total: number; results: MovieCard[] };
 export type SearchPage = { query: string; page: number; totalPages: number; total: number; results: MovieCard[] };
-export type HomeData = { regionSupported: boolean; byPlatform: MovieCard[]; fallback: MovieCard[] };
 export type Result<T> = { ok: true; data: T } | { ok: false; error: string };
 
 export type Platform = { key: string; label: string; tmdbId: number | null };
@@ -81,9 +81,12 @@ export const PLATFORMS: Platform[] = [
   { key: "fpt-play", label: "FPT Play", tmdbId: null },
   { key: "galaxy-play", label: "Galaxy Play", tmdbId: null },
   { key: "vieon", label: "VieON", tmdbId: null },
+  { key: "tv360", label: "TV360", tmdbId: null },
   { key: "prime-video", label: "Prime Video", tmdbId: 119 },
-  { key: "disney-plus", label: "Disney+", tmdbId: 122 },
+  { key: "disney-plus", label: "Disney+", tmdbId: 337 },
   { key: "apple-tv", label: "Apple TV", tmdbId: 350 },
+  { key: "iqiyi", label: "iQIYI", tmdbId: null },
+  { key: "wetv", label: "WeTV", tmdbId: null },
 ];
 
 export const GENRE_VI: Record<number, string> = {

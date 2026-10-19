@@ -9,10 +9,12 @@ export function TicketCard({
   film,
   sticker,
   showScore,
+  eager,
 }: {
   film: Film | MovieCard;
   sticker?: string | null;
   showScore?: boolean;
+  eager?: boolean;
 }) {
   const sample = isSampleFilm(film);
   const card = sample ? sampleCard(film) : film;
@@ -23,7 +25,7 @@ export function TicketCard({
     .join(" · ");
   return (
     <Link href={`/phim/${card.id}`} scroll={false} className="ticket soon">
-      <Poster film={film} />
+      <Poster film={film} eager={eager} />
       {tag && <span className="sticker date num">{tag}</span>}
       <div className="perf" />
       <b>{card.title}</b>

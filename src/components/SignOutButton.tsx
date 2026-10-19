@@ -6,7 +6,7 @@ import { hasSupabase } from "@/lib/supabase/env";
 import { createClient } from "@/lib/supabase/client";
 
 /* Chưa nối Supabase thì không có đăng nhập, nên không hiện nút. */
-export function SignOutButton({ className = "" }: { className?: string }) {
+export function SignOutButton({ className = "", showLabel = false }: { className?: string; showLabel?: boolean }) {
   const router = useRouter();
   if (!hasSupabase) return null;
 
@@ -24,7 +24,7 @@ export function SignOutButton({ className = "" }: { className?: string }) {
       className={`inline-flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-full border-2 border-line bg-surface px-3 text-[14px] font-extrabold text-muted transition-colors hover:text-fg ${className}`}
     >
       <LogOut className="size-[18px]" aria-hidden />
-      <span className="max-lg:sr-only">Đăng xuất</span>
+      <span className={showLabel ? undefined : "max-lg:sr-only"}>Đăng xuất</span>
     </button>
   );
 }
