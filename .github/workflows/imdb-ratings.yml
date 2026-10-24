@@ -9,13 +9,26 @@ jobs:
   import:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
     steps:
+      # Chưa đặt secret thì bỏ qua êm (job vẫn xanh), tránh mail báo fail hằng tuần.
+      - name: Kiểm tra secret
+        id: check
+        run: |
+          if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_SERVICE_ROLE_KEY" ]; then
+            echo "::notice::Chưa đặt secret SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY — bỏ qua nạp điểm IMDb."
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          fi
       - uses: actions/checkout@v5
+        if: steps.check.outputs.run == 'true'
       - uses: actions/setup-node@v5
+        if: steps.check.outputs.run == 'true'
         with:
           node-version: 22
       # Script không có dependency nên không cần npm ci
       - run: node scripts/import-imdb-ratings.mjs
-        env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        if: steps.check.outputs.run == 'true'
