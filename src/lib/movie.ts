@@ -19,7 +19,7 @@ export type MovieCard = {
   posterPath: string | null; // path TMDB "/abc.jpg"
   backdropPath: string | null;
   popularity: number;
-  sc: Scores; // phim thật: chỉ có tmdb, các nguồn khác null
+  sc: Scores; // list: chỉ tmdb. Trang chi tiết bổ sung imdb/rt/mc/trakt theo imdb_id (xem tmdb/api.ts)
   providers: string[]; // nhãn nền tảng VN (Ở nhà); [] nếu không biết
   sample?: SampleArt; // chỉ phim mẫu
 };

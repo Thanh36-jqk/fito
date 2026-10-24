@@ -4,6 +4,7 @@ import "server-only";
 // phần phụ có thể lỗi (en-US, rạp) được gộp bên ngoài cache bằng settle().
 import { cacheLife, cacheTag } from "next/cache";
 import { discoverParams, effectiveSort, sortCinema, type Filters } from "@/lib/discover";
+import { getImdbScore, getOmdbScores, getTraktScore } from "@/lib/ratings/sources";
 import { getFilm, sampleDetail } from "@/lib/films";
 import type { MovieCard, MovieDetail, MoviePage, Result, SearchPage } from "@/lib/movie";
 import { TmdbError, tmdbGet } from "./client";
@@ -154,10 +155,30 @@ async function cinemaOf(id: number): Promise<"now" | "soon" | null> {
 }
 
 /* Không cache ở tầng này: từng phần đã cache riêng. Phần phụ (en, rạp) lỗi thì chỉ thiếu ở lần này, không bị cache. */
-export async function getMovieDetail(id: number): Promise<MovieDetail | null> {
+export async function getMovieDetail(id: number, opts?: { scores?: boolean }): Promise<MovieDetail | null> {
   const [vi, en, cinema] = await Promise.all([getMovieVi(id), settle(getMovieEn(id)), cinemaOf(id)]);
   if (!vi || vi.adult) return null; // phim 18+ coi như không có
-  return toDetail({ vi, en: en.ok ? await withEnTitles(vi, en.data) : null, cinema });
+  const detail = toDetail({ vi, en: en.ok ? await withEnTitles(vi, en.data) : null, cinema });
+  // Ảnh OG không dùng điểm nên bỏ qua để khỏi tốn lượt OMDb.
+  return opts?.scores === false ? detail : withExternalScores(detail);
+}
+
+/* Bổ sung điểm IMDb, RT, Metacritic, Trakt theo imdb_id. Mỗi nguồn lỗi thì chỉ nguồn đó hiện "—". */
+async function withExternalScores(detail: MovieDetail): Promise<MovieDetail> {
+  if (!detail.imdbId) return detail;
+  const [imdb, omdb, trakt] = await Promise.all([
+    getImdbScore(detail.imdbId),
+    settle(getOmdbScores(detail.imdbId)),
+    settle(getTraktScore(detail.imdbId)),
+  ]);
+  detail.sc = {
+    ...detail.sc,
+    imdb,
+    rt: omdb.ok ? omdb.data.rt : null,
+    mc: omdb.ok ? omdb.data.mc : null,
+    trakt: trakt.ok ? trakt.data : null,
+  };
+  return detail;
 }
 
 async function searchCached(q: string, page: number): Promise<SearchPage> {
@@ -196,6 +217,7 @@ export async function settle<T>(p: Promise<T>): Promise<Result<T>> {
 /* KHÔNG cache. Id âm là phim mẫu, id dương là phim TMDB. */
 export async function getDetailForRoute(
   id: number,
+  opts?: { scores?: boolean },
 ): Promise<{ ok: true; data: MovieDetail } | { ok: false; reason: "not_found" | "error" }> {
   if (id < 0) {
     const film = getFilm(id);
@@ -203,7 +225,7 @@ export async function getDetailForRoute(
   }
   if (!(id > 0)) return { ok: false, reason: "not_found" };
   try {
-    const data = await getMovieDetail(id);
+    const data = await getMovieDetail(id, opts);
     return data ? { ok: true, data } : { ok: false, reason: "not_found" };
   } catch {
     return { ok: false, reason: "error" };

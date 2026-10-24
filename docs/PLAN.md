@@ -119,15 +119,15 @@ Mỗi màn có 3 trạng thái bắt buộc:
 
 ### Pha 2 — Dữ liệu và điểm
 - [ ] `lib/tmdb.ts`: now_playing, upcoming, discover theo nền tảng VN, chi tiết, tìm kiếm
-- [ ] `lib/omdb.ts` (chỉ RT + Metacritic), `lib/trakt.ts`: lấy điểm và bình luận theo imdb_id
-- [ ] Bảng `imdb_ratings` + job GitHub Actions hằng tuần nạp IMDb Datasets (điểm IMDb cho mọi phim) (script + workflow xong, chờ chạy thật)
+- [x] Điểm RT + Metacritic (OMDb), điểm Trakt, điểm IMDb (bảng `imdb_ratings`) theo imdb_id → gộp vào vòng điểm trang chi tiết (`lib/ratings/`). Bình luận Trakt chưa làm.
+- [ ] Bảng `imdb_ratings` + job GitHub Actions hằng tuần nạp IMDb Datasets (điểm IMDb cho mọi phim) (script + workflow + đọc trong app xong, chờ chạy job thật để có dữ liệu)
 - [ ] Trang chi tiết đầy đủ: diễn viên/ekip có ảnh, tagline, nước, ngôn ngữ, độ tuổi, bộ sưu tập, phim tương tự, gợi ý, logo (TMDB, thiếu thì Fanart.tv)
-- [ ] `lib/score.ts`: chuẩn hoá thang 10, tính điểm tổng, có test Vitest
-- [ ] Cache vào `movie_cache` theo mốc thời gian từng nguồn
+- [x] `lib/score.ts`: chuẩn hoá thang 10, tính điểm tổng, có test Vitest
+- [ ] Cache vào `movie_cache` theo mốc thời gian từng nguồn (điểm chi tiết đang cache bằng `'use cache'` 24h; `movie_cache` + cron để pha sau)
 - [ ] Tab Rạp: băng poster cuộn, nghiêng 3D, nền đổi màu theo poster
 - [ ] Tab Ở nhà: lưới phim theo nền tảng, cuộn vô hạn
 - [ ] Trang chi tiết: vòng điểm, điểm tổng đếm lên, trailer, nơi xem, bình luận che spoiler
-- [ ] Nguồn lỗi thì hiện "—", trang vẫn chạy
+- [x] Nguồn lỗi thì hiện "—", trang vẫn chạy (mỗi nguồn điểm bọc `settle`, lỗi → null → vòng điểm hiện "—")
 
 ### Pha 3 — Lọc, tìm, chọn phim, cài đặt
 - [x] Luồng chọn phim 4 bước như bản mẫu

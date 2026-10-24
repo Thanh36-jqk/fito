@@ -13,7 +13,7 @@ const PLAIN_COLOR = /^(#[0-9a-f]{3,8}|(rgb|hsl)a?\([\d\s.,%]+\))$/i;
 /* Ảnh xem trước của một phim: poster nghiêng + tên + chip mời xem. Không tìm thấy phim vẫn trả ảnh. */
 export default async function Image({ params }: { params: Promise<{ id: string }> }) {
   const id = parseMovieId((await params).id);
-  const r = id == null ? null : await getDetailForRoute(id);
+  const r = id == null ? null : await getDetailForRoute(id, { scores: false });
   const film = r?.ok ? r.data : null;
   const poster = await posterDataUri(film?.posterPath ?? null);
 
