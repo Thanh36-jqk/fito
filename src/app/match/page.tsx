@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { Hello } from "@/components/Hello";
 import { MatchView } from "@/components/match/MatchView";
+import { Skeleton } from "@/components/Skeleton";
 import { getMatches, getSwipeDeck } from "@/lib/swipes";
 
 export const metadata: Metadata = { title: "Match" };
@@ -11,7 +12,7 @@ export default function MatchPage() {
     <section>
       <Hello lead="Quẹt cho" highlight="trùng gu" />
       <p className="hint mb-0">Quẹt phim thật. Cả hai cùng chốt một phim là trùng gu.</p>
-      <Suspense fallback={<p className="text-muted">Đang xếp chồng quẹt…</p>}>
+      <Suspense fallback={<Skeleton style={{ height: 520, maxWidth: 380, margin: "18px auto 0", borderRadius: 24 }} />}>
         <MatchLoader />
       </Suspense>
     </section>

@@ -261,6 +261,23 @@
 .pk-chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .pk-chips .chip small { font-weight: 700; opacity: .75; margin-left: 4px; }
 .pk-chips .chip:disabled { opacity: .4; cursor: not-allowed; }
+
+/* ---------- skeleton khi chuyển trang ---------- */
+.sk { background: linear-gradient(100deg, var(--surface) 30%, var(--surface-2) 50%, var(--surface) 70%); background-size: 200% 100%; animation: sksh 1.2s ease-in-out infinite; border-radius: 12px; }
+@keyframes sksh { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+.sk-row { display: flex; gap: 14px; overflow: hidden; padding: 18px 0 26px; }
+.sk-poster { flex: none; width: 170px; aspect-ratio: 2 / 3; border-radius: 18px; }
+.sk-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.sk-card { aspect-ratio: 2 / 3; border-radius: 14px; }
+@media (min-width: 768px) { .sk-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 18px; } }
+@media (min-width: 1024px) { .sk-poster { width: 210px; } }
+@media (prefers-reduced-motion: reduce) { .sk { animation: none; } }
+
+/* ---------- poster mờ dần khi ảnh tải ---------- */
+.poster.has-img { background: var(--surface); }
+.poster.has-img .pimg { animation: pfade .5s ease; }
+@keyframes pfade { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .poster.has-img .pimg { animation: none; } }
 .pk-sum { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 16px; }
 .pk-sum .tag { background: var(--surface); border-color: var(--line); }
 

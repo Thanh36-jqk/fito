@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { EmptyState } from "@/components/EmptyState";
 import { Hello } from "@/components/Hello";
 import { TicketCard } from "@/components/film/TicketCard";
+import { TicketGridSkeleton } from "@/components/Skeleton";
 import { getJournal } from "@/lib/journal";
 import { fmtDayMonth } from "@/lib/movie";
 
@@ -12,7 +13,7 @@ export default function NhatKyPage() {
   return (
     <section>
       <Hello lead="Sổ tay" highlight="hai đứa" />
-      <Suspense fallback={<p className="text-muted">Đang mở sổ…</p>}>
+      <Suspense fallback={<TicketGridSkeleton />}>
         <JournalContent />
       </Suspense>
     </section>

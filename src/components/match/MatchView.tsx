@@ -110,13 +110,13 @@ export function MatchView({ initialDeck, initialMatches }: { initialDeck: MovieC
     <div className="match-grid">
       <div className="seg" role="tablist">
         {(["swipe", "list"] as const).map((k) => (
-          <button key={k} type="button" role="tab" aria-selected={sub === k} onClick={() => setSub(k)}>
+          <button key={k} type="button" role="tab" id={`tab-${k}`} aria-controls={`pane-${k}`} aria-selected={sub === k} onClick={() => setSub(k)}>
             {sub === k && <motion.span layoutId="seg-ind" className="ind" transition={{ type: "spring", stiffness: 500, damping: 32 }} />}
             {k === "swipe" ? "Quẹt" : `Đã trùng gu (${matches.length})`}
           </button>
         ))}
       </div>
-      <div data-pane className={sub !== "swipe" ? "max-lg:hidden" : ""}>
+      <div data-pane role="tabpanel" id="pane-swipe" aria-labelledby="tab-swipe" className={sub !== "swipe" ? "max-lg:hidden" : ""}>
         <div className="presence">
           <span className="ava you">{PARTNER.letter}</span>
           <span>{partnerOnline ? `${PARTNER.name} cũng đang quẹt` : `${PARTNER.name} chưa online`}</span>
@@ -134,7 +134,7 @@ export function MatchView({ initialDeck, initialMatches }: { initialDeck: MovieC
           <EmptyState mood="happy" title="Hết phim để quẹt rồi" hand="chọn thêm phim hoặc đợi người ấy nha" />
         )}
       </div>
-      <div data-pane className={sub !== "list" ? "max-lg:hidden" : ""}>
+      <div data-pane role="tabpanel" id="pane-list" aria-labelledby="tab-list" className={sub !== "list" ? "max-lg:hidden" : ""}>
         <MatchList matches={matches} />
       </div>
       {overlay && (
