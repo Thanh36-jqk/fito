@@ -29,7 +29,7 @@ export type Snapshot = {
   place: "cinema" | "home";
 };
 
-type CacheRow = {
+export type CacheRow = {
   tmdb_id: number;
   title_vi: string | null;
   title_en: string | null;
@@ -41,10 +41,10 @@ type CacheRow = {
   scores: Scores | null;
 };
 
-const CACHE_COLS = "tmdb_id,title_vi,title_en,year,runtime,genres,poster_path,backdrop_path,scores";
+export const CACHE_COLS = "tmdb_id,title_vi,title_en,year,runtime,genres,poster_path,backdrop_path,scores";
 
 /* Dựng MovieCard tối giản từ một dòng movie_cache để hiển thị cuống vé. */
-function cardFromCache(r: CacheRow): MovieCard {
+export function cardFromCache(r: CacheRow): MovieCard {
   const title = r.title_vi ?? r.title_en ?? "Phim";
   return {
     id: r.tmdb_id,

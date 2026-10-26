@@ -4,28 +4,34 @@ import { animate, motion, useMotionValue, useTransform } from "motion/react";
 import { Heart, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
-import { buzz, itemOf, useFito, type SwipeItem } from "@/lib/store";
+import { DASH, type MovieCard } from "@/lib/movie";
+import { buzz } from "@/lib/store";
 import { useReducedMotionPref } from "@/lib/useMedia";
-import { EmptyState } from "../EmptyState";
 import { Poster } from "../film/Poster";
 import { ScorePill } from "../film/ScorePill";
 
 type Fling = (want: boolean) => void;
 
-function CardFace({ item, top }: { item: SwipeItem; top: boolean }) {
+export function subOf(card: MovieCard): string {
+  return [card.genres.slice(0, 2).join(" · ") || DASH, card.runtime ? `${card.runtime} phút` : card.year != null ? String(card.year) : null]
+    .filter((x) => x != null)
+    .join(" · ");
+}
+
+function CardFace({ card, top }: { card: MovieCard; top: boolean }) {
   return (
     <>
-      <Poster film={item.card} eager={top} sizes="(min-width: 1024px) 380px, 90vw" />
+      <Poster film={card} eager={top} sizes="(min-width: 1024px) 380px, 90vw" />
       <div className="info">
-        <span>{item.sub}</span>
-        <ScorePill film={item.card} />
+        <span>{subOf(card)}</span>
+        <ScorePill film={card} />
       </div>
     </>
   );
 }
 
 /* Thẻ trên cùng: kéo nghiêng theo tay, tem hiện dần, thả qua ngưỡng thì bay đi kiểu lò xo. */
-function TopCard({ item, flingRef, onDone }: { item: SwipeItem; flingRef: React.RefObject<Fling | null>; onDone: (want: boolean) => void }) {
+function TopCard({ card, flingRef, onDone }: { card: MovieCard; flingRef: React.RefObject<Fling | null>; onDone: (want: boolean) => void }) {
   const router = useRouter();
   const calm = useReducedMotionPref();
   const x = useMotionValue(0);
@@ -58,12 +64,12 @@ function TopCard({ item, flingRef, onDone }: { item: SwipeItem; flingRef: React.
       onDragEnd={(_, info) => {
         if (Math.abs(info.offset.x) > 110 || Math.abs(info.velocity.x) > 700) flingRef.current?.(info.offset.x > 0);
       }}
-      onTap={() => !busy.current && router.push(`/phim/${item.card.id}`, { scroll: false })}
+      onTap={() => !busy.current && router.push(`/phim/${card.id}`, { scroll: false })}
       initial={{ scale: 0.95, y: 12 }}
       animate={{ scale: 1, y: 0 }}
       transition={{ type: "spring", stiffness: 400, damping: 30 }}
     >
-      <CardFace item={item} top />
+      <CardFace card={card} top />
       <motion.span className="st st-yes" style={{ opacity: yes }}>CHỐT ĐƠN</motion.span>
       <motion.span className="st st-no" style={{ opacity: no }}>THÔI NÉ</motion.span>
     </motion.div>
@@ -75,11 +81,9 @@ const BACK = [
   { y: 22, scale: 0.9, rotate: -3 },
 ];
 
-export function Deck() {
-  const { state, dispatch } = useFito();
+export function Deck({ cards, onSwipe }: { cards: MovieCard[]; onSwipe: (card: MovieCard, want: boolean) => void }) {
   const flingRef = useRef<Fling | null>(null);
-  const items = state.deck.map((id) => itemOf(state, id)).filter((x): x is SwipeItem => !!x);
-  const top = items[0];
+  const top = cards[0];
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -91,24 +95,17 @@ export function Deck() {
     return () => removeEventListener("keydown", onKey);
   }, []);
 
-  if (!top)
-    return (
-      <EmptyState mood="happy" title="Hết phim để quẹt rồi" hand="đợi người ấy quẹt xong nha">
-        <button type="button" className="btn btn-ghost mx-auto mt-2" onClick={() => dispatch({ type: "resetDeck" })}>
-          Quẹt lại từ đầu (dữ liệu mẫu)
-        </button>
-      </EmptyState>
-    );
+  if (!top) return null;
 
   return (
     <>
       <div className="deck">
-        {items.slice(1, 3).map((it, i) => (
-          <motion.div key={it.card.id} className="card" style={{ zIndex: 2 - i }} animate={BACK[i]} transition={{ type: "spring", stiffness: 300, damping: 26 }} aria-hidden>
-            <CardFace item={it} top={false} />
+        {cards.slice(1, 3).map((c, i) => (
+          <motion.div key={c.id} className="card" style={{ zIndex: 2 - i }} animate={BACK[i]} transition={{ type: "spring", stiffness: 300, damping: 26 }} aria-hidden>
+            <CardFace card={c} top={false} />
           </motion.div>
         ))}
-        <TopCard key={top.card.id} item={top} flingRef={flingRef} onDone={(want) => dispatch({ type: "swipe", id: top.card.id, want })} />
+        <TopCard key={top.id} card={top} flingRef={flingRef} onDone={(want) => onSwipe(top, want)} />
       </div>
       <div className="deck-btns">
         <button type="button" className="round no" aria-label="Thôi né" onClick={() => flingRef.current?.(false)}>

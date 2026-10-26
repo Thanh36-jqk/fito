@@ -21,10 +21,10 @@ export function MatchOverlay() {
   const id = state.justMatched;
   const item = id == null ? null : itemOf(state, id);
   if (id == null || !item) return null;
-  return <Overlay key={id} id={id} item={item} n={state.matches.length} onClose={() => dispatch({ type: "closeMatch" })} />;
+  return <MatchOverlayView key={id} id={id} item={item} n={state.matches.length} onClose={() => dispatch({ type: "closeMatch" })} />;
 }
 
-function Overlay({ id, item, n, onClose }: { id: number; item: SwipeItem; n: number; onClose: () => void }) {
+export function MatchOverlayView({ id, item, n, onClose }: { id: number; item: SwipeItem; n: number; onClose: () => void }) {
   const router = useRouter();
   const root = useRef<HTMLDivElement>(null);
   const openBtn = useRef<HTMLButtonElement>(null);
