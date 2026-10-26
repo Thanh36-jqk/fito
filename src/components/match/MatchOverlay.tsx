@@ -2,8 +2,9 @@
 
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { Share2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ME, PARTNER } from "@/lib/films";
 import { buzz, itemOf, useFito, type SwipeItem } from "@/lib/store";
 import { Poster } from "../film/Poster";
@@ -28,6 +29,33 @@ export function MatchOverlayView({ id, item, n, onClose }: { id: number; item: S
   const router = useRouter();
   const root = useRef<HTMLDivElement>(null);
   const openBtn = useRef<HTMLButtonElement>(null);
+  const [saving, setSaving] = useState(false);
+
+  async function share(d: string) {
+    if (saving) return;
+    setSaving(true);
+    try {
+      const res = await fetch(`/api/share/${id}?n=${encodeURIComponent(String(n))}&d=${encodeURIComponent(d)}`);
+      if (!res.ok) throw new Error("share");
+      const blob = await res.blob();
+      const file = new File([blob], `fito-trung-gu-${id}.png`, { type: "image/png" });
+      const nav = navigator as Navigator & { canShare?: (data?: { files?: File[] }) => boolean };
+      if (nav.canShare?.({ files: [file] }) && nav.share) {
+        await nav.share({ files: [file], title: "Trùng gu rồi!", text: `${ME.name} & ${PARTNER.name} cùng muốn xem ${item.card.title}` });
+      } else {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = file.name;
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+    } catch {
+      // bỏ qua: nút trở lại bình thường để thử lại
+    } finally {
+      setSaving(false);
+    }
+  }
 
   useEffect(() => {
     buzz([30, 60, 30]);
@@ -108,7 +136,10 @@ export function MatchOverlayView({ id, item, n, onClose }: { id: number; item: S
           <div><span className="ava you">{PARTNER.letter}</span></div>
           <div className="dt num">{date}<br />{d.getFullYear()}<br />#{n}</div>
         </div>
-        <div className="booth-cap">dải photobooth để đăng story · lưu ảnh sẽ có sau</div>
+        <button type="button" className="btn btn-ghost booth-share" onClick={() => share(date)} disabled={saving}>
+          <Share2 className="size-5" aria-hidden />
+          {saving ? "Đang tạo ảnh…" : "Lưu / chia sẻ ảnh story"}
+        </button>
         <div className="row">
           <button type="button" className="btn btn-ghost" onClick={onClose}>Để sau</button>
           <button ref={openBtn} type="button" className="btn btn-main" onClick={() => { onClose(); router.push(`/phim/${id}`, { scroll: false }); }}>
