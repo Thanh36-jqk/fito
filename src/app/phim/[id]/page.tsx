@@ -53,12 +53,11 @@ export default function PhimPage({ params }: PageProps<"/phim/[id]">) {
 async function PageContent({ params }: { params: PageProps<"/phim/[id]">["params"] }) {
   const id = parseMovieId((await params).id);
   if (id == null) notFound();
-  const r = await getDetailForRoute(id);
+  const [r, status] = await Promise.all([getDetailForRoute(id), getMyFilmStatus(id)]);
   if (!r.ok) {
     if (r.reason === "not_found") notFound();
     return <DetailError />;
   }
-  const status = await getMyFilmStatus(r.data.id);
   return (
     <>
       <div className="sheet-scroll">

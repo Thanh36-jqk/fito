@@ -34,9 +34,9 @@ export function Nav() {
       className="fixed inset-x-0 bottom-[calc(14px+env(safe-area-inset-bottom,0px))] z-40 mx-auto w-[min(408px,calc(100%-32px))]
                  lg:sticky lg:top-0 lg:bottom-auto lg:flex lg:h-dvh lg:w-auto lg:flex-col lg:gap-8 lg:border-r-2 lg:border-line lg:px-5 lg:py-8"
     >
-      <div className="logo hidden px-3 lg:block">
+      <Link href="/" className="logo hidden px-3 lg:block" aria-label="Fito · về trang chủ">
         Fito<small>sổ tay xem phim của hai đứa</small>
-      </div>
+      </Link>
 
       <Link
         href="/tim"

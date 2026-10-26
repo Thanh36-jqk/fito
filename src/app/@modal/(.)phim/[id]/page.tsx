@@ -29,9 +29,8 @@ async function ModalContent({ params }: { params: PageProps<"/phim/[id]">["param
   const id = parseMovieId((await params).id);
   // Không gọi notFound() ở đây: ranh giới not-found nằm ngoài Sheet nên sheet sẽ mất. Báo ngay trong sheet.
   if (id == null) return <DetailNotFound />;
-  const r = await getDetailForRoute(id);
+  const [r, status] = await Promise.all([getDetailForRoute(id), getMyFilmStatus(id)]);
   if (!r.ok) return r.reason === "not_found" ? <DetailNotFound /> : <DetailError />;
-  const status = await getMyFilmStatus(r.data.id);
   return (
     <>
       <div className="sheet-scroll">
