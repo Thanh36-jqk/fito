@@ -20,7 +20,7 @@ import { countedSources, fmt1, fmtVotes, level, MIN_VOTES, SOURCES, STAMP, total
 import { EmptyState } from "../EmptyState";
 import { Poster } from "../film/Poster";
 import { TicketCard } from "../film/TicketCard";
-import { Scratch } from "./Scratch";
+import { ReviewText } from "./ReviewText";
 import { Trailer } from "./Trailer";
 
 const C = 138.2; // chu vi vòng điểm r=22
@@ -361,7 +361,7 @@ export function DetailBody({ film }: { film: MovieDetail }) {
                 <span className="num">{fmtDate(r.date)}</span>
                 {r.rating != null && <span className="num">{r.rating}/10</span>}
               </header>
-              {r.spoiler ? <Scratch>{r.text}</Scratch> : <p style={{ whiteSpace: "pre-line" }}>{r.text}</p>}
+              <ReviewText text={r.text} spoiler={r.spoiler} />
               {r.url && (
                 <a className="d-link mt-2" href={r.url} {...EXT}>
                   Đọc đầy đủ trên {r.src} <ExternalLink className="size-3.5" aria-hidden />
