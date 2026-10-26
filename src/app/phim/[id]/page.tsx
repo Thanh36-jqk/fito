@@ -8,6 +8,7 @@ import { DetailBody } from "@/components/detail/DetailBody";
 import { DetailError } from "@/components/detail/DetailError";
 import { DetailSkeleton } from "@/components/detail/DetailSkeleton";
 import { parseMovieId } from "@/lib/movie";
+import { getMyFilmStatus, snapOf } from "@/lib/journal";
 import { getDetailForRoute } from "@/lib/tmdb/api";
 
 /* cacheComponents cần ít nhất 1 mẫu để kiểm lúc build; id khác render khi có request.
@@ -57,12 +58,19 @@ async function PageContent({ params }: { params: PageProps<"/phim/[id]">["params
     if (r.reason === "not_found") notFound();
     return <DetailError />;
   }
+  const status = await getMyFilmStatus(r.data.id);
   return (
     <>
       <div className="sheet-scroll">
         <DetailBody film={r.data} />
       </div>
-      <DetailActions id={r.data.id} className="sticky bottom-[calc(84px+env(safe-area-inset-bottom,0px))] lg:bottom-0" />
+      <DetailActions
+        id={r.data.id}
+        snap={snapOf(r.data)}
+        initialWanted={status.wanted}
+        initialWatched={status.watched}
+        className="sticky bottom-[calc(84px+env(safe-area-inset-bottom,0px))] lg:bottom-0"
+      />
     </>
   );
 }

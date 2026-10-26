@@ -5,6 +5,7 @@ import { DetailError } from "@/components/detail/DetailError";
 import { DetailNotFound } from "@/components/detail/DetailNotFound";
 import { DetailSkeleton } from "@/components/detail/DetailSkeleton";
 import { Sheet } from "@/components/detail/Sheet";
+import { getMyFilmStatus, snapOf } from "@/lib/journal";
 import { parseMovieId } from "@/lib/movie";
 import { getDetailForRoute } from "@/lib/tmdb/api";
 
@@ -30,12 +31,18 @@ async function ModalContent({ params }: { params: PageProps<"/phim/[id]">["param
   if (id == null) return <DetailNotFound />;
   const r = await getDetailForRoute(id);
   if (!r.ok) return r.reason === "not_found" ? <DetailNotFound /> : <DetailError />;
+  const status = await getMyFilmStatus(r.data.id);
   return (
     <>
       <div className="sheet-scroll">
         <DetailBody film={r.data} />
       </div>
-      <DetailActions id={r.data.id} />
+      <DetailActions
+        id={r.data.id}
+        snap={snapOf(r.data)}
+        initialWanted={status.wanted}
+        initialWatched={status.watched}
+      />
     </>
   );
 }
