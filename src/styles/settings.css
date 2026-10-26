@@ -9,7 +9,7 @@
 .pal-card[aria-pressed="true"] { outline: 3px solid var(--accent); outline-offset: -3px; }
 .pal-card:focus-visible { outline: 3px solid var(--accent-2); outline-offset: -8px; }
 .pal-card b { display: block; font-family: var(--f-display); font-weight: 800; font-size: 20px; }
-.pal-on { position: absolute; right: 10px; top: 10px; min-height: 30px; font-size: 13px; --rot: 5deg; }
+.pal-on { position: absolute; right: 10px; top: 10px; min-height: 30px; font-size: 13px; }
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
   .pal-card { transition: transform .25s var(--spring); }
   .pal-card:hover { transform: translateY(-3px) rotate(-.5deg); }

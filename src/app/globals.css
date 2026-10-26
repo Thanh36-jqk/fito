@@ -95,14 +95,14 @@ body::after {
 .sticker {
   display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 14px; border-radius: 999px;
   font-family: var(--f-display); font-weight: 700; font-size: 14px;
-  background: var(--sticker); color: #111; border: 3px solid #fff; box-shadow: 3px 3px 0 #000;
-  transform: rotate(var(--rot, -3deg)); transition: transform .25s var(--spring);
+  background: var(--sticker); color: #111;
+  transition: transform .2s var(--spring), filter .2s;
 }
-.sticker:active { transform: rotate(0) scale(.94); }
+.sticker:active { transform: scale(.94); }
 .chip {
   flex: none; min-height: 44px; padding: 0 16px; border-radius: 999px;
   background: var(--surface); border: 2px solid var(--line); color: var(--fg); font-weight: 800; font-size: 14px;
-  transform: rotate(var(--rot, 0deg)); transition: transform .3s var(--spring), background .2s;
+  transition: transform .3s var(--spring), background .2s;
 }
 .chip[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); border-color: #fff; box-shadow: 3px 3px 0 #000; }
 .chip:active { transform: scale(.92); }
