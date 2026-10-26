@@ -8,8 +8,9 @@ import { Sheet } from "@/components/detail/Sheet";
 import { parseMovieId } from "@/lib/movie";
 import { getDetailForRoute } from "@/lib/tmdb/api";
 
+/* id mẫu âm: dữ liệu offline, build không gọi TMDB/điểm ngoài nên không vỡ khi API chập chờn. */
 export function generateStaticParams() {
-  return [{ id: "38551" }];
+  return [{ id: "-1" }];
 }
 
 /* Sheet hiện ngay; nội dung đọc params nằm trong Suspense để điều hướng tức thì. */

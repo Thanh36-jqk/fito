@@ -10,9 +10,10 @@ import { DetailSkeleton } from "@/components/detail/DetailSkeleton";
 import { parseMovieId } from "@/lib/movie";
 import { getDetailForRoute } from "@/lib/tmdb/api";
 
-/* cacheComponents cần ít nhất 1 mẫu để kiểm lúc build; id khác render khi có request. */
+/* cacheComponents cần ít nhất 1 mẫu để kiểm lúc build; id khác render khi có request.
+   Dùng id mẫu âm (dữ liệu offline, không gọi TMDB/điểm ngoài) để build không phụ thuộc mạng. */
 export function generateStaticParams() {
-  return [{ id: "38551" }];
+  return [{ id: "-1" }];
 }
 
 export async function generateMetadata({ params }: PageProps<"/phim/[id]">): Promise<Metadata> {
