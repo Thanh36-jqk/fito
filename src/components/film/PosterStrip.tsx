@@ -37,6 +37,7 @@ function avgColor(img: HTMLImageElement): string | null {
 export function PosterStrip({ films }: { films: MovieCard[] }) {
   const ref = useRef<HTMLDivElement>(null);
   const drag = useRef({ on: false, x: 0, left: 0, moved: false });
+  const paused = useRef(false);
   const updateRef = useRef<() => void>(() => {});
 
   const update = useCallback(() => {
@@ -98,11 +99,39 @@ export function PosterStrip({ films }: { films: MovieCard[] }) {
   const fine = () => matchMedia("(hover: hover) and (pointer: fine)").matches;
   const calm = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  // Tự xoay vòng: cuộn sang poster kế mỗi 3s, hết thì quay về đầu. Chuột vào thì dừng, kéo cũng dừng. Tôn trọng reduced-motion.
+  useEffect(() => {
+    if (calm()) return;
+    const st = ref.current;
+    if (!st || films.length < 2) return;
+    const id = setInterval(() => {
+      if (paused.current || drag.current.on || document.visibilityState !== "visible") return;
+      const slots = [...st.querySelectorAll<HTMLElement>(".slot")];
+      if (slots.length < 2) return;
+      const r = st.getBoundingClientRect();
+      const cx = r.left + r.width / 2;
+      let idx = 0;
+      let bd = Infinity;
+      slots.forEach((sl, i) => {
+        const b = sl.getBoundingClientRect();
+        const d = Math.abs(b.left + b.width / 2 - cx);
+        if (d < bd) {
+          bd = d;
+          idx = i;
+        }
+      });
+      slots[(idx + 1) % slots.length].scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+    }, 3000);
+    return () => clearInterval(id);
+  }, [films]);
+
   return (
     <div
       ref={ref}
       className="strip"
       data-lenis-prevent
+      onMouseEnter={() => (paused.current = true)}
+      onMouseLeave={() => (paused.current = false)}
       onPointerDown={(e) => {
         if (e.pointerType !== "mouse") return;
         drag.current = { on: true, x: e.clientX, left: ref.current!.scrollLeft, moved: false };
