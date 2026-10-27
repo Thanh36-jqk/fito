@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { connection } from "next/server";
 import { Suspense } from "react";
 import { EmptyState } from "@/components/EmptyState";
 import { Hello } from "@/components/Hello";
@@ -33,6 +34,7 @@ export default function ONhaPage({ searchParams }: PageProps<"/o-nha">) {
 
 /* Trang 1 vẽ ở server theo URL; các trang sau HomeGrid tự gọi /api/discover. */
 async function HomeResults({ searchParams }: Pick<PageProps<"/o-nha">, "searchParams">) {
+  await connection(); // đọc TMDB ở request-time, không prefill lúc build
   const f = parseFilters(await searchParams, "home");
   const r = await settle(discoverMovies(f, 1));
   if (!r.ok) {

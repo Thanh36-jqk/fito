@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { connection } from "next/server";
 import Link from "next/link";
 import { Suspense } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -37,6 +38,7 @@ function pageHref(q: string, n: number) {
 }
 
 async function Results({ searchParams }: Pick<PageProps<"/tim">, "searchParams">) {
+  await connection(); // đọc TMDB ở request-time, không prefill lúc build
   const sp = await searchParams;
   const q = (first(sp.q) ?? "").trim();
   const page = Number(first(sp.trang)) || 1;

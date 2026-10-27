@@ -1,3 +1,4 @@
+import { connection } from "next/server";
 import { Suspense } from "react";
 import { Hello } from "@/components/Hello";
 import { Marquee } from "@/components/Marquee";
@@ -36,6 +37,7 @@ function RapFallback() {
 
 /* Dữ liệu động (điểm cache đọc cookie) nằm trong Suspense theo yêu cầu cacheComponents. */
 async function RapSection() {
+  await connection(); // đọc TMDB ở request-time, không prefill lúc build (build không có TMDB_READ_TOKEN)
   const [now, soon] = await Promise.all([settle(getNowPlayingVN()), settle(getUpcomingVN())]);
   const nowList = await overlayScores(now.ok ? now.data : []);
   const nowIds = new Set(nowList.map((f) => f.id));

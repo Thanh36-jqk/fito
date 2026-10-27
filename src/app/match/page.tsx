@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { connection } from "next/server";
 import { Suspense } from "react";
 import { Hello } from "@/components/Hello";
 import { MatchView } from "@/components/match/MatchView";
@@ -20,6 +21,7 @@ export default function MatchPage() {
 }
 
 async function MatchLoader() {
+  await connection(); // đọc TMDB/Supabase ở request-time, không prefill lúc build
   const [deck, matches] = await Promise.all([getSwipeDeck(), getMatches()]);
   return <MatchView initialDeck={deck} initialMatches={matches} />;
 }

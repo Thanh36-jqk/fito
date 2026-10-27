@@ -1,0 +1,44 @@
+name: CI
+
+# Cổng chất lượng: chạy trên mọi PR và mỗi lần đẩy lên main.
+# Mục tiêu: bắt lỗi TRƯỚC khi Vercel deploy. Build chạy KHÔNG secret để chứng minh
+# `next build` không cần mạng/token (nếu lỡ có call ngoài lúc build sẽ fail ở đây, không phải ở prod).
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+# PR đẩy thêm commit thì huỷ lần chạy cũ cho đỡ tốn.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npx tsc --noEmit
+
+      - name: Test
+        run: npm test
+
+      - name: Build (offline — không truyền secret)
+        # Build phải qua mà KHÔNG có TMDB_READ_TOKEN/Supabase: dữ liệu ngoài đã hoãn sang
+        # request-time bằng await connection(), nên build không chạm mạng.
+        # Next 16 canary đôi khi dừng ở nudge bảo mật lần đầu; chạy lại là qua (xem docs/DECISIONS.md).
+        run: npm run build || npm run build
