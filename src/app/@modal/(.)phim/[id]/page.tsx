@@ -5,7 +5,7 @@ import { DetailError } from "@/components/detail/DetailError";
 import { DetailNotFound } from "@/components/detail/DetailNotFound";
 import { MorphSkeleton } from "@/components/detail/MorphSkeleton";
 import { Sheet } from "@/components/detail/Sheet";
-import { getMyFilmStatus, snapOf } from "@/lib/journal";
+import { getFilmScores, getMyFilmStatus, snapOf } from "@/lib/journal";
 import { parseMovieId } from "@/lib/movie";
 import { getDetailForRoute } from "@/lib/tmdb/api";
 
@@ -29,7 +29,7 @@ async function ModalContent({ params }: { params: PageProps<"/phim/[id]">["param
   const id = parseMovieId((await params).id);
   // Không gọi notFound() ở đây: ranh giới not-found nằm ngoài Sheet nên sheet sẽ mất. Báo ngay trong sheet.
   if (id == null) return <DetailNotFound />;
-  const [r, status] = await Promise.all([getDetailForRoute(id), getMyFilmStatus(id)]);
+  const [r, status, scores] = await Promise.all([getDetailForRoute(id), getMyFilmStatus(id), getFilmScores(id)]);
   if (!r.ok) return r.reason === "not_found" ? <DetailNotFound /> : <DetailError />;
   return (
     <>
@@ -41,6 +41,7 @@ async function ModalContent({ params }: { params: PageProps<"/phim/[id]">["param
         snap={snapOf(r.data)}
         initialWanted={status.wanted}
         initialWatched={status.watched}
+        initialScores={scores}
       />
     </>
   );

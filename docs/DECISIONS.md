@@ -25,13 +25,15 @@ Nguồn sự thật cho mọi phiên làm việc. Đọc file này trước khi 
   - grain tĩnh, halftone trên poster
   - nét vẽ tay (gạch chân, mũi tên)
   - photobooth
-- **3 bảng màu**, đổi bằng `data-palette` trên `<html>`. Mặc định Neon.
+- **5 bảng màu**, đổi bằng `data-palette` trên `<html>`. Mặc định Neon.
 
   | Bảng | `--bg` | `--surface` | `--accent` | `--accent-2` | `--muted` | `--sticker` |
   |---|---|---|---|---|---|---|
   | Neon | #0D0E1A | #171829 | #C6F432 | #8B7CFF | #B3B5CF | #FF6BD6 |
   | Kẹo | #16121F | #211A2E | #FFB4A2 | #B8A6FF | #C3B4CC | #7FE0C4 |
   | Hoàng hôn | #120F0D | #1E1915 | #FF8A3D | #4FD1C5 | #C2B3A6 | #FFD23F |
+  | Bạc Hà | #0B1512 | #13201B | #57E0B0 | #9FB2FF | #A6BBB2 | #FF93C4 |
+  | Nho | #140D18 | #201528 | #FFD166 | #B49CFF | #BCA9C7 | #6FE0C9 |
 
   Màu ngữ nghĩa dùng chung: tốt `#9BE36A`, tạm `#FFC857`, kém `#FF8080`.
 - **Font:**
@@ -301,3 +303,4 @@ Yêu cầu: phải tìm và lọc ra được cả những phim ít người bi�
   - **Tầng 2 — parallax hero:** `DetailBody` thêm listener cuộn trên `.sheet-scroll` set `--py = min(scrollTop*0.12, 14px)` (rAF, passive); `.d-bd { transform: scale(1.15) translateY(var(--py)) }` — scale 1.15 cho headroom nên translate 14px không hở mép. Chỉ chạy trong **sheet** (modal) vì trang riêng `/phim/[id]` cuộn bằng window, không phải `.sheet-scroll`. Tắt khi reduced-motion (`--py` không set, backdrop chỉ còn scale tĩnh).
   - Verify (Playwright + build open): lint sạch, build qua. Tilt: media gate true → poster `rotateY(3°)rotateX(3°)` + `--gx:75%`. Parallax trong sheet: cuộn 240px → `--py=14px`; reduced-motion → `--py` unset. Ảnh chụp home + sheet: không vỡ, backdrop không hở mép, điểm/stamp hiển thị đúng.
   - **Chưa làm:** #1 poster morph list→sheet (`layoutId`) + defer render rail (cắt nốt long task 184ms) — để lượt riêng.
+- **27/10/2026** — Thêm palette Bạc Hà, Nho + hiệu ứng sóng loang đổi màu (View Transition clip-path, tôn trọng giảm chuyển động).

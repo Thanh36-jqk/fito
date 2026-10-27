@@ -1,0 +1,15 @@
+/* Công tắc giảm chuyển động theo data-motion (T4). Nạp SAU mọi CSS khác để !important thắng cascade. */
+html[data-motion="off"] *,
+html[data-motion="off"] *::before,
+html[data-motion="off"] *::after {
+  animation-duration: .01ms !important;
+  animation-iteration-count: 1 !important;
+  animation-delay: 0s !important;
+  transition-duration: .01ms !important;
+  scroll-behavior: auto !important;
+}
+html[data-motion="off"] .marquee .track,
+html[data-motion="off"] .marquee .track span { animation: none !important; }
+html[data-motion="off"] .marquee .track span { opacity: 1 !important; }
+/* Reveal cuộn (scroll-driven) bỏ qua animation-duration nên phải tắt hẳn bằng animation:none. */
+html[data-motion="off"] .reveal-grid > .ticket { animation: none !important; }

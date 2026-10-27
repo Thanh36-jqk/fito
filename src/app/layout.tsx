@@ -7,6 +7,7 @@ import { MobileHeader } from "@/components/MobileHeader";
 import { Providers } from "@/components/Providers";
 import { RegisterSW } from "@/components/RegisterSW";
 import { PALETTE_SCRIPT } from "@/lib/palette";
+import { MOTION_SCRIPT } from "@/lib/motion";
 import "./globals.css";
 import "@/styles/fito.css";
 import "@/styles/home.css";
@@ -14,6 +15,8 @@ import "@/styles/detail.css";
 import "@/styles/search.css";
 import "@/styles/picker.css";
 import "@/styles/settings.css";
+// Nạp sau cùng để !important của công tắc giảm chuyển động thắng cascade
+import "@/styles/motion.css";
 
 const baloo = Baloo_2({ variable: "--font-baloo", subsets: ["latin", "vietnamese"], weight: ["600", "700", "800"] });
 const nunito = Nunito({ variable: "--font-nunito", subsets: ["latin", "vietnamese"], weight: ["500", "600", "700", "800"] });
@@ -54,6 +57,8 @@ export default function RootLayout({ children, modal }: LayoutProps<"/">) {
       <head>
         {/* Đặt bảng màu đã lưu trước khi vẽ để không nháy màu */}
         <InlineScript html={PALETTE_SCRIPT} />
+        {/* Đặt data-motion đã lưu trước khi vẽ để không nháy chuyển động */}
+        <InlineScript html={MOTION_SCRIPT} />
       </head>
       <body>
         <Providers>

@@ -8,7 +8,7 @@ import { DetailBody } from "@/components/detail/DetailBody";
 import { DetailError } from "@/components/detail/DetailError";
 import { DetailSkeleton } from "@/components/detail/DetailSkeleton";
 import { parseMovieId } from "@/lib/movie";
-import { getMyFilmStatus, snapOf } from "@/lib/journal";
+import { getFilmScores, getMyFilmStatus, snapOf } from "@/lib/journal";
 import { getDetailForRoute } from "@/lib/tmdb/api";
 
 /* cacheComponents cần ít nhất 1 mẫu để kiểm lúc build; id khác render khi có request.
@@ -53,7 +53,7 @@ export default function PhimPage({ params }: PageProps<"/phim/[id]">) {
 async function PageContent({ params }: { params: PageProps<"/phim/[id]">["params"] }) {
   const id = parseMovieId((await params).id);
   if (id == null) notFound();
-  const [r, status] = await Promise.all([getDetailForRoute(id), getMyFilmStatus(id)]);
+  const [r, status, scores] = await Promise.all([getDetailForRoute(id), getMyFilmStatus(id), getFilmScores(id)]);
   if (!r.ok) {
     if (r.reason === "not_found") notFound();
     return <DetailError />;
@@ -68,6 +68,7 @@ async function PageContent({ params }: { params: PageProps<"/phim/[id]">["params
         snap={snapOf(r.data)}
         initialWanted={status.wanted}
         initialWatched={status.watched}
+        initialScores={scores}
         className="sticky bottom-[calc(84px+env(safe-area-inset-bottom,0px))] lg:bottom-0"
       />
     </>

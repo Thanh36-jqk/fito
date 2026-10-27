@@ -2,6 +2,8 @@ export const PALETTES = [
   { id: "neon", label: "Neon" },
   { id: "keo", label: "Kẹo" },
   { id: "hoanghon", label: "Hoàng hôn" },
+  { id: "bacha", label: "Bạc Hà" },
+  { id: "nho", label: "Nho" },
 ] as const;
 
 export type PaletteId = (typeof PALETTES)[number]["id"];

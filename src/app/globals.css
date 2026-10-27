@@ -27,6 +27,14 @@
   --bg: #120F0D; --surface: #1E1915; --surface-2: #2A231D; --line: #3A3029;
   --accent: #FF8A3D; --accent-2: #4FD1C5; --sticker: #FFD23F; --muted: #C2B3A6; --on-accent: #120F0D;
 }
+:root[data-palette="bacha"], .pal-preview[data-palette="bacha"] {
+  --bg: #0B1512; --surface: #13201B; --surface-2: #1C2C25; --line: #294036;
+  --accent: #57E0B0; --accent-2: #9FB2FF; --sticker: #FF93C4; --muted: #A6BBB2; --on-accent: #07140F;
+}
+:root[data-palette="nho"], .pal-preview[data-palette="nho"] {
+  --bg: #140D18; --surface: #201528; --surface-2: #2B1D38; --line: #3C2A4C;
+  --accent: #FFD166; --accent-2: #B49CFF; --sticker: #6FE0C9; --muted: #BCA9C7; --on-accent: #140D18;
+}
 @property --tint { syntax: "<color>"; inherits: true; initial-value: #6B4CFF; }
 
 @theme inline {
@@ -166,6 +174,16 @@ a.ticket:active { transform: scale(.98); }
 ::view-transition-new(.tab-swap) { animation: 220ms ease-out 80ms both vt-fade, 360ms var(--spring) both vt-rise; }
 @keyframes vt-fade { from { opacity: 0; } }
 @keyframes vt-rise { from { transform: translateY(14px); } }
+
+/* Sóng loang khi đổi bảng màu (View Transition clip-path từ điểm bấm) */
+@media (prefers-reduced-motion: no-preference) {
+  :root.pal-wave::view-transition-old(root){ animation: none; }
+  :root.pal-wave::view-transition-new(root){ animation: fito-wave .5s ease both; }
+  @keyframes fito-wave{
+    from{ clip-path: circle(0 at var(--wave-x,50%) var(--wave-y,50%)); }
+    to  { clip-path: circle(150vmax at var(--wave-x,50%) var(--wave-y,50%)); }
+  }
+}
 
 /* ---------- giảm chuyển động ---------- */
 @media (prefers-reduced-motion: reduce) {

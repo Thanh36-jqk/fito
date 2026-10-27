@@ -51,3 +51,30 @@ iframe.trailer { border: 0; display: block; }
 
 /* Điểm tổng chưa đủ nguồn: chữ thay cho số */
 .total .big.none { font-size: 24px; line-height: 1.1; letter-spacing: 0; text-shadow: none; color: var(--muted); max-width: 6.5em; }
+
+/* ---------- chấm điểm: form inline ---------- */
+.cmp-form { margin: 12px 0 0; padding: 16px; border-radius: 22px; background: var(--surface); border: 2px solid var(--line); }
+.cmp-form-q { margin: 0 0 10px; font-family: var(--f-hand); font-size: 16px; color: var(--accent-2); }
+.cmp-scale { display: flex; flex-wrap: wrap; gap: 8px; }
+.cmp-dot { min-width: 40px; justify-content: center; padding: 8px 0; }
+.cmp-input { display: block; width: 100%; margin-top: 12px; padding: 12px 14px; border-radius: 16px; background: var(--surface-2); border: 2px solid var(--line); color: var(--fg); font-weight: 700; font-size: 15px; }
+.cmp-input::placeholder { color: var(--muted); font-weight: 600; }
+.cmp-input:focus-visible { border-color: var(--accent); }
+.cmp-save { width: 100%; margin-top: 12px; }
+
+/* ---------- so điểm hai đứa ---------- */
+.cmp { margin: 14px 0 0; }
+.cmp-h { margin: 0 0 10px; font-family: var(--f-hand); font-size: 17px; color: var(--fg); }
+.cmp-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.cmp-cell { padding: 16px; border-radius: 22px; background: var(--surface); border: 2px solid var(--line); min-width: 0; }
+.cmp-who { display: block; font-size: 13px; font-weight: 800; color: var(--muted); }
+.cmp-num { display: inline-flex; align-items: baseline; margin-top: 4px; font-size: 32px; font-weight: 900; line-height: 1; color: var(--accent); }
+.cmp-den { font-size: 16px; font-weight: 800; color: var(--muted); }
+.cmp-seen { display: inline-block; margin-top: 6px; font-size: 15px; font-weight: 800; color: var(--accent-2); }
+.cmp-empty { display: inline-block; margin-top: 6px; font-size: 14px; font-weight: 600; color: var(--muted); }
+.cmp-note { margin: 8px 0 0; font-family: var(--f-hand); font-size: 14px; color: var(--fg); overflow-wrap: anywhere; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .cmp-dot, .cmp-input, .cmp-save { transition: transform .15s ease, opacity .15s ease; }
+  .cmp-dot[aria-pressed="true"] { transform: translateY(-1px); }
+}

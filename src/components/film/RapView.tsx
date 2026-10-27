@@ -73,7 +73,7 @@ export function RapView({
       {soonError ? (
         <p className="text-muted">Chưa lấy được phim sắp chiếu từ TMDB.</p>
       ) : soon.length ? (
-        <div className="grid-tickets">
+        <div className="grid-tickets reveal-grid">
           {soon.map((f, i) => (
             <TicketCard key={f.id} film={f} sticker={fmtDayMonth(f.releaseDate)} eager={i === 0} />
           ))}

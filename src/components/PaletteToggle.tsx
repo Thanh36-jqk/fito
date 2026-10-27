@@ -16,11 +16,40 @@ export function usePalette(): PaletteId {
   return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }
 
+// Bắt điểm con trỏ gần nhất để sóng màu loang ra từ chỗ bấm.
+let lastX = -1, lastY = -1;
+if (typeof window !== "undefined") {
+  window.addEventListener("pointerdown", (e) => {
+    lastX = e.clientX;
+    lastY = e.clientY;
+  });
+}
+
 export function setPalette(id: PaletteId) {
-  document.documentElement.dataset.palette = id;
-  try {
-    localStorage.setItem(PALETTE_KEY, id);
-  } catch {}
+  const apply = () => {
+    document.documentElement.dataset.palette = id;
+    try {
+      localStorage.setItem(PALETTE_KEY, id);
+    } catch {}
+  };
+
+  // Tôn trọng cả công tắc "Tắt hiệu ứng" trong Cài đặt (data-motion="off") lẫn reduced-motion của máy.
+  const off = document.documentElement.dataset.motion === "off";
+  const reduce = off || window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce || !document.startViewTransition) {
+    apply();
+    return;
+  }
+
+  // Loang tròn từ điểm bấm bằng clip-path (View Transition).
+  const el = document.documentElement;
+  const x = lastX >= 0 ? `${lastX}px` : "50%";
+  const y = lastY >= 0 ? `${lastY}px` : "50%";
+  el.style.setProperty("--wave-x", x);
+  el.style.setProperty("--wave-y", y);
+  el.classList.add("pal-wave");
+  const vt = document.startViewTransition(apply);
+  vt.finished.finally(() => el.classList.remove("pal-wave"));
 }
 
 export function PaletteToggle({ className = "" }: { className?: string }) {

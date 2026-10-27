@@ -12,3 +12,18 @@
 @media (min-width: 1024px) {
   .home-deep { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 24px; }
 }
+
+/* Lưới dọc "Sắp chiếu" / "Ở nhà": reveal stagger theo cuộn (scroll-driven, CSS thuần) */
+@keyframes ticket-reveal {
+  from { opacity: 0; transform: translateY(28px) scale(.97); }
+  to   { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .reveal-grid > .ticket {
+      animation: ticket-reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 55%;
+    }
+  }
+}

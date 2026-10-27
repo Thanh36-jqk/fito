@@ -39,6 +39,9 @@
   background: var(--sticker); border: 3px solid var(--fg);
 }
 
+/* ---------- hiệu ứng ---------- */
+.set-motion { flex-wrap: wrap; overflow: visible; }
+
 /* ---------- nền tảng ---------- */
 .set-plats { flex-wrap: wrap; overflow: visible; }
 .set-note { margin: 10px 0 0; font-size: 13px; color: var(--muted); }

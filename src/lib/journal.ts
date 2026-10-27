@@ -123,6 +123,30 @@ export function snapOf(film: MovieDetail): Snapshot {
   };
 }
 
+/* Điểm + ghi chú của một người cho một phim (để so điểm hai đứa ở trang chi tiết). */
+export type PersonScore = { mine: boolean; label: string; score: number | null; note: string | null; date: string | null };
+export type FilmScorePair = { signedIn: boolean; me: PersonScore | null; them: PersonScore | null };
+
+/* Đọc điểm + ghi chú của CẢ HAI cho phim id. App 2 người: dòng của mình → "Tớ", dòng kia → "Cậu". */
+export async function getFilmScores(id: number): Promise<FilmScorePair> {
+  if (id <= 0 || !hasSupabase) return { signedIn: false, me: null, them: null };
+  const sb = await createClient();
+  const { data: auth } = await sb.auth.getUser();
+  if (!auth.user) return { signedIn: false, me: null, them: null };
+  const uid = auth.user.id;
+  const { data } = await sb.from("watch_log").select("tmdb_id,user_id,my_score,note,watched_on").eq("tmdb_id", id);
+  let me: PersonScore | null = null;
+  let them: PersonScore | null = null;
+  for (const r of data ?? []) {
+    if (r.user_id === uid) {
+      me ??= { mine: true, label: "Tớ", score: r.my_score ?? null, note: r.note ?? null, date: r.watched_on ?? null };
+    } else {
+      them ??= { mine: false, label: "Cậu", score: r.my_score ?? null, note: r.note ?? null, date: r.watched_on ?? null };
+    }
+  }
+  return { signedIn: true, me, them };
+}
+
 /* Trạng thái của phim với người đang đăng nhập, để nút ở trang chi tiết hiện đúng. */
 export async function getMyFilmStatus(id: number): Promise<{ wanted: boolean; watched: boolean }> {
   if (!hasSupabase || id <= 0) return { wanted: false, watched: false };

@@ -35,7 +35,7 @@ export function HomeGrid({ filters, first }: { filters: Filters; first: MoviePag
 
   return (
     <>
-      <div className="grid-tickets">
+      <div className="grid-tickets reveal-grid">
         {list.map((f, i) => (
           <TicketCard key={f.id} film={f} sticker={f.year ? String(f.year) : null} showScore eager={i < EAGER_N} />
         ))}

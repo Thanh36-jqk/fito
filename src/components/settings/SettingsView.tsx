@@ -4,8 +4,16 @@ import { useMemo, useSyncExternalStore } from "react";
 import { PALETTES } from "@/lib/palette";
 import { PLATFORMS } from "@/lib/movie";
 import { hasSupabase } from "@/lib/supabase/env";
+import { setMotionPref, useMotionPref } from "@/lib/useMedia";
+import type { MotionPref } from "@/lib/motion";
 import { setPalette, usePalette } from "../PaletteToggle";
 import { SignOutButton } from "../SignOutButton";
+
+const MOTIONS: { id: MotionPref; label: string }[] = [
+  { id: "auto", label: "Theo máy" },
+  { id: "on", label: "Bật" },
+  { id: "off", label: "Tắt" },
+];
 
 const UNDERLINE = "M2 9 C 20 3, 35 13, 52 7 S 85 4, 98 8";
 const PLAT_KEY = "fito-platforms";
@@ -48,6 +56,7 @@ function savePlats(keys: string[]) {
 
 export function SettingsView() {
   const current = usePalette();
+  const motion = useMotionPref();
   const raw = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
   const plats = useMemo(() => parsePlats(raw), [raw]);
 
@@ -91,6 +100,21 @@ export function SettingsView() {
           );
         })}
       </div>
+
+      <div className="sec-h">
+        <h2>Hiệu ứng</h2>
+        <small>lưu trên máy này</small>
+      </div>
+      <div className="chips set-motion" role="group" aria-label="Hiệu ứng">
+        {MOTIONS.map(({ id, label }) => (
+          <button key={id} type="button" className="chip" aria-pressed={motion === id} onClick={() => setMotionPref(id)}>
+            {label}
+          </button>
+        ))}
+      </div>
+      <p className="set-note">
+        Tắt để đỡ chóng mặt hoặc tiết kiệm pin. ‘Theo máy’ nghe theo cài đặt giảm chuyển động của thiết bị.
+      </p>
 
       <div className="sec-h">
         <h2>Nền tảng hai đứa dùng</h2>
