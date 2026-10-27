@@ -7,6 +7,9 @@ const nextConfig: NextConfig = {
   // thay vì interceptor @modal/(.)phim ở prod → bấm thẻ nhảy sang trang thật thay vì mở modal.
   // Tắt để giữ prefetch đủ cây route (interception fire đúng như ở dev). Dev không lộ lỗi này.
   partialPrefetching: false,
+  // Tắt nhắc nâng cấp của Next: khi chạy dưới agent/CI, reminder "dừng lệnh" làm
+  // `next build` thoát khác 0 → fail deploy/CI gián đoạn. Nâng Next là quyết định riêng.
+  experimental: { agentUpgrade: false },
   images: {
     remotePatterns: [{ protocol: "https", hostname: "image.tmdb.org", pathname: "/t/p/**" }],
   },

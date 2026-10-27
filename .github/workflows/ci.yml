@@ -40,5 +40,5 @@ jobs:
       - name: Build (offline — không truyền secret)
         # Build phải qua mà KHÔNG có TMDB_READ_TOKEN/Supabase: dữ liệu ngoài đã hoãn sang
         # request-time bằng await connection(), nên build không chạm mạng.
-        # Next 16 canary đôi khi dừng ở nudge bảo mật lần đầu; chạy lại là qua (xem docs/DECISIONS.md).
-        run: npm run build || npm run build
+        # Nudge nâng cấp đã tắt bằng experimental.agentUpgrade:false nên build không bị dừng.
+        run: npm run build
