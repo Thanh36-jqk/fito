@@ -22,7 +22,8 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
   const { data } = await supabase.auth.getClaims();
   const signedIn = Boolean(data?.claims);
   const path = request.nextUrl.pathname;
-  const isPublic = path === "/login" || path.startsWith("/auth/");
+  // /api/cron/* tự chặn bằng CRON_SECRET (Vercel Cron gửi Bearer header, không có cookie Supabase).
+  const isPublic = path === "/login" || path.startsWith("/auth/") || path.startsWith("/api/cron/");
 
   if (!signedIn && !isPublic) return redirect(request, "/login", response);
   if (signedIn && path === "/login") return redirect(request, "/", response);

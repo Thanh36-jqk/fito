@@ -6,6 +6,7 @@ import { PickCta } from "@/components/film/PickCta";
 import { HomeFilters, HomeFiltersShell } from "@/components/home/HomeFilters";
 import { HomeGrid } from "@/components/home/HomeGrid";
 import { ResultsSkeleton } from "@/components/search/SearchBox";
+import { overlayScores } from "@/lib/movie-cache";
 import { fmtTotal, parseFilters, toSearch } from "@/lib/discover";
 import { discoverMovies, settle } from "@/lib/tmdb/api";
 
@@ -48,13 +49,14 @@ async function HomeResults({ searchParams }: Pick<PageProps<"/o-nha">, "searchPa
       </EmptyState>
     );
   }
+  const first = { ...r.data, results: await overlayScores(r.data.results) };
   return (
     <>
       <div className="sec-h">
         <h2>Kho phim</h2>
         <small>{`${fmtTotal(r.data.total)} phim · theo TMDB`}</small>
       </div>
-      <HomeGrid key={toSearch(f)} filters={f} first={r.data} />
+      <HomeGrid key={toSearch(f)} filters={f} first={first} />
     </>
   );
 }

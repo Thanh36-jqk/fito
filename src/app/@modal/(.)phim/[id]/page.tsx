@@ -3,7 +3,7 @@ import { DetailActions } from "@/components/detail/DetailActions";
 import { DetailBody } from "@/components/detail/DetailBody";
 import { DetailError } from "@/components/detail/DetailError";
 import { DetailNotFound } from "@/components/detail/DetailNotFound";
-import { DetailSkeleton } from "@/components/detail/DetailSkeleton";
+import { MorphSkeleton } from "@/components/detail/MorphSkeleton";
 import { Sheet } from "@/components/detail/Sheet";
 import { getMyFilmStatus, snapOf } from "@/lib/journal";
 import { parseMovieId } from "@/lib/movie";
@@ -18,7 +18,7 @@ export function generateStaticParams() {
 export default function PhimModal({ params }: PageProps<"/phim/[id]">) {
   return (
     <Sheet>
-      <Suspense fallback={<DetailSkeleton />}>
+      <Suspense fallback={<MorphSkeleton />}>
         <ModalContent params={params} />
       </Suspense>
     </Sheet>

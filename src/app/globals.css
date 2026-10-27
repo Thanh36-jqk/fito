@@ -128,8 +128,16 @@ body::after {
 .marquee .track span {
   font-family: var(--f-display); font-weight: 800; font-size: 18px; letter-spacing: .08em; color: #FFE9A8;
   padding-right: 28px; white-space: nowrap; text-shadow: 0 0 12px rgba(255, 200, 90, .6);
+  animation: neon-flicker 5s ease-in-out infinite;
 }
 @keyframes marquee-run { to { transform: translateX(-50%); } }
+/* nhấp nháy neon nhẹ của bảng đèn rạp (chỉ opacity + text-shadow, surface được phép chạy liên tục) */
+@keyframes neon-flicker {
+  0%, 18%, 22%, 79%, 100% { opacity: 1; text-shadow: 0 0 12px rgba(255, 200, 90, .6); }
+  20%, 80% { opacity: .78; text-shadow: 0 0 4px rgba(255, 200, 90, .3); }
+  81% { opacity: 1; }
+  82% { opacity: .85; }
+}
 
 /* ---------- cuống vé ---------- */
 .ticket {
@@ -141,6 +149,9 @@ body::after {
 }
 /* mask cắt mất viền focus bên ngoài, nên vé bấm được thì vẽ viền vào trong */
 .ticket:focus-visible { outline-offset: -4px; }
+/* phản hồi khi nhấn thẻ (nút/chip/round đã có sẵn); reduced-motion tự tắt transition ở block dưới */
+a.ticket { transition: transform .2s var(--spring); }
+a.ticket:active { transform: scale(.98); }
 .perf { border-top: 2px dashed var(--line); }
 
 /* ---------- màn trống ---------- */
@@ -163,5 +174,6 @@ body::after {
     transition-duration: .01ms !important; scroll-behavior: auto !important;
   }
   .marquee .track { animation: none; }
+  .marquee .track span { animation: none; opacity: 1; }
   ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
 }

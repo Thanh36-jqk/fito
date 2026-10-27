@@ -62,6 +62,14 @@ export async function getUpcomingVN(): Promise<MovieCard[]> {
   });
 }
 
+/* Phim phổ biến (toàn cầu), dùng cho cron làm nóng movie_cache. */
+export async function getPopular(): Promise<MovieCard[]> {
+  "use cache";
+  cacheLife(LIST_LIFE);
+  cacheTag("tmdb", "popular");
+  return fetchPagesViEn("/movie/popular", {}, 3);
+}
+
 /* Khoảng ngày của now_playing VN (TMDB trả trong `dates`), dùng cho Ra rạp trong Chọn phim. */
 async function nowPlayingWindow(): Promise<{ min: string; max: string }> {
   const { dates } = await fetchListPage("/movie/now_playing", { region: "VN", language: "vi-VN", page: 1 });

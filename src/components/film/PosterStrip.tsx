@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useRef } from "react";
 import { DASH, type MovieCard } from "@/lib/movie";
+import { rememberCard } from "@/lib/openedCards";
 import { EAGER_N, Poster } from "./Poster";
 import { ScorePill } from "./ScorePill";
 
@@ -180,6 +181,7 @@ export function PosterStrip({ films }: { films: MovieCard[] }) {
             className="tilt"
             aria-label={`Xem chi tiết ${f.title}`}
             draggable={false}
+            onClick={() => rememberCard(f)}
             onPointerMove={(e) => {
               if (!fine() || calm() || drag.current.on) return;
               const el = e.currentTarget;
@@ -193,7 +195,7 @@ export function PosterStrip({ films }: { films: MovieCard[] }) {
             }}
             onPointerLeave={(e) => (e.currentTarget.style.transform = "")}
           >
-            <Poster film={f} eager={i < EAGER_N} sizes="(min-width: 1024px) 210px, 170px" />
+            <Poster film={f} eager={i < EAGER_N} sizes="(min-width: 1024px) 210px, 170px" layoutId={`p-${f.id}`} />
           </Link>
           <div className="cap">
             <ScorePill film={f} />

@@ -201,6 +201,25 @@ export function DetailBody({ film }: { film: MovieDetail }) {
     hero.current?.closest(".sheet-scroll")?.scrollTo({ top: 0 });
   }, [film.id]);
 
+  // Parallax: backdrop trôi chậm hơn nội dung khi cuộn (chỉ transform, trong headroom scale 1.15, tắt khi giảm chuyển động).
+  useEffect(() => {
+    const sc = hero.current?.closest(".sheet-scroll");
+    if (!sc || !film.backdropPath || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let raf = 0;
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        hero.current?.style.setProperty("--py", `${Math.min(sc.scrollTop * 0.12, 14)}px`);
+      });
+    };
+    sc.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      sc.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [film.id, film.backdropPath]);
+
   return (
     <>
       <div
@@ -211,7 +230,7 @@ export function DetailBody({ film }: { film: MovieDetail }) {
         {film.backdropPath && (
           <Image className="d-bd" fill alt="" loading="eager" src={tmdbImg(film.backdropPath, "w1280")} sizes="(min-width: 768px) 760px, 100vw" />
         )}
-        <Poster film={film} size="w780" sizes="(min-width: 768px) 170px, 118px" preload />
+        <Poster film={film} size="w780" sizes="(min-width: 768px) 170px, 118px" preload layoutId={`p-${film.id}`} />
         <div className="min-w-0">
           <h2 id="dTitle">
             {film.logoPath ? (
@@ -377,7 +396,7 @@ export function DetailBody({ film }: { film: MovieDetail }) {
           <h3>Phim tương tự</h3>
           <div className="rail" data-lenis-prevent>
             {film.similar.map((m) => (
-              <TicketCard key={m.id} film={m} showScore />
+              <TicketCard key={m.id} film={m} showScore flat />
             ))}
           </div>
         </div>
@@ -387,7 +406,7 @@ export function DetailBody({ film }: { film: MovieDetail }) {
           <h3>Có thể cậu cũng thích</h3>
           <div className="rail" data-lenis-prevent>
             {film.recommendations.map((m) => (
-              <TicketCard key={m.id} film={m} showScore />
+              <TicketCard key={m.id} film={m} showScore flat />
             ))}
           </div>
         </div>
@@ -396,7 +415,7 @@ export function DetailBody({ film }: { film: MovieDetail }) {
       <p className="foot">
         {film.isSample
           ? "Dữ liệu mẫu, mọi điểm và bình luận là giả."
-          : "Dữ liệu phim, ảnh và trailer từ TMDB. Nơi xem từ JustWatch. Điểm IMDb, RT, MC, Trakt chưa nối nên hiện “—”. Sản phẩm dùng API của TMDB nhưng không được TMDB xác nhận hay chứng nhận."}
+          : "Dữ liệu phim, ảnh và trailer từ TMDB. Nơi xem từ JustWatch. Điểm từ IMDb, OMDb (RT, MC) và Trakt; nguồn nào thiếu thì hiện “—”. Sản phẩm dùng API của TMDB nhưng không được TMDB xác nhận hay chứng nhận."}
       </p>
     </>
   );

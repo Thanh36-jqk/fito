@@ -49,6 +49,12 @@
 .strip::-webkit-scrollbar { display: none; }
 .slot { flex: none; width: 170px; scroll-snap-align: center; perspective: 700px; }
 .slot .tilt { display: block; width: 100%; border-radius: 18px; transition: transform .2s ease; transform-style: preserve-3d; }
+/* Thẻ lưới: nghiêng 3D + vệt sáng theo con trỏ (chỉ máy có chuột). JS đặt transform + --gx/--gy ở TicketCard. */
+@media (hover: hover) and (pointer: fine) {
+  .ticket { perspective: 760px; }
+  .ticket .poster { transition: transform .2s ease; transform-style: preserve-3d; }
+  .ticket:hover .poster .glare { opacity: 1; }
+}
 .slot .cap { margin-top: 10px; text-align: center; font-weight: 800; font-size: 13px; color: var(--muted); display: flex; justify-content: center; gap: 6px; align-items: center; }
 @media (hover: hover) and (pointer: fine) { .slot:hover .glare { opacity: 1; } .strip { cursor: grab; } .strip.dragging { cursor: grabbing; scroll-snap-type: none; } }
 @media (min-width: 640px) { .strip { margin-inline: -28px; } }

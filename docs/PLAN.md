@@ -123,7 +123,7 @@ Mỗi màn có 3 trạng thái bắt buộc:
 - [ ] Bảng `imdb_ratings` + job GitHub Actions hằng tuần nạp IMDb Datasets (điểm IMDb cho mọi phim) (script + workflow + đọc trong app xong, chờ chạy job thật để có dữ liệu)
 - [ ] Trang chi tiết đầy đủ: diễn viên/ekip có ảnh, tagline, nước, ngôn ngữ, độ tuổi, bộ sưu tập, phim tương tự, gợi ý, logo (TMDB, thiếu thì Fanart.tv)
 - [x] `lib/score.ts`: chuẩn hoá thang 10, tính điểm tổng, có test Vitest
-- [ ] Cache vào `movie_cache` theo mốc thời gian từng nguồn (điểm chi tiết đang cache bằng `'use cache'` 24h; `movie_cache` + cron để pha sau)
+- [x] Cache vào `movie_cache` theo mốc thời gian từng nguồn (cron `/api/cron/warm` ghi điểm đủ nguồn + mốc; điểm tổng đủ nguồn phủ lên thẻ list qua `overlayScores`)
 - [ ] Tab Rạp: băng poster cuộn, nghiêng 3D, nền đổi màu theo poster
 - [ ] Tab Ở nhà: lưới phim theo nền tảng, cuộn vô hạn
 - [ ] Trang chi tiết: vòng điểm, điểm tổng đếm lên, trailer, nơi xem, bình luận che spoiler
@@ -148,7 +148,7 @@ Mỗi màn có 3 trạng thái bắt buộc:
 
 ### Pha 5 — Hoàn thiện
 - [x] PWA: manifest, icon, cài lên màn hình chính, cache poster
-- [ ] Vercel Cron làm mới ~150 phim hot mỗi ngày
+- [x] Vercel Cron làm mới phim hot mỗi ngày (`vercel.json` → `/api/cron/warm`, ~100 phim/lần: now_playing + upcoming + popular; cần `CRON_SECRET` + `SUPABASE_SERVICE_ROLE_KEY` trên Vercel; cũng giữ Supabase free khỏi ngủ)
 - [x] Kiểm tra tương phản, vùng chạm, giảm chuyển động
 - [x] Chuẩn bị deploy Vercel: README, Open Graph, noindex
 - [ ] Playwright cho luồng đăng nhập → xem chi tiết → quẹt → match
