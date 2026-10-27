@@ -31,13 +31,12 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: Typecheck
-        run: npx tsc --noEmit
-
       - name: Test
         run: npm test
 
-      - name: Build (offline — không truyền secret)
+      # KHÔNG chạy `tsc --noEmit` riêng: app dùng route types Next tự sinh (PageProps/LayoutProps)
+      # trong .next/types, chỉ có SAU build. `next build` dưới đây đã tự typecheck đầy đủ.
+      - name: Build (offline — không truyền secret, đã gồm typecheck)
         # Build phải qua mà KHÔNG có TMDB_READ_TOKEN/Supabase: dữ liệu ngoài đã hoãn sang
         # request-time bằng await connection(), nên build không chạm mạng.
         # Nudge nâng cấp đã tắt bằng experimental.agentUpgrade:false nên build không bị dừng.
