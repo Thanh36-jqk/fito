@@ -121,7 +121,8 @@ Mỗi màn có 3 trạng thái bắt buộc:
 - [ ] `lib/tmdb.ts`: now_playing, upcoming, discover theo nền tảng VN, chi tiết, tìm kiếm
 - [x] Điểm RT + Metacritic (OMDb), điểm Trakt, điểm IMDb (bảng `imdb_ratings`) theo imdb_id → gộp vào vòng điểm trang chi tiết (`lib/ratings/`). Bình luận Trakt chưa làm.
 - [ ] Bảng `imdb_ratings` + job GitHub Actions hằng tuần nạp IMDb Datasets (điểm IMDb cho mọi phim) (script + workflow + đọc trong app xong, chờ chạy job thật để có dữ liệu)
-- [ ] Trang chi tiết đầy đủ: diễn viên/ekip có ảnh, tagline, nước, ngôn ngữ, độ tuổi, bộ sưu tập, phim tương tự, gợi ý, logo (TMDB, thiếu thì Fanart.tv)
+- [x] Trang chi tiết đầy đủ: diễn viên/ekip có ảnh, tagline, nước, ngôn ngữ, độ tuổi, bộ sưu tập, phim tương tự, gợi ý, logo (đã render từ trước; 28/10 bọc link diễn viên/ekip → trang người. Logo fallback Fanart.tv chưa nối)
+- [x] Trang người `nguoi/[id]` + sheet: bấm diễn viên/đạo diễn ra phim của họ; tiểu sử, nghề, ngày sinh/mất, nơi sinh (28/10)
 - [x] `lib/score.ts`: chuẩn hoá thang 10, tính điểm tổng, có test Vitest
 - [x] Cache vào `movie_cache` theo mốc thời gian từng nguồn (cron `/api/cron/warm` ghi điểm đủ nguồn + mốc; điểm tổng đủ nguồn phủ lên thẻ list qua `overlayScores`)
 - [ ] Tab Rạp: băng poster cuộn, nghiêng 3D, nền đổi màu theo poster
@@ -133,7 +134,7 @@ Mỗi màn có 3 trạng thái bắt buộc:
 - [x] Luồng chọn phim 4 bước như bản mẫu
 - [x] Chip lọc nhanh + khung lọc nâng cao, lưu trên URL
 - [x] Sắp xếp theo điểm tổng, độ hot, ngày ra mắt
-- [x] Tìm theo tên Việt, tên Anh, tên gốc, tên thay thế, phủ toàn bộ ~1,26 triệu phim của TMDB; đợi 300ms sau khi ngừng gõ mới tìm
+- [x] Tìm theo tên Việt, tên Anh, tên gốc, tên thay thế, phủ toàn bộ ~1,26 triệu phim của TMDB; đợi 300ms sau khi ngừng gõ mới tìm. Tìm cả tên diễn viên/đạo diễn (`/search/multi`, mục Người riêng → trang người) (28/10)
 - [x] "Đào sâu" bằng TMDB discover: quốc gia, ngôn ngữ gốc, thập niên, từ khoá, Phổ biến / Ít người biết (từ khoá chưa làm)
 - [x] Cài đặt: chọn bảng màu, nền tảng đang dùng (nền tảng lưu localStorage, pha 4 lưu theo tài khoản)
 - [x] Trang Ở nhà: bộ lọc trên URL, Đào sâu, lưới + "Xem thêm", đủ 3 trạng thái (đang tải, rỗng, TMDB lỗi)

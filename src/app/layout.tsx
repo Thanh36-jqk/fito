@@ -12,6 +12,7 @@ import "./globals.css";
 import "@/styles/fito.css";
 import "@/styles/home.css";
 import "@/styles/detail.css";
+import "@/styles/person.css";
 import "@/styles/search.css";
 import "@/styles/picker.css";
 import "@/styles/settings.css";

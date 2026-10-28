@@ -65,6 +65,10 @@
   .slot .poster { --pt: 26px; }
 }
 
+/* ---------- ảnh tròn chân dung (dùng chung: diễn viên/ekip, người trong tìm kiếm) ---------- */
+.ph { border-radius: 50%; overflow: hidden; display: grid; place-items: center; background: var(--surface-2); border: 2px solid var(--line); color: var(--muted); }
+.ph img { width: 100%; height: 100%; object-fit: cover; }
+
 /* ---------- lưới cuống vé ---------- */
 .grid-tickets { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
 @media (min-width: 768px) { .grid-tickets { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 18px; } }

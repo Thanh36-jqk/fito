@@ -1,8 +1,8 @@
 // Hàm thuần biến JSON TMDB thành MovieCard/MovieDetail. Không I/O, có test (pick.test.ts).
-import { DASH, GENRE_VI, JOB_VI, PLATFORMS } from "@/lib/movie";
-import type { LangText, MovieCard, MovieDetail, MovieReview, Person, Provider, ProvidersVN, Trailer } from "@/lib/movie";
+import { DASH, DEPT_VI, GENRE_VI, JOB_VI, PLATFORMS } from "@/lib/movie";
+import type { LangText, MovieCard, MovieDetail, MovieReview, Person, PersonDetail, PersonHit, Provider, ProvidersVN, Trailer } from "@/lib/movie";
 import type { Score } from "@/lib/score";
-import type { TmdbImage, TmdbListItem, TmdbMovieFull, TmdbProvider, TmdbReleaseDates, TmdbVideo, TmdbWatchProviders } from "./types";
+import type { TmdbImage, TmdbListItem, TmdbMovieFull, TmdbPersonFull, TmdbPersonListItem, TmdbProvider, TmdbReleaseDates, TmdbVideo, TmdbWatchProviders } from "./types";
 
 export function clean(s: string | null | undefined): string | null {
   const t = s?.trim();
@@ -301,5 +301,77 @@ export function toDetail(input: { vi: TmdbMovieFull; en: TmdbMovieFull | null; c
     recommendations: mergeLists(vi.recommendations?.results ?? [], en?.recommendations?.results ?? []).slice(0, 12),
     reviews,
     isSample: false,
+  };
+}
+
+export function deptVi(d: string | null | undefined): string | null {
+  const k = clean(d);
+  return k ? (DEPT_VI[k] ?? k) : null;
+}
+
+export function toPersonHit(p: TmdbPersonListItem): PersonHit {
+  return { id: p.id, name: clean(p.name) ?? DASH, role: deptVi(p.known_for_department), profilePath: p.profile_path ?? null };
+}
+
+export const PERSON_FILMS_MAX = 60;
+
+/* Vai diễn (cast) luôn tính; ekip (crew) chỉ giữ việc có trong JOB_VI để bỏ credit vặt ("Thanks", v.v.). */
+const personCredits = (p: TmdbPersonFull) => [
+  ...(p.movie_credits?.cast ?? []),
+  ...(p.movie_credits?.crew ?? []).filter((c) => !!c.job && c.job in JOB_VI),
+];
+
+/* Phim của người: gộp cast + crew (đã lọc), dedupe theo id, nối tên en qua mergeLists.
+   Cắt 60 phim NỔI BẬT nhất (theo popularity) rồi hiện mới nhất trước (chưa có ngày xuống cuối). */
+function personFilms(vi: TmdbPersonFull, en: TmdbPersonFull | null): MovieCard[] {
+  const seen = new Set<number>();
+  const viUniq: TmdbListItem[] = [];
+  for (const c of personCredits(vi)) {
+    if (!(c.id > 0) || seen.has(c.id)) continue;
+    seen.add(c.id);
+    viUniq.push(c);
+  }
+  return mergeLists(viUniq, en ? personCredits(en) : [])
+    .sort((a, b) => b.popularity - a.popularity)
+    .slice(0, PERSON_FILMS_MAX)
+    .sort((a, b) => {
+      if (!a.releaseDate && !b.releaseDate) return b.popularity - a.popularity;
+      if (!a.releaseDate) return 1;
+      if (!b.releaseDate) return -1;
+      return a.releaseDate > b.releaseDate ? -1 : a.releaseDate < b.releaseDate ? 1 : 0;
+    });
+}
+
+export function toPerson(vi: TmdbPersonFull, en: TmdbPersonFull | null): PersonDetail {
+  const name = clean(vi.name) ?? DASH;
+  return {
+    id: vi.id,
+    name,
+    originalName: otherName(name, en?.name),
+    role: deptVi(vi.known_for_department),
+    bio: pickText(vi.biography, en?.biography),
+    profilePath: vi.profile_path ?? null,
+    birthday: isoDay(vi.birthday ?? undefined),
+    deathday: isoDay(vi.deathday ?? undefined),
+    placeOfBirth: clean(vi.place_of_birth),
+    films: personFilms(vi, en),
+    isSample: false,
+  };
+}
+
+/* Người mẫu offline cho build (generateStaticParams id -1), không gọi TMDB. */
+export function samplePerson(): PersonDetail {
+  return {
+    id: -1,
+    name: "Người mẫu",
+    originalName: null,
+    role: "Diễn viên",
+    bio: null,
+    profilePath: null,
+    birthday: null,
+    deathday: null,
+    placeOfBirth: null,
+    films: [],
+    isSample: true,
   };
 }

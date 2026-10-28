@@ -34,6 +34,8 @@ export type ProvidersVN = {
   buy: Provider[];
 };
 export type Person = { id: number; name: string; originalName: string | null; role: string; profilePath: string | null };
+// Người trong kết quả tìm (tên + nghề chính). role null nếu TMDB không biết nghề.
+export type PersonHit = { id: number; name: string; role: string | null; profilePath: string | null };
 export type Trailer = { key: string; name: string; lang: string | null; publishedAt: string | null };
 export type LangText = { text: string; lang: "vi" | "en" };
 export type MovieReview = {
@@ -71,8 +73,23 @@ export type MovieDetail = MovieCard & {
   isSample: boolean;
 };
 
+// Trang chi tiết một người: tiểu sử + danh sách phim (dùng lại thẻ phim).
+export type PersonDetail = {
+  id: number; // TMDB id (>0). Người mẫu dùng id ÂM (-1)
+  name: string;
+  originalName: string | null; // tên gốc nếu khác tên hiển thị
+  role: string | null; // nghề chính (known_for_department) sang tiếng Việt
+  bio: LangText | null;
+  profilePath: string | null;
+  birthday: string | null; // "YYYY-MM-DD"
+  deathday: string | null;
+  placeOfBirth: string | null;
+  films: MovieCard[]; // phim của họ (cast + crew), dedupe, xếp mới nhất trước
+  isSample: boolean;
+};
+
 export type MoviePage = { page: number; totalPages: number; total: number; results: MovieCard[] };
-export type SearchPage = { query: string; page: number; totalPages: number; total: number; results: MovieCard[] };
+export type SearchPage = { query: string; page: number; totalPages: number; total: number; results: MovieCard[]; people: PersonHit[] };
 export type Result<T> = { ok: true; data: T } | { ok: false; error: string };
 
 export type Platform = { key: string; label: string; tmdbId: number | null };
@@ -121,6 +138,21 @@ export const JOB_VI: Record<string, string> = {
   "Director of Photography": "Quay phim",
   Producer: "Sản xuất",
   Editor: "Dựng phim",
+};
+
+// Nghề chính của người (known_for_department) sang tiếng Việt.
+export const DEPT_VI: Record<string, string> = {
+  Acting: "Diễn viên",
+  Directing: "Đạo diễn",
+  Writing: "Biên kịch",
+  Production: "Sản xuất",
+  Sound: "Âm nhạc",
+  Camera: "Quay phim",
+  Editing: "Dựng phim",
+  "Visual Effects": "Kỹ xảo",
+  Art: "Mỹ thuật",
+  "Costume & Make-Up": "Phục trang & hoá trang",
+  Crew: "Đoàn phim",
 };
 
 export type ImgSize = "w185" | "w500" | "w780" | "w1280";
