@@ -6,10 +6,10 @@ import { cacheLife, cacheTag } from "next/cache";
 import { discoverParams, effectiveSort, sortCinema, type Filters } from "@/lib/discover";
 import { getImdbScore, getOmdbScores, getTraktScore } from "@/lib/ratings/sources";
 import { getFilm, sampleDetail } from "@/lib/films";
-import type { MovieCard, MovieDetail, MoviePage, Result, SearchPage } from "@/lib/movie";
+import type { MovieCard, MovieDetail, MoviePage, PersonDetail, PersonHit, Result, SearchPage } from "@/lib/movie";
 import { TmdbError, tmdbGet } from "./client";
-import { clean, mergeLists, toDetail } from "./pick";
-import type { TmdbListItem, TmdbMovieFull, TmdbPaged } from "./types";
+import { clean, mergeLists, samplePerson, toDetail, toPerson, toPersonHit } from "./pick";
+import type { TmdbListItem, TmdbMovieFull, TmdbPaged, TmdbPersonFull, TmdbPersonListItem } from "./types";
 
 export const LIST_LIFE = { stale: 300, revalidate: 21600, expire: 86400 }; // danh sách: 6 giờ
 export const DETAIL_LIFE = { stale: 300, revalidate: 86400, expire: 604800 }; // chi tiết: 24 giờ
@@ -189,27 +189,42 @@ async function withExternalScores(detail: MovieDetail): Promise<MovieDetail> {
   return detail;
 }
 
+const PEOPLE_MAX = 12;
+
+/* Tìm phim (/search/movie, phân trang) + người (/search/person, chỉ trang 1). Tách 2 nguồn để số đếm/phân trang
+   bám đúng phim, còn mục Người chỉ hiện ở trang đầu (đỡ xáo người theo từng trang phim). */
 async function searchCached(q: string, page: number): Promise<SearchPage> {
   "use cache";
   cacheLife(LIST_LIFE);
   cacheTag("tmdb", "search");
-  const [vi, en] = await Promise.all([
+  const [vi, en, ppl] = await Promise.all([
     tmdbGet<TmdbPaged<TmdbListItem>>("/search/movie", { query: q, page, language: "vi-VN", include_adult: false }),
     tmdbGet<TmdbPaged<TmdbListItem>>("/search/movie", { query: q, page, language: "en-US", include_adult: false }),
+    page === 1
+      ? tmdbGet<TmdbPaged<TmdbPersonListItem>>("/search/person", { query: q, page: 1, language: "vi-VN", include_adult: false })
+      : Promise.resolve(null),
   ]);
+  const seenP = new Set<number>();
+  const people: PersonHit[] = [];
+  for (const r of ppl?.results ?? []) {
+    if (r.adult || seenP.has(r.id) || people.length >= PEOPLE_MAX) continue;
+    seenP.add(r.id);
+    people.push(toPersonHit(r));
+  }
   return {
     query: q,
     page,
     totalPages: Math.min(vi.total_pages, 500),
     total: vi.total_results,
     results: mergeLists(vi.results, en.results),
+    people,
   };
 }
 
 export async function searchMovies(query: string, page: number): Promise<SearchPage> {
   const q = query.trim().replace(/\s+/g, " ").slice(0, 100);
   const p = Math.min(500, Math.max(1, Math.trunc(page) || 1));
-  if (!q) return { query: "", page: p, totalPages: 0, total: 0, results: [] };
+  if (!q) return { query: "", page: p, totalPages: 0, total: 0, results: [], people: [] };
   return searchCached(q, p);
 }
 
@@ -219,6 +234,50 @@ export async function settle<T>(p: Promise<T>): Promise<Result<T>> {
     return { ok: true, data: await p };
   } catch {
     return { ok: false, error: "tmdb" };
+  }
+}
+
+/* Bản vi-VN của người (movie_credits có tên phim tiếng Việt). 404 → null (được cache); lỗi khác throw. */
+async function getPersonVi(id: number): Promise<TmdbPersonFull | null> {
+  "use cache";
+  cacheLife(DETAIL_LIFE);
+  cacheTag("tmdb", `person-${id}`);
+  try {
+    return await tmdbGet<TmdbPersonFull>(`/person/${id}`, {
+      language: "vi-VN",
+      append_to_response: "movie_credits,external_ids",
+    });
+  } catch (error) {
+    if (error instanceof TmdbError && error.status === 404) return null;
+    throw error;
+  }
+}
+
+/* Bản en-US: tiểu sử (vi-VN hay rỗng) + tên phim en. Lỗi throw để không bị cache. */
+async function getPersonEn(id: number): Promise<TmdbPersonFull> {
+  "use cache";
+  cacheLife(DETAIL_LIFE);
+  cacheTag("tmdb", `person-${id}`);
+  return tmdbGet<TmdbPersonFull>(`/person/${id}`, { language: "en-US", append_to_response: "movie_credits" });
+}
+
+export async function getPerson(id: number): Promise<PersonDetail | null> {
+  const [vi, en] = await Promise.all([getPersonVi(id), settle(getPersonEn(id))]);
+  if (!vi) return null;
+  return toPerson(vi, en.ok ? en.data : null);
+}
+
+/* KHÔNG cache. Id âm là người mẫu (offline), id dương là người TMDB. */
+export async function getPersonForRoute(
+  id: number,
+): Promise<{ ok: true; data: PersonDetail } | { ok: false; reason: "not_found" | "error" }> {
+  if (id === -1) return { ok: true, data: samplePerson() };
+  if (!(id > 0)) return { ok: false, reason: "not_found" };
+  try {
+    const data = await getPerson(id);
+    return data ? { ok: true, data } : { ok: false, reason: "not_found" };
+  } catch {
+    return { ok: false, reason: "error" };
   }
 }
 

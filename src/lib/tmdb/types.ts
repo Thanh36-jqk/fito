@@ -68,6 +68,32 @@ export type TmdbReview = {
   url: string;
 };
 
+// Một phim trong movie_credits của người (kèm vai/việc làm). Giữ đủ trường của list item để tái dùng toCard.
+export type TmdbMovieCredit = TmdbListItem & { character?: string; job?: string; department?: string };
+
+export type TmdbPersonFull = {
+  id: number;
+  name: string;
+  biography?: string;
+  profile_path: string | null;
+  known_for_department?: string;
+  birthday?: string | null;
+  deathday?: string | null;
+  place_of_birth?: string | null;
+  movie_credits?: { cast?: TmdbMovieCredit[]; crew?: TmdbMovieCredit[] };
+  external_ids?: { imdb_id?: string | null };
+};
+
+// Một người trong kết quả /search/person.
+export type TmdbPersonListItem = {
+  id: number;
+  name: string;
+  profile_path: string | null;
+  known_for_department?: string;
+  popularity?: number;
+  adult?: boolean;
+};
+
 export type TmdbMovieFull = TmdbListItem & {
   runtime?: number | null;
   tagline?: string | null;

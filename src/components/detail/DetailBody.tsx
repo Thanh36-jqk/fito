@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { animate, motion } from "motion/react";
 import { ExternalLink, UserRound } from "lucide-react";
 import { useEffect, useRef } from "react";
@@ -69,15 +70,17 @@ function People({ list }: { list: Person[] }) {
     <ul className="people" data-lenis-prevent>
       {list.map((p) => (
         <li key={`${p.id}-${p.role}`} className="person">
-          <span className="ph">
-            {p.profilePath ? (
-              <Image src={tmdbImg(p.profilePath, "w185")} alt="" width={72} height={72} />
-            ) : (
-              <UserRound className="size-8" aria-hidden />
-            )}
-          </span>
-          <b>{p.name}</b>
-          {p.role && <span>{p.role}</span>}
+          <Link href={`/nguoi/${p.id}`} scroll={false} className="person-link">
+            <span className="ph">
+              {p.profilePath ? (
+                <Image src={tmdbImg(p.profilePath, "w185")} alt="" width={72} height={72} />
+              ) : (
+                <UserRound className="size-8" aria-hidden />
+              )}
+            </span>
+            <b>{p.name}</b>
+            {p.role && <span>{p.role}</span>}
+          </Link>
         </li>
       ))}
     </ul>

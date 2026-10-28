@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import { connection } from "next/server";
+import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, UserRound } from "lucide-react";
 import { EmptyState } from "@/components/EmptyState";
 import { Hello } from "@/components/Hello";
 import { EAGER_N } from "@/components/film/Poster";
 import { TicketCard } from "@/components/film/TicketCard";
 import { ResultsSkeleton, SearchBox, SearchBoxShell } from "@/components/search/SearchBox";
+import { tmdbImg, type PersonHit } from "@/lib/movie";
 import { searchMovies, settle } from "@/lib/tmdb/api";
 
 export const metadata: Metadata = { title: "Tìm phim" };
@@ -37,6 +39,33 @@ function pageHref(q: string, n: number) {
   return `/tim?q=${encodeURIComponent(q)}&trang=${n}`;
 }
 
+/* Diễn viên/đạo diễn khớp tên: bấm sang trang người. */
+function PeopleHits({ people }: { people: PersonHit[] }) {
+  return (
+    <div className="block">
+      <div className="sec-h">
+        <h2>Người</h2>
+        <small>diễn viên · đạo diễn</small>
+      </div>
+      <div className="people-hits">
+        {people.map((p) => (
+          <Link key={p.id} href={`/nguoi/${p.id}`} scroll={false} className="phit">
+            <span className="ph">
+              {p.profilePath ? (
+                <Image src={tmdbImg(p.profilePath, "w185")} alt="" width={76} height={76} />
+              ) : (
+                <UserRound className="size-8" aria-hidden />
+              )}
+            </span>
+            <b>{p.name}</b>
+            {p.role && <span>{p.role}</span>}
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 async function Results({ searchParams }: Pick<PageProps<"/tim">, "searchParams">) {
   await connection(); // đọc TMDB ở request-time, không prefill lúc build
   const sp = await searchParams;
@@ -60,26 +89,31 @@ async function Results({ searchParams }: Pick<PageProps<"/tim">, "searchParams">
     );
   }
 
-  const { results, total, totalPages, page: cur, query } = r.data;
-  if (results.length === 0) {
+  const { results, people, total, totalPages, page: cur, query } = r.data;
+  if (results.length === 0 && people.length === 0) {
     return (
-      <EmptyState mood="sad" title={`Không thấy phim nào tên “${q}”`}>
-        Thử tên tiếng Anh hoặc tên gốc xem sao.
+      <EmptyState mood="sad" title={`Không thấy gì tên “${q}”`}>
+        Thử tên tiếng Anh, tên gốc, hay tên diễn viên/đạo diễn xem sao.
       </EmptyState>
     );
   }
 
   return (
     <>
-      <div className="sec-h">
-        <h2>Kết quả</h2>
-        <small>{`${total.toLocaleString("vi-VN")} phim · theo TMDB`}</small>
-      </div>
-      <div className="grid-tickets">
-        {results.map((f, i) => (
-          <TicketCard key={f.id} film={f} sticker={f.year ? String(f.year) : null} showScore eager={i < EAGER_N} />
-        ))}
-      </div>
+      {people.length > 0 && <PeopleHits people={people} />}
+      {results.length > 0 && (
+        <>
+          <div className="sec-h">
+            <h2>Phim</h2>
+            <small>{`${total.toLocaleString("vi-VN")} phim · theo TMDB`}</small>
+          </div>
+          <div className="grid-tickets">
+            {results.map((f, i) => (
+              <TicketCard key={f.id} film={f} sticker={f.year ? String(f.year) : null} showScore eager={i < EAGER_N} />
+            ))}
+          </div>
+        </>
+      )}
       {totalPages > 1 && (
         <nav className="pager" aria-label="Phân trang">
           {cur > 1 && (
