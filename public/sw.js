@@ -1,5 +1,5 @@
 // Service worker của Fito: trang offline khi mất mạng + cache poster TMDB. Không cache HTML (có dữ liệu riêng).
-const VERSION = "v1";
+const VERSION = "v2";
 const SHELL = "fito-shell-" + VERSION;
 const POSTERS = "fito-posters-" + VERSION;
 const OFFLINE_URL = "/offline.html";
@@ -39,7 +39,9 @@ async function posterFirst(req) {
   const hit = await cache.match(req);
   if (hit) return hit;
   const res = await fetch(req);
-  if (res.ok) {
+  // res.ok cho /_next/image (same-origin); ảnh image.tmdb.org tải kiểu no-cors nên là
+  // opaque (status 0, ok=false) — vẫn cache để dùng offline.
+  if (res.ok || res.type === "opaque") {
     await cache.put(req, res.clone());
     await trimPosters();
   }
@@ -50,6 +52,13 @@ self.addEventListener("fetch", (event) => {
   const req = event.request;
   if (req.method !== "GET") return;
   const url = new URL(req.url);
+
+  // Poster/ảnh TMDB tải thẳng (ảnh unoptimized, cross-origin): cache trước, mạng sau
+  if (url.hostname === "image.tmdb.org") {
+    event.respondWith(posterFirst(req));
+    return;
+  }
+
   if (url.origin !== self.location.origin) return;
   if (PRIVATE.some((re) => re.test(url.pathname))) return;
 

@@ -11,6 +11,9 @@ const nextConfig: NextConfig = {
   // `next build` thoát khác 0 → fail deploy/CI gián đoạn. Nâng Next là quyết định riêng.
   experimental: { agentUpgrade: false },
   images: {
+    // Vercel Hobby hết quota tối ưu ảnh → /_next/image trả 402, poster vỡ.
+    // TMDB đã phục vụ sẵn các cỡ w185/w500/w780/w1280 nên bỏ optimizer, dùng ảnh gốc.
+    unoptimized: true,
     remotePatterns: [{ protocol: "https", hostname: "image.tmdb.org", pathname: "/t/p/**" }],
   },
   // sw.js không được cache để bản mới tới ngay
