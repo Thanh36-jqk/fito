@@ -1,5 +1,7 @@
 // Service worker của Fito: trang offline khi mất mạng + cache poster TMDB. Không cache HTML (có dữ liệu riêng).
-const VERSION = "v2";
+// v3: buộc cài lại SW để CSP mới (connect-src image.tmdb.org) có hiệu lực — đổi header /sw.js
+// không làm trình duyệt coi SW là "đã đổi" (so sánh byte script), nên phải đổi byte ở đây.
+const VERSION = "v3";
 const SHELL = "fito-shell-" + VERSION;
 const POSTERS = "fito-posters-" + VERSION;
 const OFFLINE_URL = "/offline.html";
