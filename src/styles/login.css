@@ -45,6 +45,14 @@
 .login-form .btn-main { margin-top: 4px; }
 .login-err { display: flex; align-items: flex-start; gap: 8px; margin: 2px 0 0; color: var(--bad); font-size: 14px; line-height: 1.45; }
 
+/* Chuyển giữa Đăng nhập / Đăng ký */
+.login-switch {
+  width: 100%; margin-top: 12px; min-height: 44px; border-radius: 12px;
+  font-family: var(--f-display); font-weight: 700; font-size: 14px; color: var(--accent-2);
+}
+.login-switch:hover { color: var(--accent); }
+.login-switch:focus-visible { outline: none; box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 45%, transparent); }
+
 .login-sent { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; padding-top: 8px; }
 .login-sent h2 { font-family: var(--f-display); font-weight: 800; font-size: 26px; margin: 0; }
 .login-sent p { margin: 0; color: var(--muted); line-height: 1.6; overflow-wrap: anywhere; }
